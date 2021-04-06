@@ -50,6 +50,7 @@ flutter_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/wn.png"
+  image_path_ios: "assets/ios_logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
