@@ -34,7 +34,7 @@ class _ShowsViewState extends State<ShowsView>
               "TV Shows",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 28,
+                fontSize: 24,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -54,31 +54,7 @@ class _ShowsViewState extends State<ShowsView>
     models.add(
       SliderInputModel(
         url: "tv/airing_today",
-        sliderTitle: "Now Playing",
-        pictureType: "tv",
-      ),
-    );
-
-    models.add(
-      SliderInputModel(
-        url: "tv/on_the_air",
-        sliderTitle: "Now Playing",
-        pictureType: "tv",
-      ),
-    );
-
-    models.add(
-      SliderInputModel(
-        url: "tv/popular",
-        sliderTitle: "Now Playing",
-        pictureType: "tv",
-      ),
-    );
-
-    models.add(
-      SliderInputModel(
-        url: "tv/top_rated",
-        sliderTitle: "Now Playing",
+        sliderTitle: "Airing Today",
         pictureType: "tv",
       ),
     );
@@ -111,6 +87,30 @@ class _ShowsViewState extends State<ShowsView>
       SliderInputModel(
         url: "discover/tv?sort_by=popularity.desc&with_networks=2739",
         sliderTitle: "Disney Plus",
+        pictureType: "tv",
+      ),
+    );
+
+    models.add(
+      SliderInputModel(
+        url: "tv/on_the_air",
+        sliderTitle: "On The Air",
+        pictureType: "tv",
+      ),
+    );
+
+    models.add(
+      SliderInputModel(
+        url: "tv/popular",
+        sliderTitle: "Popular",
+        pictureType: "tv",
+      ),
+    );
+
+    models.add(
+      SliderInputModel(
+        url: "tv/top_rated",
+        sliderTitle: "Top Rated",
         pictureType: "tv",
       ),
     );

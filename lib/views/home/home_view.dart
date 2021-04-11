@@ -36,7 +36,7 @@ class _HomeViewState extends State<HomeView>
               "WatchNext",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 28,
+                fontSize: 24,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -53,7 +53,7 @@ class _HomeViewState extends State<HomeView>
             Expanded(
               child: Container(
                 child: Card(
-                  color: lightBackGround,
+                  color: darkBackGround,
                   elevation: 2,
                   child: InkWell(
                     onTap: () {
@@ -71,9 +71,9 @@ class _HomeViewState extends State<HomeView>
                           Expanded(
                             child: Container(
                               child: Text(
-                                "Click Here To Explore More",
+                                "Explore...",
                                 style: TextStyle(
-                                  color: Colors.white70,
+                                  color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -84,7 +84,7 @@ class _HomeViewState extends State<HomeView>
                             margin: EdgeInsets.only(left: 16),
                             child: Icon(
                               Icons.search_rounded,
-                              color: Colors.white70,
+                              color: Colors.white,
                             ),
                           )
                         ],
@@ -117,31 +117,7 @@ class _HomeViewState extends State<HomeView>
     models.add(
       SliderInputModel(
         url: "movie/now_playing",
-        sliderTitle: "Now Playing",
-        pictureType: "movie",
-      ),
-    );
-
-    models.add(
-      SliderInputModel(
-        url: "movie/upcoming",
-        sliderTitle: "Now Playing",
-        pictureType: "movie",
-      ),
-    );
-
-    models.add(
-      SliderInputModel(
-        url: "movie/popular",
-        sliderTitle: "Now Playing",
-        pictureType: "movie",
-      ),
-    );
-
-    models.add(
-      SliderInputModel(
-        url: "movie/top_rated",
-        sliderTitle: "Now Playing",
+        sliderTitle: "In Theaters",
         pictureType: "movie",
       ),
     );
@@ -149,31 +125,7 @@ class _HomeViewState extends State<HomeView>
     models.add(
       SliderInputModel(
         url: "tv/airing_today",
-        sliderTitle: "Now Playing",
-        pictureType: "tv",
-      ),
-    );
-
-    models.add(
-      SliderInputModel(
-        url: "tv/on_the_air",
-        sliderTitle: "Now Playing",
-        pictureType: "tv",
-      ),
-    );
-
-    models.add(
-      SliderInputModel(
-        url: "tv/popular",
-        sliderTitle: "Now Playing",
-        pictureType: "tv",
-      ),
-    );
-
-    models.add(
-      SliderInputModel(
-        url: "tv/top_rated",
-        sliderTitle: "Now Playing",
+        sliderTitle: "Airing Today",
         pictureType: "tv",
       ),
     );
@@ -206,6 +158,54 @@ class _HomeViewState extends State<HomeView>
       SliderInputModel(
         url: "discover/tv?sort_by=popularity.desc&with_networks=2739",
         sliderTitle: "Disney Plus",
+        pictureType: "tv",
+      ),
+    );
+
+    models.add(
+      SliderInputModel(
+        url: "movie/upcoming",
+        sliderTitle: "Upcoming",
+        pictureType: "movie",
+      ),
+    );
+
+    models.add(
+      SliderInputModel(
+        url: "tv/on_the_air",
+        sliderTitle: "On The Air",
+        pictureType: "tv",
+      ),
+    );
+
+    models.add(
+      SliderInputModel(
+        url: "movie/popular",
+        sliderTitle: "Popular",
+        pictureType: "movie",
+      ),
+    );
+
+    models.add(
+      SliderInputModel(
+        url: "tv/popular",
+        sliderTitle: "Popular",
+        pictureType: "tv",
+      ),
+    );
+
+    models.add(
+      SliderInputModel(
+        url: "movie/top_rated",
+        sliderTitle: "Top Rated",
+        pictureType: "movie",
+      ),
+    );
+
+    models.add(
+      SliderInputModel(
+        url: "tv/top_rated",
+        sliderTitle: "Top Rated",
         pictureType: "tv",
       ),
     );

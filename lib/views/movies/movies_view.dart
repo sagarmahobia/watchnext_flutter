@@ -34,7 +34,7 @@ class _MoviesViewState extends State<MoviesView>
               "Movies",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 28,
+                fontSize: 24,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -54,7 +54,7 @@ class _MoviesViewState extends State<MoviesView>
     models.add(
       SliderInputModel(
         url: "movie/now_playing",
-        sliderTitle: "Now Playing",
+        sliderTitle: "In Theaters",
         pictureType: "movie",
       ),
     );
@@ -62,7 +62,7 @@ class _MoviesViewState extends State<MoviesView>
     models.add(
       SliderInputModel(
         url: "movie/upcoming",
-        sliderTitle: "Now Playing",
+        sliderTitle: "Upcoming",
         pictureType: "movie",
       ),
     );
@@ -70,7 +70,7 @@ class _MoviesViewState extends State<MoviesView>
     models.add(
       SliderInputModel(
         url: "movie/popular",
-        sliderTitle: "Now Playing",
+        sliderTitle: "Popular",
         pictureType: "movie",
       ),
     );
@@ -78,7 +78,7 @@ class _MoviesViewState extends State<MoviesView>
     models.add(
       SliderInputModel(
         url: "movie/top_rated",
-        sliderTitle: "Now Playing",
+        sliderTitle: "Top Rated",
         pictureType: "movie",
       ),
     );
