@@ -61,12 +61,30 @@ class _DetailPageState extends State<DetailPage> {
                               children: [
                                 Image.network(
                                   "https://image.tmdb.org/t/p/original" +
-                                      state.stateModel.backdrop,
+                                      (state.stateModel.backdrop ?? ""),
                                   width: double.infinity,
                                   fit: BoxFit.fill,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      height: 200,
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.broken_image_outlined,
+                                          size: 75,
+                                          color: Colors.white24,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(130, 16, 16, 28),
+                                  margin: EdgeInsets.fromLTRB(
+                                      state.stateModel.poster != null
+                                          ? 130
+                                          : 16,
+                                      16,
+                                      16,
+                                      28),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -74,7 +92,6 @@ class _DetailPageState extends State<DetailPage> {
                                       Text(
                                         state.stateModel.title,
                                         maxLines: 2,
-
                                         style: TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.w600),
@@ -125,16 +142,32 @@ class _DetailPageState extends State<DetailPage> {
                                 ),
                               ],
                             ),
-                            Positioned(
-                              top: 220,
-                              left: 12,
-                              child: Image.network(
-                                "https://image.tmdb.org/t/p/original" +
-                                    state.stateModel.poster,
-                                fit: BoxFit.fitHeight,
-                                height: 150,
-                                width: 100,
-                              ), // or optionaly wrap the child in FractionalTranslation
+                            Visibility(
+                              visible: state.stateModel.poster != null,
+                              child: Positioned(
+                                top: 220,
+                                left: 12,
+                                child: Image.network(
+                                  "https://image.tmdb.org/t/p/original" +
+                                      (state.stateModel.poster ?? ""),
+                                  fit: BoxFit.fitHeight,
+                                  height: 150,
+                                  width: 100,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      height: 150,
+                                      width: 100,
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.broken_image_outlined,
+                                          size: 50,
+                                          color: Colors.white24,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ), // or optionaly wrap the child in FractionalTranslation
+                              ),
                             )
                           ],
                         ),

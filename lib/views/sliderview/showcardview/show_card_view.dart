@@ -37,6 +37,18 @@ class ShowCardView extends StatelessWidget {
                 children: [
                   FadeInImage.memoryNetwork(
                     placeholder: kTransparentImage,
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        height: 180,
+                        child: Center(
+                          child: Icon(
+                            Icons.broken_image_outlined,
+                            size: 50,
+                            color: Colors.white24,
+                          ),
+                        ),
+                      );
+                    },
                     image: this.inputModel.imageUrl,
                     fit: BoxFit.fitWidth,
                   ),

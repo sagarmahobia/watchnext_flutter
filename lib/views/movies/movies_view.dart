@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:watchnext/pages/search/search_page.dart';
-import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/utils/genre_utils.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
 import 'package:watchnext/views/sliderview/slider_view.dart';

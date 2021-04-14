@@ -118,7 +118,7 @@ class _ShowsViewState extends State<ShowsView>
     for (TVGenres genre in TVGenres.values) {
       models.add(
         SliderInputModel(
-          url: "discover/movie?sort_by=popularity.desc&with_genres=" +
+          url: "discover/tv?sort_by=popularity.desc&with_genres=" +
               genre.id.toString(),
           sliderTitle: getTvGenreById(genre.id),
           pictureType: "tv",
