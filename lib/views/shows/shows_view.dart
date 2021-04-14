@@ -29,7 +29,7 @@ class _ShowsViewState extends State<ShowsView>
       [
         Center(
           child: Padding(
-            padding: const EdgeInsets.only(top: 32.0, bottom: 0),
+            padding: const EdgeInsets.only(top: 8.0, bottom: 0),
             child: Text(
               "TV Shows",
               style: TextStyle(

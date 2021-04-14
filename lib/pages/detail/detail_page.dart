@@ -66,13 +66,15 @@ class _DetailPageState extends State<DetailPage> {
                                   fit: BoxFit.fill,
                                 ),
                                 Container(
-                                  margin: EdgeInsets.fromLTRB(130, 16, 0, 28),
+                                  margin: EdgeInsets.fromLTRB(130, 16, 16, 28),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         state.stateModel.title,
+                                        maxLines: 2,
+
                                         style: TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.w600),

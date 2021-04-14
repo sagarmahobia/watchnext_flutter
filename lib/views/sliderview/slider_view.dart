@@ -81,22 +81,25 @@ class _SliderViewState extends State<SliderView> {
                     ],
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ListPage(
-                                url: inputModel.url,
-                                pictureType: inputModel.pictureType,
-                              )),
-                    );
-                  },
-                  child: Text(
-                    "MORE",
-                    style: TextStyle(
-                      color: Colors.redAccent,
-                      fontSize: 16,
+                Container(
+                  margin: EdgeInsets.only(right: 16),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ListPage(
+                                  url: inputModel.url,
+                                  pictureType: inputModel.pictureType,
+                                )),
+                      );
+                    },
+                    child: Text(
+                      "MORE",
+                      style: TextStyle(
+                        color: Colors.redAccent,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ),
