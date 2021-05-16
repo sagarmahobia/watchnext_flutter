@@ -7,6 +7,8 @@ import 'di/injection.dart';
 
 void main() {
   configureInjection();
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 

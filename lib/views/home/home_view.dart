@@ -16,6 +16,7 @@ class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin<HomeView> {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
       child: Column(
         children: getSliderModels(),

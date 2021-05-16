@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:watchnext/pages/detail/detail_page_bloc.dart';
 import 'package:watchnext/res/app_colors.dart';
@@ -55,27 +56,34 @@ class _DetailPageState extends State<DetailPage> {
                       Container(
                         color: lightBackGround,
                         child: Stack(
+                          alignment: AlignmentDirectional.bottomStart,
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Image.network(
-                                  "https://image.tmdb.org/t/p/original" +
-                                      (state.stateModel.backdrop ?? ""),
-                                  width: double.infinity,
-                                  fit: BoxFit.fill,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Container(
-                                      height: 200,
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.broken_image_outlined,
-                                          size: 75,
-                                          color: Colors.white24,
-                                        ),
-                                      ),
-                                    );
-                                  },
+                                Center(
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(maxWidth: 900),
+                                    child: Image.network(
+                                      "https://image.tmdb.org/t/p/original" +
+                                          (state.stateModel.backdrop ?? ""),
+                                      width: double.infinity,
+                                      fit: BoxFit.fill,
+                                      errorBuilder:
+                                          (context, error, xstackTrace) {
+                                        return Container(
+                                          height: 200,
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.broken_image_outlined,
+                                              size: 75,
+                                              color: Colors.white24,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 ),
                                 Container(
                                   margin: EdgeInsets.fromLTRB(
@@ -145,7 +153,7 @@ class _DetailPageState extends State<DetailPage> {
                             Visibility(
                               visible: state.stateModel.poster != null,
                               child: Positioned(
-                                top: 220,
+                                bottom: 12,
                                 left: 12,
                                 child: Image.network(
                                   "https://image.tmdb.org/t/p/original" +

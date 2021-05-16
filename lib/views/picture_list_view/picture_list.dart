@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:watchnext/adaptive_ui/base_widget.dart';
+import 'package:watchnext/adaptive_ui/util.dart';
 import 'package:watchnext/pages/search/search_page.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/views/sliderview/showcardview/show_card_input_model.dart';
@@ -90,25 +92,30 @@ class _PictureListViewState extends State<PictureListView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
-      color: backGroundColor,
-      child: PagedGridView<int, ShowCardInputModel>(
-        showNewPageProgressIndicatorAsGridChild: false,
-        showNewPageErrorIndicatorAsGridChild: false,
-        showNoMoreItemsIndicatorAsGridChild: false,
-        pagingController: _pagingController,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: 100 / 190,
-          crossAxisSpacing: 5,
-          mainAxisSpacing: 5,
-          crossAxisCount: 3,
-        ),
-        builderDelegate: PagedChildBuilderDelegate<ShowCardInputModel>(
-          itemBuilder: (context, item, index) {
-            return ShowCardView(inputModel: item);
-          },
-        ),
-      ),
+    return BaseWidget(
+      builder: (context, sizingInformation) {
+
+        return Container(
+          color: backGroundColor,
+          child: PagedGridView<int, ShowCardInputModel>(
+            showNewPageProgressIndicatorAsGridChild: false,
+            showNewPageErrorIndicatorAsGridChild: false,
+            showNoMoreItemsIndicatorAsGridChild: false,
+            pagingController: _pagingController,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              childAspectRatio: 100 / 200,
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 5,
+              crossAxisCount: sizingInformation.screenSize.width ~/ 125,
+            ),
+            builderDelegate: PagedChildBuilderDelegate<ShowCardInputModel>(
+              itemBuilder: (context, item, index) {
+                return ShowCardView(inputModel: item);
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 

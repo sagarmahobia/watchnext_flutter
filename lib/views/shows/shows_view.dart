@@ -14,6 +14,7 @@ class _ShowsViewState extends State<ShowsView>
     with AutomaticKeepAliveClientMixin<ShowsView> {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
       child: Column(
         children: getSliderModels(),

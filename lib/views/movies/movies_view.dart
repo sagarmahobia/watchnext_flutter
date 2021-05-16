@@ -12,6 +12,7 @@ class _MoviesViewState extends State<MoviesView>
     with AutomaticKeepAliveClientMixin<MoviesView> {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
       child: Column(
         children: getSliderModels(),
