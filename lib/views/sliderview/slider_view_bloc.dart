@@ -39,7 +39,7 @@ class SliderViewBloc extends Bloc<SliderViewEvent, SliderViewState> {
                   (result.posterPath != null ? result.posterPath : ""),
               result.title != null ? result.title : result.name,
               this.type,
-              result.voteAverage);
+              result.voteAverage.toStringAsFixed(1));
 
           cardModels.add(x);
         }

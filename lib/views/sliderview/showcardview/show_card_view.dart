@@ -65,7 +65,7 @@ class ShowCardView extends StatelessWidget {
                       textAlign: TextAlign.start,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(),
+                      style: TextStyle(fontSize: 15),
                     ),
                   ),
                 ],
@@ -87,7 +87,7 @@ class ShowCardView extends StatelessWidget {
                     top: 6,
                     bottom: 6,
                   ),
-                  child: Text(inputModel.vote.toString()),
+                  child: Text(inputModel.vote),
                 ),
               )
             ],

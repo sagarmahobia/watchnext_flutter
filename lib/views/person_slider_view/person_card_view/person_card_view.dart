@@ -23,7 +23,9 @@ class PersonCardView extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PersonDetailPage(id: inputModel.id),
+              builder: (context) => PersonDetailPage(
+                id: inputModel.id,
+              ),
             ),
           ); //todo
         },
@@ -33,17 +35,35 @@ class PersonCardView extends StatelessWidget {
             children: [
               FadeInImage.memoryNetwork(
                 placeholder: kTransparentImage,
+                imageErrorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 170,
+                    child: Center(
+                      child: Icon(
+                        Icons.broken_image_outlined,
+                        size: 50,
+                        color: Colors.white24,
+                      ),
+                    ),
+                  );
+                },
                 image: this.inputModel.image,
                 fit: BoxFit.fitWidth,
               ),
+              Expanded(
+                child: Container(),
+              ),
               Container(
                 padding: EdgeInsets.all(8.0),
+                constraints: BoxConstraints(
+                  minHeight: 54,
+                ),
                 child: Text(
                   inputModel.name,
                   textAlign: TextAlign.start,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(),
+                  style: TextStyle(fontSize: 15),
                 ),
               ),
             ],

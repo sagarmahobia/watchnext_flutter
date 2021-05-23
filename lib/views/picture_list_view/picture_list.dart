@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:watchnext/adaptive_ui/base_widget.dart';
-import 'package:watchnext/adaptive_ui/util.dart';
 import 'package:watchnext/pages/search/search_page.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/views/sliderview/showcardview/show_card_input_model.dart';
@@ -61,7 +60,7 @@ class _PictureListViewState extends State<PictureListView>
         } else {
           _pagingController.appendLastPage([]);
         }
-        //TODO check if done.
+
       }
     });
 
@@ -79,11 +78,14 @@ class _PictureListViewState extends State<PictureListView>
 
   @override
   void refresh() {
-    bloc.query = myListenable.getQuery();
-
     if (myListenable.getQuery().isEmpty) {
       return;
     }
+    if (myListenable.getQuery() == bloc.query) {
+      return;
+    }
+    bloc.query = myListenable.getQuery();
+
     _pagingController.refresh();
 
     bloc.add(LoadNextPage(1, query: myListenable.getQuery()));
@@ -94,7 +96,6 @@ class _PictureListViewState extends State<PictureListView>
     super.build(context);
     return BaseWidget(
       builder: (context, sizingInformation) {
-
         return Container(
           color: backGroundColor,
           child: PagedGridView<int, ShowCardInputModel>(

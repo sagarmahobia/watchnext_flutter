@@ -23,6 +23,8 @@ class _PersonSliderViewState extends State<PersonSliderView> {
 
   PersonSliderViewBloc bloc;
 
+  bool isVisible = false; //TODO
+
   _PersonSliderViewState(this.inputModel);
 
   @override
@@ -31,29 +33,62 @@ class _PersonSliderViewState extends State<PersonSliderView> {
     bloc = PersonSliderViewBloc(this.inputModel.url,
         isCredit: inputModel.isCredit);
     bloc.add(LoadItemsEvent());
+    bloc.stream.listen((state) {
+      if (state is VideoSliderViewSuccess) {
+        setState(
+          () {
+            if (state.cardModels.isEmpty) {
+              this.isVisible = false;
+            }
+          },
+        );
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
-      cubit: bloc,
-      builder: (context, VideoSliderViewState state) {
-        if (state is VideoSliderViewSuccess) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    inputModel.isCredit ? "Cast" : "People",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                    ),
+    return Visibility(
+      visible: isVisible,
+      child: Container(
+        margin: EdgeInsets.only(top: 24),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(
+                          left: 16.0,
+                          right: 8.0,
+                        ),
+                        child: Text(
+                    inputModel.type,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        inputModel.isCredit ? "Cast" : "People",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(child: Text(inputModel.type)),
-                  FlatButton(
-                    onPressed: () {
+                ),
+                Container(
+                  margin: EdgeInsets.only(right: 16),
+                  child: InkWell(
+                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -64,36 +99,60 @@ class _PersonSliderViewState extends State<PersonSliderView> {
                       );
                       //
                     },
-                    child: Text("SEE ALL"),
-                  )
-                ],
-              ),
-              Container(
-                height: 230,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: getShowCards(state.cardModels),
-                ),
-              )
-            ],
-          );
-        }
-        if (state is VideoSliderViewError) {
-          debugPrint(state.error.toString());
+                    child: Text(
+                      "MORE",
+                      style: TextStyle(
+                        color: Colors.redAccent,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 16.0),
+              child: BlocBuilder(
+                bloc: bloc,
+                builder: (context, VideoSliderViewState state) {
+                  if (state is VideoSliderViewSuccess) {
+                    return Container(
+                      height: 235,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: getShowCards(state.cardModels),
+                      ),
+                    );
+                  }
+                  if (state is VideoSliderViewError) {
+                    debugPrint(state.error.toString());
 
-          return Center(
-            child: Text("ERROR"),
-          );
-        }
-        return CircularProgressIndicator(
-          strokeWidth: 2,
-        );
-      },
+                    return InkWell(
+                      onTap: () {
+                        bloc.add(LoadItemsEvent());
+                      },
+                      child: Container(
+                        height: 235,
+                        child: Center(
+                          child: Text("Something went wrong. Tap to reload."),
+                        ),
+                      ),
+                    );
+                  }
+                  return CircularProgressIndicator(
+                    strokeWidth: 2,
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   List<Widget> getShowCards(List<PersonCardInputModel> cardModels) {
-    List<Widget> showCards = List();
+    List<Widget> showCards = [];
 
     for (PersonCardInputModel model in cardModels) {
       showCards.add(

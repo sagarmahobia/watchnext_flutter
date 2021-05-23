@@ -34,7 +34,7 @@ class _PersonDetailPageState extends State<PersonDetailPage> {
         title: Text("Detail"),
       ),
       body: BlocBuilder(
-        cubit: bloc,
+        bloc: bloc,
         builder: (context, state) {
           if (state is DetailPageLoaded) {
             return SingleChildScrollView(

@@ -50,7 +50,7 @@ class _VideoSliderViewState extends State<VideoSliderView> {
       child: Container(
         margin: EdgeInsets.only(top: 16.0),
         child: BlocBuilder(
-          cubit: bloc,
+          bloc: bloc,
           builder: (context, VideoSliderViewState state) {
             if (state is VideoSliderViewSuccess) {
               return Container(
@@ -82,13 +82,15 @@ class _VideoSliderViewState extends State<VideoSliderView> {
             if (state is VideoSliderViewError) {
               debugPrint(state.error.toString());
 
-              //TODO Height
               return InkWell(
                 onTap: () {
                   bloc.add(LoadItemsEvent());
                 },
-                child: Center(
-                  child: Text("ERROR"),
+                child: Container(
+                  height: 150,
+                  child: Center(
+                    child: Text("Something went wrong. Tap to try again."),
+                  ),
                 ),
               );
             }

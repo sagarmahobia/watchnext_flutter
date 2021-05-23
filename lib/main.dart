@@ -9,7 +9,7 @@ void main() {
   configureInjection();
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(MyApp());
+  runApp(MyApp()); // Wrap your app
 }
 
 class MyApp extends StatelessWidget {
@@ -26,7 +26,10 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         accentColor: accentColor,
       ),
-      home: Container(color: backGroundColor, child: HomePage()),
+      home: Container(
+        color: backGroundColor,
+        child: HomePage(),
+      ),
     );
   }
 }

@@ -30,7 +30,7 @@ class _SliderViewState extends State<SliderView> {
     super.initState();
     bloc = SliderViewBloc(this.inputModel.url, this.inputModel.pictureType);
     bloc.add(LoadItemsEvent());
-    bloc.listen((state) {
+    bloc.stream.listen((state) {
       if (state is SliderViewSuccess) {
         setState(
           () {
@@ -91,6 +91,8 @@ class _SliderViewState extends State<SliderView> {
                             builder: (context) => ListPage(
                                   url: inputModel.url,
                                   pictureType: inputModel.pictureType,
+                                  title:
+                                      inputModel.sliderTitle + " " + getType(),
                                 )),
                       );
                     },
@@ -108,7 +110,7 @@ class _SliderViewState extends State<SliderView> {
             Container(
               margin: EdgeInsets.only(top: 16.0),
               child: BlocBuilder(
-                cubit: bloc,
+                bloc: bloc,
                 builder: (context, SliderViewState state) {
                   if (state is SliderViewSuccess) {
                     return Container(
@@ -121,7 +123,7 @@ class _SliderViewState extends State<SliderView> {
                   } else if (state is SliderViewError) {
                     debugPrint(state.error.toString());
 
-                    //TODO Height
+
                     return InkWell(
                       onTap: () {
                         bloc.add(LoadItemsEvent());
@@ -129,7 +131,8 @@ class _SliderViewState extends State<SliderView> {
                       child: Container(
                         height: 235,
                         child: Center(
-                          child: Text("Something went wrong. Try again."),
+                          child: Text("Something went wrong. Tap to reload."),
+
                         ),
                       ),
                     );

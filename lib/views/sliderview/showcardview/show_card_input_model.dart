@@ -5,7 +5,7 @@ class ShowCardInputModel {
 
   final String type;
 
-  final double vote;
+  final String vote;
 
   ShowCardInputModel(this.id, this.imageUrl, this.title, this.type, this.vote);
 }

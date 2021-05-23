@@ -47,7 +47,7 @@ class PictureListBloc extends Bloc<PictureListEvent, PictureListState> {
                   (result.posterPath != null ? result.posterPath : ""),
               result.title != null ? result.title : result.name,
               type,
-              result.voteAverage);
+              result.voteAverage.toStringAsFixed(1));
 
           cards.add(x);
         }

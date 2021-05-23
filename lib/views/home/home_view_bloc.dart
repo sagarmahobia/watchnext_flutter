@@ -13,6 +13,6 @@ class HomeViewBloc extends Bloc<HomeViewEvent, HomeViewState> {
   Stream<HomeViewState> mapEventToState(
     HomeViewEvent event,
   ) async* {
-    // TODO: implement mapEventToState
+
   }
 }

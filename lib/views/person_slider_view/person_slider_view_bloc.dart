@@ -22,7 +22,9 @@ class PersonSliderViewBloc
       : super(VideoSliderViewInitial());
 
   @override
-  Stream<VideoSliderViewState> mapEventToState(VideoSliderViewEvent e,) async* {
+  Stream<VideoSliderViewState> mapEventToState(
+    VideoSliderViewEvent e,
+  ) async* {
     if (e is LoadItemsEvent) {
       TMDBService rest = getIt<TMDBService>();
 
@@ -38,12 +40,12 @@ class PersonSliderViewBloc
           results = people.results;
         }
 
-        List<PersonCardInputModel> cardModels = List();
+        List<PersonCardInputModel> cardModels = [];
 
         for (var result in results) {
           var image = "https://image.tmdb.org/t/p/w342" +
               (result.profilePath != null ? result.profilePath : "");
-          var x = PersonCardInputModel(result.id,result.name, image);
+          var x = PersonCardInputModel(result.id, result.name, image);
 
           cardModels.add(x);
         }

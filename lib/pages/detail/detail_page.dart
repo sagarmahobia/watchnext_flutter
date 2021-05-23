@@ -47,7 +47,7 @@ class _DetailPageState extends State<DetailPage> {
         child: Column(
           children: [
             BlocBuilder(
-              cubit: bloc,
+              bloc: bloc,
               builder: (context, state) {
                 if (state is DetailPageLoaded) {
                   return Column(
@@ -62,8 +62,9 @@ class _DetailPageState extends State<DetailPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Center(
-                                  child: ConstrainedBox(
+                                  child: Container(
                                     constraints: BoxConstraints(maxWidth: 900),
+
                                     child: Image.network(
                                       "https://image.tmdb.org/t/p/original" +
                                           (state.stateModel.backdrop ?? ""),
@@ -117,10 +118,12 @@ class _DetailPageState extends State<DetailPage> {
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.only(left: 8),
+                                              margin:
+                                                  EdgeInsets.only(left: 8),
                                               child: Text(
                                                 state.stateModel.runtime,
-                                                style: TextStyle(fontSize: 14),
+                                                style:
+                                                    TextStyle(fontSize: 14),
                                               ),
                                             ),
                                           ],
@@ -190,7 +193,7 @@ class _DetailPageState extends State<DetailPage> {
                     ],
                   );
                 } else if (state is DetailPageError) {
-                  //TODO height
+
                   return InkWell(
                     onTap: () {
                       bloc.add(LoadPageDetail());

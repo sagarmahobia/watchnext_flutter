@@ -7,10 +7,14 @@ class ListPage extends StatefulWidget {
   final String url;
   final String pictureType;
 
-  const ListPage({Key key, this.url, this.pictureType,}) : super(key: key);
+  final String title;
+
+  const ListPage({Key key, this.url, this.pictureType, this.title})
+      : super(key: key);
 
   @override
-  _ListPageState createState() => _ListPageState(this.url, this.pictureType);
+  _ListPageState createState() =>
+      _ListPageState(this.url, this.pictureType, this.title);
 }
 
 class _ListPageState extends State<ListPage> {
@@ -18,18 +22,23 @@ class _ListPageState extends State<ListPage> {
 
   final String pictureType;
 
-  _ListPageState(this.url, this.pictureType);
+  final String title;
+
+  _ListPageState(this.url, this.pictureType, this.title);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(""),),
+      appBar: AppBar(
+        title: Text(this.title),
+      ),
       body: Container(
         color: backGroundColor,
         child: PictureListView(
-        url: this.url,
-        pictureType: this.pictureType,
+          url: this.url,
+          pictureType: this.pictureType,
+        ),
       ),
-    ),);
+    );
   }
 }

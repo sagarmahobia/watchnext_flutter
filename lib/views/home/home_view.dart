@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:watchnext/pages/search/search_page.dart';
 import 'package:watchnext/res/app_colors.dart';
+import 'package:watchnext/views/person_slider_view/person_slider_input_model.dart';
+import 'package:watchnext/views/person_slider_view/person_slider_view.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
 import 'package:watchnext/views/sliderview/slider_view.dart';
 
@@ -48,7 +50,7 @@ class _HomeViewState extends State<HomeView>
 
     widgets.add(
       Container(
-        margin: EdgeInsets.only(top: 16),
+        margin: EdgeInsets.only(top: 16, left: 8, right: 8),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -72,7 +74,7 @@ class _HomeViewState extends State<HomeView>
                           Expanded(
                             child: Container(
                               child: Text(
-                                "Explore...",
+                                "Search...",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
@@ -225,6 +227,17 @@ class _HomeViewState extends State<HomeView>
     //   )),
     // );
 
+    widgets.add(
+      PersonSliderView(
+        inputModel: PersonSliderInputModel("person/popular", "Popular"),
+      ),
+    );
+
+    widgets.add(
+      Container(
+        height: 20,
+      ),
+    );
     return widgets;
   }
 
