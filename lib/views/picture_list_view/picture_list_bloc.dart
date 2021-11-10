@@ -38,7 +38,7 @@ class PictureListBloc extends Bloc<PictureListEvent, PictureListState> {
 
         ListResponse items = listResponseFromJson(response.bodyString);
 
-        List<ShowCardInputModel> cards = List();
+        List<ShowCardInputModel> cards = [];
 
         for (var result in items.results) {
           var x = ShowCardInputModel(

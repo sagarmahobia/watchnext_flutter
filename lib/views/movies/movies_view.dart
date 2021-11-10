@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:watchnext/utils/genre_utils.dart';
+import 'package:watchnext/views/ad_views/native_ad_view.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
 import 'package:watchnext/views/sliderview/slider_view.dart';
 
@@ -8,8 +9,7 @@ class MoviesView extends StatefulWidget {
   _MoviesViewState createState() => _MoviesViewState();
 }
 
-class _MoviesViewState extends State<MoviesView>
-    with AutomaticKeepAliveClientMixin<MoviesView> {
+class _MoviesViewState extends State<MoviesView> with AutomaticKeepAliveClientMixin<MoviesView> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -75,6 +75,10 @@ class _MoviesViewState extends State<MoviesView>
     );
 
     models.add(
+      SliderInputModel(isAd: true),
+    );
+
+    models.add(
       SliderInputModel(
         url: "movie/top_rated",
         sliderTitle: "Top Rated",
@@ -85,8 +89,7 @@ class _MoviesViewState extends State<MoviesView>
     for (MovieGenres genre in MovieGenres.values) {
       models.add(
         SliderInputModel(
-          url: "discover/movie?sort_by=popularity.desc&with_genres=" +
-              genre.id.toString(),
+          url: "discover/movie?sort_by=popularity.desc&with_genres=" + genre.id.toString(),
           sliderTitle: getMovieGenreById(genre.id),
           pictureType: "movie",
         ),
@@ -94,9 +97,20 @@ class _MoviesViewState extends State<MoviesView>
     }
 
     for (var value in models) {
-      widgets.add(SliderView(
-        inputModel: value,
-      ));
+      if (value.isAd) {
+        widgets.add(
+          Container(
+            margin: EdgeInsets.only(top: 24),
+            child: NativeAdView(),
+          ),
+        );
+      } else {
+        widgets.add(
+          SliderView(
+            inputModel: value,
+          ),
+        );
+      }
     }
 
     return widgets;

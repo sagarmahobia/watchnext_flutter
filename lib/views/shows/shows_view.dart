@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:watchnext/pages/search/search_page.dart';
-import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/utils/genre_utils.dart';
+import 'package:watchnext/views/ad_views/native_ad_view.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
 import 'package:watchnext/views/sliderview/slider_view.dart';
 
@@ -93,6 +92,10 @@ class _ShowsViewState extends State<ShowsView>
     );
 
     models.add(
+      SliderInputModel(isAd: true),
+    );
+    
+    models.add(
       SliderInputModel(
         url: "tv/on_the_air",
         sliderTitle: "On The Air",
@@ -128,11 +131,21 @@ class _ShowsViewState extends State<ShowsView>
     }
 
     for (var value in models) {
-      widgets.add(SliderView(
-        inputModel: value,
-      ));
+      if (value.isAd) {
+        widgets.add(
+          Container(
+            margin: EdgeInsets.only(top: 24),
+            child: NativeAdView(),
+          ),
+        );
+      } else {
+        widgets.add(
+          SliderView(
+            inputModel: value,
+          ),
+        );
+      }
     }
-
     // widgets.add(
     //   PersonSliderView(
     //       inputModel: PersonSliderInputModel(

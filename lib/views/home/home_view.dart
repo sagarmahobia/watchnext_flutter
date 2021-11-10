@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:watchnext/pages/search/search_page.dart';
 import 'package:watchnext/res/app_colors.dart';
+import 'package:watchnext/views/ad_views/native_ad_view.dart';
 import 'package:watchnext/views/person_slider_view/person_slider_input_model.dart';
 import 'package:watchnext/views/person_slider_view/person_slider_view.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
@@ -14,8 +15,7 @@ class HomeView extends StatefulWidget {
   _HomeViewState createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView>
-    with AutomaticKeepAliveClientMixin<HomeView> {
+class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin<HomeView> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -118,6 +118,10 @@ class _HomeViewState extends State<HomeView>
     );
 
     models.add(
+      SliderInputModel(isAd: true),
+    );
+
+    models.add(
       SliderInputModel(
         url: "movie/now_playing",
         sliderTitle: "In Theaters",
@@ -163,6 +167,10 @@ class _HomeViewState extends State<HomeView>
         sliderTitle: "Disney Plus",
         pictureType: "tv",
       ),
+    );
+
+    models.add(
+      SliderInputModel(isAd: true),
     );
 
     models.add(
@@ -214,24 +222,28 @@ class _HomeViewState extends State<HomeView>
     );
 
     for (var value in models) {
-      widgets.add(SliderView(
-        inputModel: value,
-      ));
+      if (value.isAd) {
+        widgets.add(
+          Container(
+            margin: EdgeInsets.only(top: 24),
+            child: NativeAdView(),
+          ),
+        );
+      } else {
+        widgets.add(
+          SliderView(
+            inputModel: value,
+          ),
+        );
+      }
     }
 
     // widgets.add(
     //   PersonSliderView(
-    //       inputModel: PersonSliderInputModel(
-    //     "person/popular",
-    //     "Popular",
-    //   )),
+    //     inputModel: PersonSliderInputModel("person/popular", "Popular"),
+    //   ),
     // );
 
-    widgets.add(
-      PersonSliderView(
-        inputModel: PersonSliderInputModel("person/popular", "Popular"),
-      ),
-    );
 
     widgets.add(
       Container(

@@ -95,8 +95,7 @@ class TvDetail {
 
   factory TvDetail.fromJson(Map<String, dynamic> json) => TvDetail(
         backdropPath: json["backdrop_path"],
-        createdBy: List<CreatedBy>.from(
-            json["created_by"].map((x) => CreatedBy.fromJson(x))),
+        createdBy: List<CreatedBy>.from(json["created_by"].map((x) => CreatedBy.fromJson(x))),
         episodeRunTime: List<int>.from(json["episode_run_time"].map((x) => x)),
         firstAirDate: json["first_air_date"],
         genres: List<Genre>.from(json["genres"].map((x) => Genre.fromJson(x))),
@@ -105,12 +104,10 @@ class TvDetail {
         inProduction: json["in_production"],
         languages: List<String>.from(json["languages"].map((x) => x)),
         lastAirDate: json["last_air_date"],
-        lastEpisodeToAir:
-            LastEpisodeToAir.fromJson(json["last_episode_to_air"]),
+        lastEpisodeToAir: getLastAirDate(json),
         name: json["name"],
         nextEpisodeToAir: json["next_episode_to_air"],
-        networks: List<Network>.from(
-            json["networks"].map((x) => Network.fromJson(x))),
+        networks: List<Network>.from(json["networks"].map((x) => Network.fromJson(x))),
         numberOfEpisodes: json["number_of_episodes"],
         numberOfSeasons: json["number_of_seasons"],
         originCountry: List<String>.from(json["origin_country"].map((x) => x)),
@@ -119,13 +116,11 @@ class TvDetail {
         overview: json["overview"],
         popularity: json["popularity"].toDouble(),
         posterPath: json["poster_path"],
-        productionCompanies: List<Network>.from(
-            json["production_companies"].map((x) => Network.fromJson(x))),
+        productionCompanies:
+            List<Network>.from(json["production_companies"].map((x) => Network.fromJson(x))),
         productionCountries: List<ProductionCountry>.from(
-            json["production_countries"]
-                .map((x) => ProductionCountry.fromJson(x))),
-        seasons:
-            List<Season>.from(json["seasons"].map((x) => Season.fromJson(x))),
+            json["production_countries"].map((x) => ProductionCountry.fromJson(x))),
+        seasons: List<Season>.from(json["seasons"].map((x) => Season.fromJson(x))),
         spokenLanguages: List<SpokenLanguage>.from(
             json["spoken_languages"].map((x) => SpokenLanguage.fromJson(x))),
         status: json["status"],
@@ -144,6 +139,15 @@ class TvDetail {
         title: json["title"],
         video: json["video"],
       );
+}
+
+getLastAirDate(Map<String, dynamic> json) {
+  //todo simplify
+  try {
+    return LastEpisodeToAir.fromJson(json["last_episode_to_air"]);
+  } catch (e) {
+    return null;
+  }
 }
 
 class CreatedBy {
@@ -223,8 +227,7 @@ class LastEpisodeToAir {
   double voteAverage;
   int voteCount;
 
-  factory LastEpisodeToAir.fromJson(Map<String, dynamic> json) =>
-      LastEpisodeToAir(
+  factory LastEpisodeToAir.fromJson(Map<String, dynamic> json) => LastEpisodeToAir(
         airDate: json["air_date"],
         episodeNumber: json["episode_number"],
         id: json["id"],
@@ -275,8 +278,7 @@ class ProductionCountry {
   String iso31661;
   String name;
 
-  factory ProductionCountry.fromJson(Map<String, dynamic> json) =>
-      ProductionCountry(
+  factory ProductionCountry.fromJson(Map<String, dynamic> json) => ProductionCountry(
         iso31661: json["iso_3166_1"],
         name: json["name"],
       );

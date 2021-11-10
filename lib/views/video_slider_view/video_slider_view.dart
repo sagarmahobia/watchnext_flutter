@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:watchnext/views/ad_views/ad_widget.dart';
 import 'package:watchnext/views/video_slider_view/video_card_view/video_card_input_model.dart';
 import 'package:watchnext/views/video_slider_view/video_card_view/video_card_view.dart';
 import 'package:watchnext/views/video_slider_view/video_slider_input_model.dart';
@@ -16,7 +19,7 @@ class VideoSliderView extends StatefulWidget {
   _VideoSliderViewState createState() => _VideoSliderViewState(this.inputModel);
 }
 
-class _VideoSliderViewState extends State<VideoSliderView> {
+class _VideoSliderViewState extends FullAdWidgetState<VideoSliderView> {
   final VideoSliderInputModel inputModel;
 
   VideoSliderViewBloc bloc;
@@ -30,7 +33,7 @@ class _VideoSliderViewState extends State<VideoSliderView> {
     super.initState();
     bloc = VideoSliderViewBloc(this.inputModel.id, this.inputModel.pictureType);
     bloc.add(LoadItemsEvent());
-    bloc.listen((state) {
+    bloc.stream.listen((state) {
       if (state is VideoSliderViewSuccess) {
         setState(
           () {
@@ -58,8 +61,7 @@ class _VideoSliderViewState extends State<VideoSliderView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding:
-                          EdgeInsets.only(left: 16.0, right: 8.0, bottom: 8.0),
+                      padding: EdgeInsets.only(left: 16.0, right: 8.0, bottom: 8.0),
                       child: Text(
                         "Videos",
                         style: TextStyle(
@@ -103,16 +105,37 @@ class _VideoSliderViewState extends State<VideoSliderView> {
     );
   }
 
-  List<VideoCardView> getShowCards(List<VideoCardInputModel> cardModels) {
-    List<VideoCardView> showCards = List();
+  List<Widget> getShowCards(List<VideoCardInputModel> cardModels) {
+    List<Widget> showCards = [];
 
     for (VideoCardInputModel model in cardModels) {
       showCards.add(
-        VideoCardView(
-          inputModel: model,
+        InkWell(
+          onTap: () {
+            if (super.interstitialAd != null) {
+              super.interstitialAd.show();
+              super.interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+                onAdDismissedFullScreenContent: (ad) {
+                  launch(model.url);
+                  super.interstitialAd.dispose();
+                  super.interstitialAd = null;
+                },
+              );
+            } else {
+              launch(model.url);
+            }
+          },
+          child: VideoCardView(
+            inputModel: model,
+          ),
         ),
       );
     }
     return showCards;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

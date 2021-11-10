@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 final Color accentColor = Colors.red;
@@ -15,3 +14,5 @@ final Color lightBackGround = Color(0xff333333);
     <color name="colorBackgroundCardLight">#333333</color>
     <color name="colorBackgroundCardDetail">#404040</color>
 * */
+
+

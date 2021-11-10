@@ -116,7 +116,7 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
               value: movieDetail.homepage,
             ),
           ]);
-          //////todo
+          //////todo what
 
         } else if (this.type == 'tv') {
           TvDetail tvDetail = tvDetailFromJson(response.bodyString);

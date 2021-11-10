@@ -27,7 +27,7 @@ class PersonCardView extends StatelessWidget {
                 id: inputModel.id,
               ),
             ),
-          ); //todo
+          ); //todo what
         },
         child: Container(
           child: Column(

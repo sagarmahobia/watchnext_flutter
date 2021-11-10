@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#212121</color>
+    <color name="colorPrimaryDark">#191919</color>
+    <color name="colorAccent">#F44336</color>
+
+    <color name="colorNavIcon">#8A8A8A</color>
+    <color name="colorBackground">#191919</color>
+    <color name="colorBackgroundCard">#262626</color>
+    <color name="colorBackgroundCardLight">#333333</color>
+    <color name="colorBackgroundCardDetail">#404040</color>
+
+    <color name="white">#ffffff</color>
+    <color name="colorGrayText">#bdbdbd</color>
+    <color name="colorNavDrawer">@color/colorBackgroundCard</color>
+    <color name="colorNavHeader">@color/colorBackground</color>
+    <color name="colorLightText">#eeeeee</color>
+    <color name="colorNavDrawable">#eeeeee</color>
+    <color name="colorDarkDrawable">#616161</color>
+    <color name="rippleColor">#bdbdbd</color>
+
+
+</resources>

@@ -23,7 +23,7 @@ class _PersonSliderViewState extends State<PersonSliderView> {
 
   PersonSliderViewBloc bloc;
 
-  bool isVisible = false; //TODO
+  bool isVisible = true; //TODO used for disabling the persons view
 
   _PersonSliderViewState(this.inputModel);
 

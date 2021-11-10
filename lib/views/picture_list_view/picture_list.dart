@@ -14,13 +14,11 @@ class PictureListView extends StatefulWidget {
   final String pictureType;
   final MyListenable myListenable;
 
-  PictureListView({Key key, this.url, this.pictureType, this.myListenable})
-      : super(key: key);
+  PictureListView({Key key, this.url, this.pictureType, this.myListenable}) : super(key: key);
 
   @override
   _PictureListViewState createState() =>
-      _PictureListViewState(this.url, this.pictureType,
-          myListenable: this.myListenable);
+      _PictureListViewState(this.url, this.pictureType, myListenable: this.myListenable);
 }
 
 class _PictureListViewState extends State<PictureListView>
@@ -36,21 +34,26 @@ class _PictureListViewState extends State<PictureListView>
 
   PictureListBloc bloc;
 
-  _PictureListViewState(this.url, this.pictureType, {this.myListenable});
+  _PictureListViewState(
+    this.url,
+    this.pictureType, {
+    this.myListenable,
+  });
 
   @override
   void initState() {
     super.initState();
-    _pagingController =
-        PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
+    _pagingController = PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
     bloc = PictureListBloc(this.url, this.pictureType);
 
-    _pagingController.addPageRequestListener((pageKey) {
-      bloc.add(LoadNextPage(pageKey));
-    });
+    _pagingController.addPageRequestListener(
+      (pageKey) {
+        bloc.add(LoadNextPage(pageKey));
+      },
+    );
 
-    bloc.listen((PictureListState state) {
+    bloc.stream.listen((PictureListState state) {
       if (state is ListPageLoaded) {
         if (state.cardModels.isNotEmpty) {
           if (state.cardModels.length < 20) {
@@ -60,7 +63,6 @@ class _PictureListViewState extends State<PictureListView>
         } else {
           _pagingController.appendLastPage([]);
         }
-
       }
     });
 
