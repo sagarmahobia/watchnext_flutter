@@ -224,10 +224,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin<
     for (var value in models) {
       if (value.isAd) {
         widgets.add(
-          Container(
-            margin: EdgeInsets.only(top: 24),
-            child: NativeAdView(),
-          ),
+          NativeAdView(true),
         );
       } else {
         widgets.add(
@@ -243,7 +240,6 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin<
     //     inputModel: PersonSliderInputModel("person/popular", "Popular"),
     //   ),
     // );
-
 
     widgets.add(
       Container(

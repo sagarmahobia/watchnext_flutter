@@ -199,10 +199,7 @@ class _DetailPageState extends State<DetailPage> {
                 }
               },
             ),
-            Container(
-              margin: EdgeInsets.only(top: 24),
-              child: NativeAdView(),
-            ),
+            NativeAdView(false),
             VideoSliderView(
               inputModel: VideoSliderInputModel(
                 id,

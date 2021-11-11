@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/utils/genre_utils.dart';
 import 'package:watchnext/views/ad_views/native_ad_view.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
@@ -9,8 +10,7 @@ class ShowsView extends StatefulWidget {
   _ShowsViewState createState() => _ShowsViewState();
 }
 
-class _ShowsViewState extends State<ShowsView>
-    with AutomaticKeepAliveClientMixin<ShowsView> {
+class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixin<ShowsView> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -94,7 +94,7 @@ class _ShowsViewState extends State<ShowsView>
     models.add(
       SliderInputModel(isAd: true),
     );
-    
+
     models.add(
       SliderInputModel(
         url: "tv/on_the_air",
@@ -122,8 +122,7 @@ class _ShowsViewState extends State<ShowsView>
     for (TVGenres genre in TVGenres.values) {
       models.add(
         SliderInputModel(
-          url: "discover/tv?sort_by=popularity.desc&with_genres=" +
-              genre.id.toString(),
+          url: "discover/tv?sort_by=popularity.desc&with_genres=" + genre.id.toString(),
           sliderTitle: getTvGenreById(genre.id),
           pictureType: "tv",
         ),
@@ -133,10 +132,7 @@ class _ShowsViewState extends State<ShowsView>
     for (var value in models) {
       if (value.isAd) {
         widgets.add(
-          Container(
-            margin: EdgeInsets.only(top: 24),
-            child: NativeAdView(),
-          ),
+          NativeAdView(true),
         );
       } else {
         widgets.add(

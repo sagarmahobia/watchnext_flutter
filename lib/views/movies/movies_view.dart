@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/utils/genre_utils.dart';
 import 'package:watchnext/views/ad_views/native_ad_view.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
@@ -99,10 +100,7 @@ class _MoviesViewState extends State<MoviesView> with AutomaticKeepAliveClientMi
     for (var value in models) {
       if (value.isAd) {
         widgets.add(
-          Container(
-            margin: EdgeInsets.only(top: 24),
-            child: NativeAdView(),
-          ),
+          NativeAdView(true),
         );
       } else {
         widgets.add(

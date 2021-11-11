@@ -4,16 +4,22 @@ import 'package:watchnext/admanager.dart';
 import 'package:watchnext/res/app_colors.dart';
 
 class NativeAdView extends StatefulWidget {
-  const NativeAdView({Key key}) : super(key: key);
+  final bool useCard;
+
+  const NativeAdView(this.useCard, {Key key}) : super(key: key);
 
   @override
-  _NativeAdViewState createState() => _NativeAdViewState();
+  _NativeAdViewState createState() => _NativeAdViewState(useCard);
 }
 
 class _NativeAdViewState extends State<NativeAdView> {
   NativeAd myNative;
 
   bool loaded = false;
+
+  bool useCard;
+
+  _NativeAdViewState(this.useCard);
 
   @override
   void initState() {
@@ -40,22 +46,38 @@ class _NativeAdViewState extends State<NativeAdView> {
     myNative.load();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Visibility(
-      visible: loaded,
-      child: Card(
-        color: lightBackGround,
-        child: Container(
+  getAdWidget() {
+    if (useCard) {
+      return Container(
+        margin: EdgeInsets.only(top: 32),
 
+        child: Card(
+          color: lightBackGround,
+          child: Container(
             padding: EdgeInsets.all(8),
             height: 448,
             child: AdWidget(
               ad: myNative,
-            )
-            // Text("Ad Goes Here"),
             ),
-      ),
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        padding: EdgeInsets.all(8),
+        height: 448,
+        child: AdWidget(
+          ad: myNative,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: loaded,
+      child: getAdWidget(),
     );
   }
 }

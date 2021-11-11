@@ -14,9 +14,9 @@ void main() {
 
   MobileAds.instance.initialize();
 
-  MobileAds.instance.updateRequestConfiguration(RequestConfiguration(
-      testDeviceIds: ["B517205846B118100D2DDE8782532B8A", "4D06A259E0AAA30DEA1436D28C159197","Simulator"]));
-  // todo debug off/on
+  // MobileAds.instance.updateRequestConfiguration(RequestConfiguration(
+  //     testDeviceIds: ["B517205846B118100D2DDE8782532B8A", "4D06A259E0AAA30DEA1436D28C159197","Simulator"]));
+  //   // todo debug off/on
 }
 
 class MyApp extends StatelessWidget {
