@@ -1,3 +1,4 @@
+import 'package:watchnext/models/tv-detail-models.dart';
 import 'package:watchnext/views/text_banner/text_banner.dart';
 
 class DetailPageStateModels {
@@ -21,5 +22,5 @@ class DetailPageStateModels {
 
   List<TextBannerInputModel> textBannersInputModels = List();
 
-
+  List<Season> seasons;
 }

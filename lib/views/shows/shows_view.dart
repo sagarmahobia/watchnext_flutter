@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/utils/genre_utils.dart';
 import 'package:watchnext/views/ad_views/native_ad_view.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
@@ -23,7 +22,7 @@ class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixi
 
   List<Widget> getSliderModels() {
     List<SliderInputModel> models = List();
-    List<Widget> widgets = List();
+    List<Widget> widgets = [];
 
     widgets.addAll(
       [

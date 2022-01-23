@@ -1,3 +1,4 @@
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -10,13 +11,21 @@ void main() {
   configureInjection();
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(MyApp()); // Wrap your app
+  requestTrackingAuthorization().then(
+    (value) => {
+      MobileAds.instance.initialize(),
+      MobileAds.instance.updateRequestConfiguration(RequestConfiguration(testDeviceIds: [
+        "B517205846B118100D2DDE8782532B8A",
+        "4D06A259E0AAA30DEA1436D28C159197",
+        "Simulator"
+      ])),
+      runApp(MyApp())
+    },
+  );
+}
 
-  MobileAds.instance.initialize();
-
-  MobileAds.instance.updateRequestConfiguration(RequestConfiguration(
-      testDeviceIds: ["B517205846B118100D2DDE8782532B8A", "4D06A259E0AAA30DEA1436D28C159197","Simulator"]));
-
+Future<void> requestTrackingAuthorization() async {
+  await AppTrackingTransparency.requestTrackingAuthorization();
 }
 
 class MyApp extends StatelessWidget {

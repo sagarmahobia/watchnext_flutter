@@ -5,7 +5,7 @@ class AdManager {
     if (Platform.isAndroid) {
       return "ca-app-pub-5244380836127327~3828975975";
     } else if (Platform.isIOS) {
-      return "ca-app-pub-5244380836127327~8666806393";
+      return "ca-app-pub-5244380836127327~9079930788";
     } else {
       throw new UnsupportedError("Unsupported platform");
     }
@@ -15,7 +15,7 @@ class AdManager {
     if (Platform.isAndroid) {
       return "ca-app-pub-5244380836127327/5449450845";
     } else if (Platform.isIOS) {
-      return "ca-app-pub-5244380836127327/2890707867";
+      return "ca-app-pub-5244380836127327/1476828112";
     } else {
       throw new UnsupportedError("Unsupported platform");
     }
@@ -25,7 +25,7 @@ class AdManager {
     if (Platform.isAndroid) {
       return "ca-app-pub-5244380836127327/5091531658";
     } else if (Platform.isIOS) {
-      return "ca-app-pub-5244380836127327/7979093374";
+      return "ca-app-pub-5244380836127327/5059375120";
     } else {
       throw new UnsupportedError("Unsupported platform");
     }
@@ -35,7 +35,7 @@ class AdManager {
     if (Platform.isAndroid) {
       return "ca-app-pub-5244380836127327/3755205153";
     } else if (Platform.isIOS) {
-      return "ca-app-pub-5244380836127327/6115637004";
+      return "ca-app-pub-5244380836127327/8086484408";
     } else {
       throw new UnsupportedError("Unsupported platform");
     }

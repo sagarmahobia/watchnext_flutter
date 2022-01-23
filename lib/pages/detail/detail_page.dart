@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:watchnext/pages/detail/detail_page_bloc.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/views/ad_views/native_ad_view.dart';
+import 'package:watchnext/views/seasons/seasons_view.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
 import 'package:watchnext/views/sliderview/slider_view.dart';
 import 'package:watchnext/views/text_banner/text_banner.dart';
@@ -70,7 +71,8 @@ class _DetailPageState extends State<DetailPage> {
                                           (state.stateModel.backdrop ?? ""),
                                       width: double.infinity,
                                       fit: BoxFit.fill,
-                                      errorBuilder: (context, error, xstackTrace) {
+                                      errorBuilder:
+                                          (context, error, xstackTrace) {
                                         return Container(
                                           height: 200,
                                           child: Center(
@@ -87,17 +89,26 @@ class _DetailPageState extends State<DetailPage> {
                                 ),
                                 Container(
                                   margin: EdgeInsets.fromLTRB(
-                                      state.stateModel.poster != null ? 130 : 16, 16, 16, 28),
+                                      state.stateModel.poster != null
+                                          ? 130
+                                          : 16,
+                                      16,
+                                      16,
+                                      28),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         state.stateModel.title,
                                         maxLines: 2,
-                                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                                        style: TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w600),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 8.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
                                         child: Row(
                                           children: [
                                             Text(
@@ -118,7 +129,8 @@ class _DetailPageState extends State<DetailPage> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 8.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
                                         child: Text(
                                           state.stateModel.genres,
                                           style: TextStyle(
@@ -128,7 +140,8 @@ class _DetailPageState extends State<DetailPage> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 8.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
                                         child: Text(state.stateModel.vote +
                                             " (" +
                                             state.stateModel.voteCount +
@@ -172,9 +185,11 @@ class _DetailPageState extends State<DetailPage> {
                       Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: getTextBanners(state.stateModel.textBannersInputModels),
+                          children: getTextBanners(
+                              state.stateModel.textBannersInputModels),
                         ),
                       ),
+                      SeasonsSlider(seasons: state.stateModel.seasons)
                     ],
                   );
                 } else if (state is DetailPageError) {
@@ -215,13 +230,14 @@ class _DetailPageState extends State<DetailPage> {
             ),
             SliderView(
               inputModel: SliderInputModel(
-                  url: this.type + "/" + this.id.toString() + "/recommendations",
+                  url:
+                      this.type + "/" + this.id.toString() + "/recommendations",
                   sliderTitle: "Recommendation",
                   pictureType: this.type,
                   isEmbedded: true),
             ),
             Container(
-             height: 28,
+              height: 28,
             ),
             // PersonSliderView(
             //   inputModel: PersonSliderInputModel(

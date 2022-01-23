@@ -200,6 +200,8 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
               value: tvDetail.homepage,
             ),
           ]);
+
+          stateModel.seasons = tvDetail.seasons;
         }
 
         yield DetailPageLoaded(stateModel);

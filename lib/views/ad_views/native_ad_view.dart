@@ -55,7 +55,7 @@ class _NativeAdViewState extends State<NativeAdView> {
           color: lightBackGround,
           child: Container(
             padding: EdgeInsets.all(8),
-            height: 448,
+            height: 380,
             child: AdWidget(
               ad: myNative,
             ),
@@ -65,7 +65,7 @@ class _NativeAdViewState extends State<NativeAdView> {
     } else {
       return Container(
         padding: EdgeInsets.all(8),
-        height: 448,
+        height: 360,
         child: AdWidget(
           ad: myNative,
         ),
