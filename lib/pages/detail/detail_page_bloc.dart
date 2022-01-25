@@ -116,6 +116,16 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
               value: movieDetail.homepage,
             ),
           ]);
+
+          if (movieDetail.belongsToCollection != null) {
+            stateModel.showCollection = true;
+            stateModel.collectionId = movieDetail.belongsToCollection.id;
+            stateModel.collectionName = movieDetail.belongsToCollection.name;
+            stateModel.collectionImage =
+                movieDetail.belongsToCollection.backdropPath;
+          } else {
+            stateModel.showCollection = false;
+          }
           //////todo what
 
         } else if (this.type == 'tv') {

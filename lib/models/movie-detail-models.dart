@@ -11,7 +11,7 @@ class MovieDetail {
   MovieDetail({
     this.adult,
     this.backdropPath,
-    // this.belongsToCollection,
+    this.belongsToCollection,
     this.budget,
     this.genres,
     this.homepage,
@@ -38,7 +38,7 @@ class MovieDetail {
 
   bool adult;
   String backdropPath;
-  // List<Collection> belongsToCollection;
+  Collection belongsToCollection;
   int budget;
   List<Genre> genres;
   String homepage;
@@ -65,8 +65,8 @@ class MovieDetail {
   factory MovieDetail.fromJson(Map<String, dynamic> json) => MovieDetail(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
-        // belongsToCollection: List<Collection>.from(
-        //     json["belongs_to_collection"].map((x) => Collection.fromJson(x))),
+        belongsToCollection:
+        ( json["belongs_to_collection"]!=null? Collection.fromJson(json["belongs_to_collection"]):null) ,
         budget: json["budget"],
         genres: List<Genre>.from(json["genres"].map((x) => Genre.fromJson(x))),
         homepage: json["homepage"],
@@ -165,18 +165,18 @@ class SpokenLanguage {
       );
 }
 
-// class Collection {
-//   int id;
-//   String name;
-//   String posterPath;
-//   String backdropPath;
-//
-//   Collection(this.id, this.name, this.posterPath, this.backdropPath);
-//
-//   factory Collection.fromJson(Map<String, dynamic> json) => Collection(
-//         json['id'],
-//         json['name'],
-//         json['poster_path'],
-//         json['backdrop_path'],
-//       );
-// }
+class Collection {
+  int id;
+  String name;
+  String posterPath;
+  String backdropPath;
+
+  Collection(this.id, this.name, this.posterPath, this.backdropPath);
+
+  factory Collection.fromJson(Map<String, dynamic> json) => Collection(
+        json['id'],
+        json['name'],
+        json['poster_path'],
+        json['backdrop_path'],
+      );
+}

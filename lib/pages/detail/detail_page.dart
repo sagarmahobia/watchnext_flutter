@@ -189,7 +189,11 @@ class _DetailPageState extends State<DetailPage> {
                               state.stateModel.textBannersInputModels),
                         ),
                       ),
-                      SeasonsSlider(seasons: state.stateModel.seasons)
+                      buildCollection(state),
+                      Visibility(
+                        visible: this.type == "tv",
+                        child: SeasonsSlider(seasons: state.stateModel.seasons),
+                      )
                     ],
                   );
                 } else if (state is DetailPageError) {
@@ -250,6 +254,58 @@ class _DetailPageState extends State<DetailPage> {
         ),
       ),
     );
+  }
+
+  Widget buildCollection(DetailPageLoaded state) {
+    if (this.type == "movie" && state.stateModel.showCollection) {
+      return Container(
+        padding: EdgeInsets.all(16),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.network(
+              "https://image.tmdb.org/t/p/w500/" +
+                  (state.stateModel.collectionImage ?? ""),
+              width: double.infinity,
+              fit: BoxFit.fill,
+              errorBuilder: (context, error, xStackTrace) {
+                return Container(
+                  height: 200,
+                  child: Center(
+                    child: Icon(
+                      Icons.broken_image_outlined,
+                      size: 75,
+                      color: Colors.white24,
+                    ),
+                  ),
+                );
+              },
+            ),
+            Column(
+              children: [
+                Text(
+                  "Part of the " + state.stateModel.collectionName,
+                  style: TextStyle(fontSize: 22),
+                  textAlign: TextAlign.center,
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color(0x99000000),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    "View Collection",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 
   List<Widget> getTextBanners(

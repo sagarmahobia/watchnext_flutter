@@ -20,7 +20,14 @@ class DetailPageStateModels {
 
   String voteCount;
 
-  List<TextBannerInputModel> textBannersInputModels = List();
+  List<TextBannerInputModel> textBannersInputModels = [];
 
   List<Season> seasons;
+
+  // collection info
+  bool showCollection;
+  int collectionId;
+  String collectionImage;
+  String collectionName;
+
 }

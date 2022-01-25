@@ -18,6 +18,12 @@ class _SeasonsSliderState extends State<SeasonsSlider> {
 
   @override
   Widget build(BuildContext context) {
+
+
+    if (this.seasons == null) {
+      return Container();
+    }
+
     return Container(
       margin: EdgeInsets.only(top: 24),
       child: Column(
@@ -75,5 +81,4 @@ class _SeasonsSliderState extends State<SeasonsSlider> {
     }
     return showCards;
   }
-
 }
