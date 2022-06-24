@@ -2,38 +2,41 @@ import 'package:flutter/material.dart';
 
 class TextBannerInputModel {
   final String title;
-  final String value;
+  final String? value;
 
-  TextBannerInputModel({this.title, this.value});
+  TextBannerInputModel({required this.title, required this.value});
 }
 
 class TextBanner extends StatelessWidget {
   final String title;
-  final String value;
+  final String? value;
 
-  const TextBanner({Key key, this.title, this.value}) : super(key: key);
+  const TextBanner({Key? key, required this.title, required this.value}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 8, left: 12, right: 12, bottom: 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 4),
-            child: Text(
-              value ?? "N/A",
-              style: TextStyle(
-                color: Colors.white60,
-              ),
+    return Visibility(
+      visible: value != null,
+      child: Container(
+        margin: EdgeInsets.only(top: 8, left: 12, right: 12, bottom: 4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
             ),
-          )
-        ],
+            Container(
+              margin: EdgeInsets.only(top: 4),
+              child: Text(
+                value ?? "",
+                style: TextStyle(
+                  color: Colors.white60,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

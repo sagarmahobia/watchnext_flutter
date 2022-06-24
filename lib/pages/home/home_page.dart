@@ -6,7 +6,7 @@ import 'package:watchnext/views/shows/shows_view.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> tabViews = getTabViews();
 
-  PageController _pageController;
+ late PageController _pageController;
 
   @override
   void initState() {

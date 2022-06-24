@@ -11,28 +11,23 @@ import 'person_slider_view_bloc.dart';
 class PersonSliderView extends StatefulWidget {
   final PersonSliderInputModel inputModel;
 
-  PersonSliderView({this.inputModel});
+  PersonSliderView({required this.inputModel});
 
   @override
-  _PersonSliderViewState createState() =>
-      _PersonSliderViewState(this.inputModel);
+  _PersonSliderViewState createState() => _PersonSliderViewState();
 }
 
 class _PersonSliderViewState extends State<PersonSliderView> {
-  final PersonSliderInputModel inputModel;
+  PersonSliderViewBloc bloc = PersonSliderViewBloc();
 
-  PersonSliderViewBloc bloc;
+  bool isVisible = true;
 
-  bool isVisible = true; //TODO used for disabling the persons view
-
-  _PersonSliderViewState(this.inputModel);
+  _PersonSliderViewState();
 
   @override
   void initState() {
     super.initState();
-    bloc = PersonSliderViewBloc(this.inputModel.url,
-        isCredit: inputModel.isCredit);
-    bloc.add(LoadItemsEvent());
+    bloc.add(LoadItemsEvent(widget.inputModel.url, isCredit: widget.inputModel.isCredit));
     bloc.stream.listen((state) {
       if (state is VideoSliderViewSuccess) {
         setState(
@@ -60,7 +55,6 @@ class _PersonSliderViewState extends State<PersonSliderView> {
                 Expanded(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
-
                     children: [
                       Container(
                         padding: EdgeInsets.only(
@@ -68,7 +62,7 @@ class _PersonSliderViewState extends State<PersonSliderView> {
                           right: 8.0,
                         ),
                         child: Text(
-                    inputModel.type,
+                          widget.inputModel.type,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -76,7 +70,7 @@ class _PersonSliderViewState extends State<PersonSliderView> {
                         ),
                       ),
                       Text(
-                        inputModel.isCredit ? "Cast" : "People",
+                        widget.inputModel.isCredit ? "Cast" : "People",
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
@@ -93,7 +87,7 @@ class _PersonSliderViewState extends State<PersonSliderView> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => PeopleList(
-                            url: inputModel.url,
+                            url: widget.inputModel.url,
                           ),
                         ),
                       );
@@ -129,7 +123,8 @@ class _PersonSliderViewState extends State<PersonSliderView> {
 
                     return InkWell(
                       onTap: () {
-                        bloc.add(LoadItemsEvent());
+                        bloc.add(LoadItemsEvent(widget.inputModel.url,
+                            isCredit: widget.inputModel.isCredit));
                       },
                       child: Container(
                         height: 235,

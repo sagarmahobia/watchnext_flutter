@@ -16,140 +16,33 @@ part 'detail_page_event.dart';
 part 'detail_page_state.dart';
 
 class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
-  TMDBService rest;
-  final String type;
-  final int id;
+  TMDBService rest = getIt<TMDBService>();
 
-  DetailPageBloc(this.type, this.id) : super(DetailPageInitial()) {
-    rest = getIt<TMDBService>();
-  }
+  DetailPageBloc() : super(DetailPageInitial()) {
+    on((e, emit) async {
+      if (e is LoadPageDetail) {
+        emit.call(DetailPageLoading());
+        try {
+          Response response = await rest.getDetails(e.type, e.id);
+          var stateModel = DetailPageStateModels();
 
-  @override
-  Stream<DetailPageState> mapEventToState(
-    DetailPageEvent e,
-  ) async* {
-    if (e is LoadPageDetail) {
-      TMDBService rest = getIt<TMDBService>();
+          if (e.type == 'movie') {
+            MovieDetail movieDetail = movieDetailFromJson(response.bodyString);
 
-      yield DetailPageLoading();
-      try {
-        Response response = await rest.getDetails(type, id);
-        var stateModel = DetailPageStateModels();
+            stateModel.backdrop = movieDetail.backdropPath;
+            stateModel.poster = movieDetail.posterPath;
+            stateModel.title = movieDetail.title;
+            stateModel.year = movieDetail.releaseDate?.year.toString();
 
-        if (this.type == 'movie') {
-          MovieDetail movieDetail = movieDetailFromJson(response.bodyString);
+            stateModel.genres =
+                movieDetail.genres.map((e) => getMovieGenreById(e.id ?? 0)).toList().join(', ');
 
-          stateModel.backdrop = movieDetail.backdropPath;
-          stateModel.poster = movieDetail.posterPath;
-          stateModel.title = movieDetail.title;
-          stateModel.year = movieDetail.releaseDate?.substring(0, 4) ?? "N/A";
+            stateModel.voteCount = movieDetail.voteCount.toString();
+            stateModel.vote = movieDetail.voteAverage.toString();
 
-          stateModel.genres = movieDetail.genres
-                  ?.map((e) => getMovieGenreById(e.id))
-                  ?.toList()
-                  ?.join(', ') ??
-              "N/A";
-
-          stateModel.voteCount = movieDetail.voteCount.toString();
-          stateModel.vote = movieDetail.voteAverage.toString();
-
-          int t = movieDetail.runtime;
-          int hours = (t / 60).truncate(); //since both are ints, you get an int
-          int minutes = t % 60;
-
-          if (hours == 0 && minutes == 0) {
-            stateModel.runtime = "";
-          } else if (hours == 0) {
-            stateModel.runtime = minutes.toString() + "m";
-          } else if (minutes == 0) {
-            stateModel.runtime = hours.toString() + "h";
-          } else {
-            stateModel.runtime =
-                hours.toString() + "h " + minutes.toString() + "m";
-          }
-
-          stateModel.textBannersInputModels.addAll([
-            TextBannerInputModel(
-              title: "Overview",
-              value: movieDetail.overview,
-            ),
-            TextBannerInputModel(
-              title: "Original Title",
-              value: movieDetail.originalTitle ?? "N/A",
-            ),
-            TextBannerInputModel(
-              title: "Original Language",
-              value: movieDetail.originalLanguage,
-            ),
-            TextBannerInputModel(
-              title: "Status",
-              value: movieDetail.status,
-            ),
-            //MOVIE
-            TextBannerInputModel(
-              title: "Release Date",
-              value: movieDetail.releaseDate,
-            ),
-            TextBannerInputModel(
-              title: "Budget",
-              value: movieDetail.revenue != 0
-                  ? "\$ " + movieDetail.budget.toString()
-                  : null,
-            ),
-            TextBannerInputModel(
-              title: "Revenue",
-              value: movieDetail.revenue != 0
-                  ? "\$ " + movieDetail.revenue.toString()
-                  : null,
-            ),
-
-            TextBannerInputModel(
-              title: "Production Companies",
-              value: movieDetail.productionCompanies
-                      ?.map((e) => e.name)
-                      ?.toList()
-                      ?.join(", ") ??
-                  null,
-            ),
-            TextBannerInputModel(
-              title: "Homepage",
-              value: movieDetail.homepage,
-            ),
-          ]);
-
-          if (movieDetail.belongsToCollection != null) {
-            stateModel.showCollection = true;
-            stateModel.collectionId = movieDetail.belongsToCollection.id;
-            stateModel.collectionName = movieDetail.belongsToCollection.name;
-            stateModel.collectionImage =
-                movieDetail.belongsToCollection.backdropPath;
-          } else {
-            stateModel.showCollection = false;
-          }
-          //////todo what
-
-        } else if (this.type == 'tv') {
-          TvDetail tvDetail = tvDetailFromJson(response.bodyString);
-
-          stateModel.backdrop = tvDetail.backdropPath;
-          stateModel.poster = tvDetail.posterPath;
-          stateModel.title = tvDetail.name;
-          stateModel.year = tvDetail.firstAirDate?.substring(0, 4) ?? "N/A";
-          stateModel.genres = tvDetail.genres
-                  ?.map((e) => getTvGenreById(e.id))
-                  ?.toList()
-                  ?.join(', ') ??
-              "N/A";
-
-          stateModel.voteCount = tvDetail.voteCount.toString();
-          stateModel.vote = tvDetail.voteAverage.toString();
-
-          List<int> episodeRunTime = tvDetail.episodeRunTime;
-          if (episodeRunTime != null && episodeRunTime.isNotEmpty) {
-            int t = episodeRunTime.first;
-            int hours =
-                (t / 60).truncate(); //since both are ints, you get an int
-            int minutes = t % 60;
+            int? t = movieDetail.runtime;
+            int hours = (((t ?? 0) / 60)).truncate(); //since both are ints, you get an int
+            int minutes = (t ?? 0) % 60;
 
             if (hours == 0 && minutes == 0) {
               stateModel.runtime = "";
@@ -158,66 +51,145 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
             } else if (minutes == 0) {
               stateModel.runtime = hours.toString() + "h";
             } else {
-              stateModel.runtime =
-                  hours.toString() + "h " + minutes.toString() + "m";
+              stateModel.runtime = hours.toString() + "h " + minutes.toString() + "m";
             }
-          } else {
-            stateModel.runtime = "";
+
+            stateModel.textBannersInputModels.addAll([
+              TextBannerInputModel(
+                title: "Overview",
+                value: movieDetail.overview ?? "N/A",
+              ),
+              TextBannerInputModel(
+                title: "Original Title",
+                value: movieDetail.originalTitle ?? "N/A",
+              ),
+              TextBannerInputModel(
+                title: "Original Language",
+                value: movieDetail.originalLanguage ?? "N/A",
+              ),
+              TextBannerInputModel(
+                title: "Status",
+                value: movieDetail.status ?? "N/A",
+              ),
+              //MOVIE
+              TextBannerInputModel(
+                title: "Release Date",
+                value: movieDetail.releaseDate.toString(),
+              ),
+              TextBannerInputModel(
+                title: "Budget",
+                value: (movieDetail.revenue ?? 0) != 0
+                    ? "\$ " + (movieDetail.budget?.toString() ?? "N/A")
+                    : "N/A",
+              ),
+              TextBannerInputModel(
+                title: "Revenue",
+                value: (movieDetail.revenue ?? 0) != 0
+                    ? "\$ " + (movieDetail.revenue?.toString() ?? "N/A")
+                    : "N/A",
+              ),
+
+              TextBannerInputModel(
+                title: "Production Companies",
+                value:
+                    movieDetail.productionCompanies.map((e) => e.name ?? "N/A").toList().join(", "),
+              ),
+              TextBannerInputModel(
+                title: "Homepage",
+                value: movieDetail.homepage ?? "N/A",
+              ),
+            ]);
+
+            if (movieDetail.belongsToCollection != null) {
+              stateModel.showCollection = true;
+              stateModel.collectionId = movieDetail.belongsToCollection?.id;
+              stateModel.collectionName = movieDetail.belongsToCollection?.name;
+              stateModel.collectionImage = movieDetail.belongsToCollection?.backdropPath;
+            } else {
+              stateModel.showCollection = false;
+            }
+            //////todo what
+
+          } else if (e.type == 'tv') {
+            TvDetail tvDetail = tvDetailFromJson(response.bodyString);
+
+            stateModel.backdrop = tvDetail.backdropPath;
+            stateModel.poster = tvDetail.posterPath;
+            stateModel.title = tvDetail.name;
+            stateModel.year = tvDetail.firstAirDate?.year.toString();
+            stateModel.genres =
+                tvDetail.genres?.map((e) => getTvGenreById(e.id ?? 0)).toList().join(', ');
+
+            stateModel.voteCount = tvDetail.voteCount.toString();
+            stateModel.vote = tvDetail.voteAverage.toString();
+
+            List<int> episodeRunTime = tvDetail.episodeRunTime??[];
+            if (episodeRunTime != null && episodeRunTime.isNotEmpty) {
+              int t = episodeRunTime.first;
+              int hours = (t / 60).truncate(); //since both are ints, you get an int
+              int minutes = t % 60;
+
+              if (hours == 0 && minutes == 0) {
+                stateModel.runtime = "";
+              } else if (hours == 0) {
+                stateModel.runtime = minutes.toString() + "m";
+              } else if (minutes == 0) {
+                stateModel.runtime = hours.toString() + "h";
+              } else {
+                stateModel.runtime = hours.toString() + "h " + minutes.toString() + "m";
+              }
+            } else {
+              stateModel.runtime = "";
+            }
+
+            stateModel.textBannersInputModels.addAll([
+              TextBannerInputModel(
+                title: "Overview",
+                value: tvDetail.overview ?? "N/A",
+              ),
+              TextBannerInputModel(
+                title: "Original Title",
+                value: tvDetail.originalName ?? "N/A",
+              ),
+              TextBannerInputModel(
+                title: "Original Language",
+                value: tvDetail.originalLanguage ?? "N/A",
+              ),
+              TextBannerInputModel(
+                title: "Show Status",
+                value: tvDetail.status ?? "N/A",
+              ),
+
+              TextBannerInputModel(
+                title: "First Air Date",
+                value: tvDetail.firstAirDate.toString(),
+              ), //
+              TextBannerInputModel(
+                title: "Last Air Date",
+                value: tvDetail.lastAirDate.toString(),
+              ), //
+              TextBannerInputModel(
+                title: "Networks",
+                value: tvDetail.networks?.map((e) => e.name).toList().toString(),
+              ), //
+              TextBannerInputModel(
+                title: "Production Companies",
+                value: tvDetail.productionCompanies?.map((e) => e.name).toList().join(", "),
+              ),
+              TextBannerInputModel(
+                title: "Homepage",
+                value: tvDetail.homepage ?? "N/A",
+              ),
+            ]);
+
+            stateModel.seasons = tvDetail.seasons;
           }
 
-          stateModel.textBannersInputModels.addAll([
-            TextBannerInputModel(
-              title: "Overview",
-              value: tvDetail.overview,
-            ),
-            TextBannerInputModel(
-              title: "Original Title",
-              value: tvDetail.originalTitle,
-            ),
-            TextBannerInputModel(
-              title: "Original Language",
-              value: tvDetail.originalLanguage,
-            ),
-            TextBannerInputModel(
-              title: "Show Status",
-              value: tvDetail.status,
-            ),
-
-            TextBannerInputModel(
-              title: "First Air Date",
-              value: tvDetail.firstAirDate,
-            ), //
-            TextBannerInputModel(
-              title: "Last Air Date",
-              value: tvDetail.lastAirDate,
-            ), //
-            TextBannerInputModel(
-              title: "Networks",
-              value:
-                  tvDetail.networks?.map((e) => e.name)?.toList()?.toString() ??
-                      null,
-            ), //
-            TextBannerInputModel(
-              title: "Production Companies",
-              value: tvDetail.productionCompanies
-                      ?.map((e) => e.name)
-                      ?.toList()
-                      ?.join(", ") ??
-                  null,
-            ),
-            TextBannerInputModel(
-              title: "Homepage",
-              value: tvDetail.homepage,
-            ),
-          ]);
-
-          stateModel.seasons = tvDetail.seasons;
+          emit.call(DetailPageLoaded(stateModel));
+        } catch (e) {
+          emit.call(DetailPageError(e));
         }
-
-        yield DetailPageLoaded(stateModel);
-      } catch (e) {
-        yield DetailPageError(e);
       }
-    }
+    });
   }
 }

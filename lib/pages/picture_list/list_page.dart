@@ -9,7 +9,7 @@ class ListPage extends StatefulWidget {
 
   final String title;
 
-  const ListPage({Key key, this.url, this.pictureType, this.title})
+  const ListPage({Key? key, required this.url, required this.pictureType, required this.title})
       : super(key: key);
 
   @override
@@ -30,6 +30,7 @@ class _ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 1,
         title: Text(this.title),
       ),
       body: Container(

@@ -5,6 +5,8 @@ abstract class VideoSliderViewEvent {}
 
 class LoadItemsEvent extends VideoSliderViewEvent {
 
+  final String url;
 
-  LoadItemsEvent();
+  final bool isCredit;
+  LoadItemsEvent(this.url, {this.isCredit = false});
 }

@@ -3,24 +3,21 @@ import 'package:watchnext/models/tv-detail-models.dart';
 import 'package:watchnext/views/seasons/season_card_view/season_card_view.dart';
 
 class SeasonsSlider extends StatefulWidget {
-  final List<Season> seasons;
+  final List<Season>? seasons;
+  final int tvId;
 
-  const SeasonsSlider({Key key, this.seasons}) : super(key: key);
+  const SeasonsSlider({Key? key, required this.seasons, required this.tvId}) : super(key: key);
 
   @override
-  _SeasonsSliderState createState() => _SeasonsSliderState(seasons);
+  _SeasonsSliderState createState() => _SeasonsSliderState();
 }
 
 class _SeasonsSliderState extends State<SeasonsSlider> {
-  final List<Season> seasons;
-
-  _SeasonsSliderState(this.seasons);
+  _SeasonsSliderState();
 
   @override
   Widget build(BuildContext context) {
-
-
-    if (this.seasons == null) {
+    if (widget.seasons == null) {
       return Container();
     }
 
@@ -58,7 +55,7 @@ class _SeasonsSliderState extends State<SeasonsSlider> {
             margin: EdgeInsets.only(top: 16.0),
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: getSeasonCards(seasons),
+              children: getSeasonCards(widget.seasons ?? []),
             ),
           ),
         ],
@@ -75,6 +72,7 @@ class _SeasonsSliderState extends State<SeasonsSlider> {
           width: 135,
           child: SeasonCard(
             inputModel: model,
+            tvId: widget.tvId
           ),
         ),
       );

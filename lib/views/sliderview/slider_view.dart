@@ -10,26 +10,23 @@ import 'package:watchnext/views/sliderview/slider_input_model.dart';
 class SliderView extends StatefulWidget {
   final SliderInputModel inputModel;
 
-  SliderView({this.inputModel});
+  SliderView({required this.inputModel});
 
   @override
-  _SliderViewState createState() => _SliderViewState(this.inputModel);
+  _SliderViewState createState() => _SliderViewState();
 }
 
 class _SliderViewState extends State<SliderView> {
-  final SliderInputModel inputModel;
-
-  SliderViewBloc bloc;
+  SliderViewBloc bloc = SliderViewBloc();
 
   bool isVisible = true;
 
-  _SliderViewState(this.inputModel);
+  int retries = 0;
 
   @override
   void initState() {
     super.initState();
-    bloc = SliderViewBloc(this.inputModel.url, this.inputModel.pictureType);
-    bloc.add(LoadItemsEvent());
+    bloc.add(LoadItemsEvent(widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
     bloc.stream.listen((state) {
       if (state is SliderViewSuccess) {
         setState(
@@ -39,6 +36,14 @@ class _SliderViewState extends State<SliderView> {
             }
           },
         );
+      } else if (state is SliderViewError) {
+        Future.delayed(Duration(seconds: 2), () {
+          retries++;
+          if (retries < 3) {
+            bloc.add(
+                LoadItemsEvent(widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
+          }
+        });
       }
     });
   }
@@ -64,7 +69,7 @@ class _SliderViewState extends State<SliderView> {
                           right: 8.0,
                         ),
                         child: Text(
-                          inputModel.sliderTitle,
+                          widget.inputModel.sliderTitle ?? "",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -89,10 +94,9 @@ class _SliderViewState extends State<SliderView> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => ListPage(
-                                  url: inputModel.url,
-                                  pictureType: inputModel.pictureType,
-                                  title:
-                                      inputModel.sliderTitle + " " + getType(),
+                                  url: widget.inputModel.url ?? "",
+                                  pictureType: widget.inputModel.pictureType ?? "",
+                                  title: (widget.inputModel.sliderTitle ?? "") + " " + getType(),
                                 )),
                       );
                     },
@@ -120,19 +124,18 @@ class _SliderViewState extends State<SliderView> {
                         children: getShowCards(state.cardModels),
                       ),
                     );
-                  } else if (state is SliderViewError) {
+                  } else if (state is SliderViewError && retries >= 3) {
                     debugPrint(state.error.toString());
-
 
                     return InkWell(
                       onTap: () {
-                        bloc.add(LoadItemsEvent());
+                        bloc.add(LoadItemsEvent(
+                            widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
                       },
                       child: Container(
                         height: 235,
                         child: Center(
                           child: Text("Something went wrong. Tap to reload."),
-
                         ),
                       ),
                     );
@@ -170,10 +173,10 @@ class _SliderViewState extends State<SliderView> {
   }
 
   String getType() {
-    if (inputModel.isEmbedded) {
+    if (widget.inputModel.isEmbedded ?? false) {
       return "";
     }
-    if (inputModel.pictureType == 'movie') {
+    if (widget.inputModel.pictureType == 'movie') {
       return "Movies";
     } else {
       return "Shows";

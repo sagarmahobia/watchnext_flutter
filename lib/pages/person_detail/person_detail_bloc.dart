@@ -13,29 +13,26 @@ part 'person_detail_event.dart';
 part 'person_detail_state.dart';
 
 class PersonDetailBloc extends Bloc<PersonDetailEvent, PersonDetailState> {
-  PersonDetailBloc() : super(PersonDetailInitial());
+  PersonDetailBloc() : super(PersonDetailInitial()) {
+    on((e, emit) async {
+      if (e is LoadPersonDetail) {
+        LoadPersonDetail event = e;
+        TMDBService rest = getIt<TMDBService>();
 
-  @override
-  Stream<PersonDetailState> mapEventToState(
-    PersonDetailEvent e,
-  ) async* {
-    if (e is LoadPersonDetail) {
-      LoadPersonDetail event = e;
-      TMDBService rest = getIt<TMDBService>();
+        emit.call(PersonDetailLoading());
+        try {
+          Response response = await rest.getPersonDetail(event.id);
 
-      yield PersonDetailLoading();
-      try {
-        Response response = await rest.getPersonDetail(event.id);
+          var bodyString = response.bodyString;
+          PersonDetail personDetail = personDetailFromJson(bodyString);
 
-        PersonDetail personDetail = personDetailFromJson(response.bodyString);
+          var stateModel = PersonDetailStateModel(personDetail);
 
-        var stateModel = PersonDetailStateModel();
-        stateModel.profilePath = personDetail.profilePath;
-        stateModel.name = personDetail.name;
-        yield DetailPageLoaded(stateModel);
-      } catch (e) {
-        yield DetailPageError(e);
+          emit.call(DetailPageLoaded(stateModel));
+        } catch (e) {
+          emit.call(DetailPageError(e));
+        }
       }
-    }
+    });
   }
 }

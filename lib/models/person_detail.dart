@@ -1,59 +1,72 @@
-// To parse this JSON data, do
-//
-//     final personDetail = personDetailFromJson(jsonString);
-
 import 'dart:convert';
 
-PersonDetail personDetailFromJson(String str) =>
-    PersonDetail.fromJson(json.decode(str));
+import 'package:json_annotation/json_annotation.dart';
 
+part 'person_detail.g.dart';
+
+PersonDetail personDetailFromJson(String str) => PersonDetail.fromJson(json.decode(str));
+
+@JsonSerializable()
 class PersonDetail {
   PersonDetail({
-    this.birthday,
-    this.knownForDepartment,
-    this.deathday,
-    this.id,
-    this.name,
-    this.alsoKnownAs,
-    this.gender,
-    this.biography,
-    this.popularity,
-    this.placeOfBirth,
-    this.profilePath,
-    this.adult,
-    this.imdbId,
-    this.homepage,
+    required this.adult,
+    required this.alsoKnownAs,
+    required this.biography,
+    required this.birthday,
+    required this.deathday,
+    required this.gender,
+    required this.homepage,
+    required this.id,
+    required this.imdbId,
+    required this.knownForDepartment,
+    required this.name,
+    required this.placeOfBirth,
+    required this.popularity,
+    required this.profilePath,
   });
 
-  String birthday;
-  String knownForDepartment;
-  String deathday;
-  int id;
-  String name;
-  List<String> alsoKnownAs;
-  int gender;
-  String biography;
-  double popularity;
-  String placeOfBirth;
-  String profilePath;
-  bool adult;
-  String imdbId;
-  String homepage;
+  @JsonKey(name: 'adult')
+  final bool? adult;
 
-  factory PersonDetail.fromJson(Map<String, dynamic> json) => PersonDetail(
-        birthday: json["birthday"],
-        knownForDepartment: json["known_for_department"],
-        deathday: json["deathday"],
-        id: json["id"],
-        name: json["name"],
-        alsoKnownAs: List<String>.from(json["also_known_as"].map((x) => x)),
-        gender: json["gender"],
-        biography: json["biography"],
-        popularity: json["popularity"].toDouble(),
-        placeOfBirth: json["place_of_birth"],
-        profilePath: json["profile_path"],
-        adult: json["adult"],
-        imdbId: json["imdb_id"],
-        homepage: json["homepage"],
-      );
+  @JsonKey(name: 'also_known_as')
+  final List<String>? alsoKnownAs;
+
+  @JsonKey(name: 'biography')
+  final String? biography;
+
+  @JsonKey(name: 'birthday')
+  final DateTime? birthday;
+
+  @JsonKey(name: 'deathday')
+  final DateTime? deathday;
+
+  @JsonKey(name: 'gender')
+  final int? gender;
+
+  @JsonKey(name: 'homepage')
+  final dynamic homepage;
+
+  @JsonKey(name: 'id')
+  final int? id;
+
+  @JsonKey(name: 'imdb_id')
+  final String? imdbId;
+
+  @JsonKey(name: 'known_for_department')
+  final String? knownForDepartment;
+
+  @JsonKey(name: 'name')
+  final String? name;
+
+  @JsonKey(name: 'place_of_birth')
+  final String? placeOfBirth;
+
+  @JsonKey(name: 'popularity')
+  final double? popularity;
+
+  @JsonKey(name: 'profile_path')
+  final String? profilePath;
+
+  factory PersonDetail.fromJson(Map<String, dynamic> json) => _$PersonDetailFromJson(json);
+
 }

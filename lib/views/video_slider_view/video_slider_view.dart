@@ -13,26 +13,22 @@ import 'video_slider_view_bloc.dart';
 class VideoSliderView extends StatefulWidget {
   final VideoSliderInputModel inputModel;
 
-  VideoSliderView({this.inputModel});
+  const VideoSliderView({Key? key, required this.inputModel});
 
   @override
-  _VideoSliderViewState createState() => _VideoSliderViewState(this.inputModel);
+  _VideoSliderViewState createState() => _VideoSliderViewState();
 }
 
 class _VideoSliderViewState extends FullAdWidgetState<VideoSliderView> {
-  final VideoSliderInputModel inputModel;
-
-  VideoSliderViewBloc bloc;
+  VideoSliderViewBloc bloc = VideoSliderViewBloc();
 
   bool isVisible = true;
-
-  _VideoSliderViewState(this.inputModel);
 
   @override
   void initState() {
     super.initState();
-    bloc = VideoSliderViewBloc(this.inputModel.id, this.inputModel.pictureType);
-    bloc.add(LoadItemsEvent());
+
+    bloc.add(LoadItemsEvent(widget.inputModel.id, widget.inputModel.pictureType));
     bloc.stream.listen((state) {
       if (state is VideoSliderViewSuccess) {
         setState(
@@ -86,7 +82,7 @@ class _VideoSliderViewState extends FullAdWidgetState<VideoSliderView> {
 
               return InkWell(
                 onTap: () {
-                  bloc.add(LoadItemsEvent());
+                  bloc.add(LoadItemsEvent(widget.inputModel.id, widget.inputModel.pictureType));
                 },
                 child: Container(
                   height: 150,
@@ -96,9 +92,7 @@ class _VideoSliderViewState extends FullAdWidgetState<VideoSliderView> {
                 ),
               );
             }
-            return CircularProgressIndicator(
-              strokeWidth: 2,
-            );
+            return CircularProgressIndicator();
           },
         ),
       ),
@@ -113,11 +107,11 @@ class _VideoSliderViewState extends FullAdWidgetState<VideoSliderView> {
         InkWell(
           onTap: () {
             if (super.interstitialAd != null) {
-              super.interstitialAd.show();
-              super.interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+              super.interstitialAd?.show();
+              super.interstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
                 onAdDismissedFullScreenContent: (ad) {
                   launch(model.url);
-                  super.interstitialAd.dispose();
+                  super.interstitialAd?.dispose();
                   super.interstitialAd = null;
                 },
               );

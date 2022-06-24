@@ -13,49 +13,39 @@ part 'picture_list_event.dart';
 part 'picture_list_state.dart';
 
 class PictureListBloc extends Bloc<PictureListEvent, PictureListState> {
-  String url;
-
-  String type;
-  TMDBService rest;
+  TMDBService rest = getIt<TMDBService>();
 
   String query = "";
 
-  PictureListBloc(this.url, this.type) : super(ListPageInitial()) {
-    rest = getIt<TMDBService>();
-  }
+  PictureListBloc() : super(ListPageInitial()) {
+    on((event, emit) async {
+      emit.call(ListPageLoading());
+      try {
+        Response response;
 
-  @override
-  Stream<PictureListState> mapEventToState(
-    PictureListEvent event,
-  ) async* {
-    yield ListPageLoading();
-    try {
-      Response response;
+        if (event is LoadNextPage) {
+          response = await rest.getItems(event.url, page: event.page, query: query);
 
-      if (event is LoadNextPage) {
-        response =
-            await rest.getItems(url, page: event.page, query: query ?? "");
+          ListResponse items = listResponseFromJson(response.bodyString);
 
-        ListResponse items = listResponseFromJson(response.bodyString);
+          List<ShowCardInputModel> cards = [];
 
-        List<ShowCardInputModel> cards = [];
+          for (var result in items.results??[]) {
+            var x = ShowCardInputModel(
+                result.id ?? 0,
+                "https://image.tmdb.org/t/p/w342" + (result.posterPath ?? ""),
+                result.title != null ? (result.title ?? "N/A") : (result.name ?? "N/A"),
+                event.pictureType,
+                result.voteAverage?.toStringAsFixed(1) ?? "0");
 
-        for (var result in items.results) {
-          var x = ShowCardInputModel(
-              result.id,
-              "https://image.tmdb.org/t/p/w342" +
-                  (result.posterPath != null ? result.posterPath : ""),
-              result.title != null ? result.title : result.name,
-              type,
-              result.voteAverage.toStringAsFixed(1));
+            cards.add(x);
+          }
 
-          cards.add(x);
+          emit.call(ListPageLoaded(cards, event.page + 1));
         }
-
-        yield ListPageLoaded(cards, event.page + 1);
+      } catch (e) {
+        emit.call(ListPageError(e));
       }
-    } catch (e) {
-      yield ListPageError(e);
-    }
+    });
   }
 }

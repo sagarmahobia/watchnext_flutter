@@ -12,44 +12,31 @@ import 'picture_list_bloc.dart';
 class PictureListView extends StatefulWidget {
   final String url;
   final String pictureType;
-  final MyListenable myListenable;
+  final MyListenable? myListenable;
 
-  PictureListView({Key key, this.url, this.pictureType, this.myListenable}) : super(key: key);
+  PictureListView(
+      {Key? key, required this.url, required this.pictureType,   this.myListenable})
+      : super(key: key);
 
   @override
-  _PictureListViewState createState() =>
-      _PictureListViewState(this.url, this.pictureType, myListenable: this.myListenable);
+  _PictureListViewState createState() => _PictureListViewState();
 }
 
 class _PictureListViewState extends State<PictureListView>
     with AutomaticKeepAliveClientMixin<PictureListView>
     implements MyListener {
-  final String url;
+  late PagingController<int, ShowCardInputModel> _pagingController;
 
-  final String pictureType;
-
-  MyListenable myListenable;
-
-  PagingController<int, ShowCardInputModel> _pagingController;
-
-  PictureListBloc bloc;
-
-  _PictureListViewState(
-    this.url,
-    this.pictureType, {
-    this.myListenable,
-  });
+  PictureListBloc bloc = PictureListBloc();
 
   @override
   void initState() {
     super.initState();
     _pagingController = PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-    bloc = PictureListBloc(this.url, this.pictureType);
-
     _pagingController.addPageRequestListener(
       (pageKey) {
-        bloc.add(LoadNextPage(pageKey));
+        bloc.add(LoadNextPage(pageKey, widget.url, widget.pictureType));
       },
     );
 
@@ -66,31 +53,38 @@ class _PictureListViewState extends State<PictureListView>
       }
     });
 
-    if (myListenable != null) {
-      myListenable.addListener(this);
-      if (myListenable.getQuery().isNotEmpty) {
-        if (myListenable.getQuery().isEmpty) {
+    if (widget.myListenable != null) {
+      widget.myListenable?.addListener(this);
+      if (widget.myListenable?.getQuery().isNotEmpty??false) {
+        if (widget.myListenable?.getQuery().isEmpty??true) {
           return;
         }
-        bloc.query = myListenable.getQuery();
-        bloc.add(LoadNextPage(1, query: myListenable.getQuery()));
+        bloc.query = widget.myListenable?.getQuery()??"";
+        bloc.add(
+          LoadNextPage(
+            1,
+            widget.url,
+            widget.pictureType,
+            query: widget.myListenable?.getQuery()??"",
+          ),
+        );
       }
     }
   }
 
   @override
   void refresh() {
-    if (myListenable.getQuery().isEmpty) {
+    if (widget.myListenable?.getQuery().isEmpty??true) {
       return;
     }
-    if (myListenable.getQuery() == bloc.query) {
+    if (widget.myListenable?.getQuery() == bloc.query) {
       return;
     }
-    bloc.query = myListenable.getQuery();
+    bloc.query =widget. myListenable?.getQuery()??"";
 
     _pagingController.refresh();
 
-    bloc.add(LoadNextPage(1, query: myListenable.getQuery()));
+    // bloc.add(LoadNextPage(1, query: myListenable.getQuery()));
   }
 
   @override

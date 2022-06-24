@@ -235,11 +235,11 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin<
       }
     }
 
-    // widgets.add(
-    //   PersonSliderView(
-    //     inputModel: PersonSliderInputModel("person/popular", "Popular"),
-    //   ),
-    // );
+    widgets.add(
+      PersonSliderView(
+        inputModel: PersonSliderInputModel("person/popular", "Popular"),
+      ),
+    );
 
     widgets.add(
       Container(

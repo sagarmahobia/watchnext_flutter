@@ -1,58 +1,115 @@
-// To parse this JSON data, do
-//
-//     final people = peopleFromJson(jsonString);
-
 import 'dart:convert';
+
+import 'package:watchnext/models/cast_and_crew.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'people-model.g.dart';
 
 People peopleFromJson(String str) => People.fromJson(json.decode(str));
 
-List<Result> peopleForCredit(String str) {
-  Map<String, dynamic> decode = json.decode(str);
-  return List<Result>.from(decode["cast"].map((x) => Result.fromJson(x)));
-}
-
+@JsonSerializable(createToJson: false)
 class People {
   People({
-    this.page,
-    this.results,
-    this.totalResults,
-    this.totalPages,
+    required this.page,
+    required this.results,
+    required this.totalPages,
+    required this.totalResults,
   });
 
-  int page;
-  List<Result> results;
-  int totalResults;
-  int totalPages;
+  @JsonKey(name: 'page')
+  final int? page;
 
-  factory People.fromJson(Map<String, dynamic> json) => People(
-        page: json["page"],
-        results:
-            List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
-        totalResults: json["total_results"],
-        totalPages: json["total_pages"],
-      );
+  @JsonKey(name: 'results')
+  final List<Cast>? results;
+
+  @JsonKey(name: 'total_pages')
+  final int? totalPages;
+
+  @JsonKey(name: 'total_results')
+  final int? totalResults;
+
+  factory People.fromJson(Map<String, dynamic> json) => _$PeopleFromJson(json);
+
 }
 
-class Result {
-  Result({
-    this.profilePath,
-    this.adult,
-    this.id,
-    this.name,
-    this.popularity,
+
+@JsonSerializable(createToJson: false)
+class KnownFor {
+  KnownFor({
+    required this.adult,
+    required this.backdropPath,
+    required this.genreIds,
+    required this.id,
+    required this.mediaType,
+    required this.originalLanguage,
+    required this.originalTitle,
+    required this.overview,
+    required this.posterPath,
+    required this.releaseDate,
+    required this.title,
+    required this.video,
+    required this.voteAverage,
+    required this.voteCount,
+    required this.firstAirDate,
+    required this.name,
+    required this.originCountry,
+    required this.originalName,
   });
 
-  String profilePath;
-  bool adult;
-  int id;
-  String name;
-  double popularity;
+  @JsonKey(name: 'adult')
+  final bool? adult;
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
-        profilePath: json["profile_path"],
-        adult: json["adult"],
-        id: json["id"],
-        name: json["name"],
-        popularity: json["popularity"].toDouble(),
-      );
+  @JsonKey(name: 'backdrop_path')
+  final String? backdropPath;
+
+  @JsonKey(name: 'genre_ids')
+  final List<int>? genreIds;
+
+  @JsonKey(name: 'id')
+  final int? id;
+
+  @JsonKey(name: 'media_type')
+  final String? mediaType;
+
+  @JsonKey(name: 'original_language')
+  final String? originalLanguage;
+
+  @JsonKey(name: 'original_title')
+  final String? originalTitle;
+
+  @JsonKey(name: 'overview')
+  final String? overview;
+
+  @JsonKey(name: 'poster_path')
+  final String? posterPath;
+
+  @JsonKey(name: 'release_date')
+  final DateTime? releaseDate;
+
+  @JsonKey(name: 'title')
+  final String? title;
+
+  @JsonKey(name: 'video')
+  final bool? video;
+
+  @JsonKey(name: 'vote_average')
+  final double? voteAverage;
+
+  @JsonKey(name: 'vote_count')
+  final int? voteCount;
+
+  @JsonKey(name: 'first_air_date')
+  final DateTime? firstAirDate;
+
+  @JsonKey(name: 'name')
+  final String? name;
+
+  @JsonKey(name: 'origin_country')
+  final List<String>? originCountry;
+
+  @JsonKey(name: 'original_name')
+  final String? originalName;
+
+  factory KnownFor.fromJson(Map<String, dynamic> json) => _$KnownForFromJson(json);
+
 }

@@ -22,8 +22,8 @@ class _MoviesViewState extends State<MoviesView> with AutomaticKeepAliveClientMi
   }
 
   List<Widget> getSliderModels() {
-    List<SliderInputModel> models = List();
-    List<Widget> widgets = List();
+    List<SliderInputModel> models = [];
+    List<Widget> widgets = [];
 
     widgets.addAll(
       [

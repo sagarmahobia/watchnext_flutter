@@ -12,45 +12,36 @@ part 'video_slider_view_event.dart';
 
 part 'video_slider_view_state.dart';
 
-class VideoSliderViewBloc
-    extends Bloc<VideoSliderViewEvent, VideoSliderViewState> {
-  final int id;
+class VideoSliderViewBloc extends Bloc<VideoSliderViewEvent, VideoSliderViewState> {
+  VideoSliderViewBloc() : super(VideoSliderViewInitial()) {
+    on((e, emit) async {
+      if (e is LoadItemsEvent) {
+        TMDBService rest = getIt<TMDBService>();
 
-  final String type;
+        emit.call(VideoSliderViewLoading());
+        try {
+          Response response = await rest.getVideos(e.type, e.id);
 
-  VideoSliderViewBloc(this.id, this.type) : super(VideoSliderViewInitial());
+          Videos items = videosFromJson(response.bodyString);
+          List<VideoCardInputModel> cardModels = [];
 
-  @override
-  Stream<VideoSliderViewState> mapEventToState(
-    VideoSliderViewEvent e,
-  ) async* {
-    if (e is LoadItemsEvent) {
-      TMDBService rest = getIt<TMDBService>();
+          for (var result in items.results??[]) {
+            if (result.site == null || result.site != "YouTube") {
+              continue;
+            }
+            var image = "https://img.youtube.com/vi/" + (result.key ?? "") + "/mqdefault.jpg";
+            var url = "https://www.youtube.com/watch?v=" + (result.key ?? "");
 
-      yield VideoSliderViewLoading();
-      try {
-        Response response = await rest.getVideos(type, id);
+            var x = VideoCardInputModel(result.name ?? "", result.type ?? "", image, url);
 
-        Videos items = videosFromJson(response.bodyString);
-        List<VideoCardInputModel> cardModels = List();
-
-        for (var result in items.results) {
-          if (result.site == null || result.site != "YouTube") {
-            continue;
+            cardModels.add(x);
           }
-          var image =
-              "https://img.youtube.com/vi/" + result.key + "/mqdefault.jpg";
-          var url = "https://www.youtube.com/watch?v=" + result.key;
 
-          var x = VideoCardInputModel(result.name, result.type, image, url);
-
-          cardModels.add(x);
+          emit.call(VideoSliderViewSuccess(cardModels));
+        } catch (e) {
+          emit.call(VideoSliderViewError(e));
         }
-
-        yield VideoSliderViewSuccess(cardModels);
-      } catch (e) {
-        yield VideoSliderViewError(e);
       }
-    }
+    });
   }
 }

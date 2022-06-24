@@ -1,5 +1,9 @@
-class PersonDetailStateModel {
-  String profilePath;
+import 'package:watchnext/models/person_detail.dart';
 
-  String name;
+class PersonDetailStateModel {
+  final PersonDetail personDetail;
+
+  PersonDetailStateModel(
+    this.personDetail,
+  );
 }

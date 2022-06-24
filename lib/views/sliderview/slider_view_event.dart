@@ -4,5 +4,8 @@ part of 'slider_view_bloc.dart';
 abstract class SliderViewEvent {}
 
 class LoadItemsEvent extends SliderViewEvent {
-  LoadItemsEvent();
+  final String url;
+  final String type;
+
+  LoadItemsEvent(this.url, this.type);
 }

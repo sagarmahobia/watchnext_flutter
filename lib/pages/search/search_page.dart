@@ -16,7 +16,6 @@ class EmptyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size(0.0, 0.0);
 }
 
-
 class SearchPage extends StatefulWidget {
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -27,11 +26,11 @@ class _SearchPageState extends State<SearchPage>
     implements MyListenable {
   final _searchController = new TextEditingController();
   var _debounce;
-  TabController _tabController;
+  late TabController _tabController = TabController(length: 2, vsync: this);
 
   List<MyListener> _listeners = [];
 
-  PageController _pageController;
+  late PageController _pageController;
 
   int _currentIndex = 0;
 
@@ -52,7 +51,6 @@ class _SearchPageState extends State<SearchPage>
     super.initState();
     _searchController.addListener(_onSearchChanged);
 
-    _tabController = TabController(vsync: this, length: 2);
     _pageController = PageController(initialPage: _currentIndex);
   }
 

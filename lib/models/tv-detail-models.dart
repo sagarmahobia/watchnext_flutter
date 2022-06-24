@@ -1,335 +1,314 @@
-// To parse this JSON data, do
-//
-//     final welcome = welcomeFromJson(jsonString);
-
 import 'dart:convert';
+
+import 'package:json_annotation/json_annotation.dart';
+
+part 'tv-detail-models.g.dart';
 
 TvDetail tvDetailFromJson(String str) => TvDetail.fromJson(json.decode(str));
 
+@JsonSerializable()
 class TvDetail {
   TvDetail({
-    this.backdropPath,
-    this.createdBy,
-    this.episodeRunTime,
-    this.firstAirDate,
-    this.genres,
-    this.homepage,
-    this.id,
-    this.inProduction,
-    this.languages,
-    this.lastAirDate,
-    this.lastEpisodeToAir,
-    this.name,
-    this.nextEpisodeToAir,
-    this.networks,
-    this.numberOfEpisodes,
-    this.numberOfSeasons,
-    this.originCountry,
-    this.originalLanguage,
-    this.originalName,
-    this.overview,
-    this.popularity,
-    this.posterPath,
-    this.productionCompanies,
-    this.productionCountries,
-    this.seasons,
-    this.spokenLanguages,
-    this.status,
-    this.tagline,
-    this.type,
-    this.voteAverage,
-    this.voteCount,
-    this.adult,
-    this.belongsToCollection,
-    this.budget,
-    this.imdbId,
-    this.originalTitle,
-    this.releaseDate,
-    this.revenue,
-    this.runtime,
-    this.title,
-    this.video,
+    required this.adult,
+    required this.backdropPath,
+    required this.createdBy,
+    required this.episodeRunTime,
+    required this.firstAirDate,
+    required this.genres,
+    required this.homepage,
+    required this.id,
+    required this.inProduction,
+    required this.languages,
+    required this.lastAirDate,
+    required this.lastEpisodeToAir,
+    required this.name,
+    required this.nextEpisodeToAir,
+    required this.networks,
+    required this.numberOfEpisodes,
+    required this.numberOfSeasons,
+    required this.originCountry,
+    required this.originalLanguage,
+    required this.originalName,
+    required this.overview,
+    required this.popularity,
+    required this.posterPath,
+    required this.productionCompanies,
+    required this.productionCountries,
+    required this.seasons,
+    required this.spokenLanguages,
+    required this.status,
+    required this.tagline,
+    required this.type,
+    required this.voteAverage,
+    required this.voteCount,
   });
 
-  String backdropPath;
-  List<CreatedBy> createdBy;
-  List<int> episodeRunTime;
-  String firstAirDate;
-  List<Genre> genres;
-  String homepage;
-  int id;
-  bool inProduction;
-  List<String> languages;
-  String lastAirDate;
-  LastEpisodeToAir lastEpisodeToAir;
-  String name;
-  dynamic nextEpisodeToAir;
-  List<Network> networks;
-  int numberOfEpisodes;
-  int numberOfSeasons;
-  List<String> originCountry;
-  String originalLanguage;
-  String originalName;
-  String overview;
-  double popularity;
-  dynamic posterPath;
-  List<Network> productionCompanies;
-  List<ProductionCountry> productionCountries;
-  List<Season> seasons;
-  List<SpokenLanguage> spokenLanguages;
-  String status;
-  String tagline;
-  String type;
-  double voteAverage;
-  int voteCount;
-  bool adult;
-  dynamic belongsToCollection;
-  int budget;
-  String imdbId;
-  String originalTitle;
-  String releaseDate;
-  int revenue;
-  int runtime;
-  String title;
-  bool video;
+  @JsonKey(name: 'adult')
+  final bool? adult;
 
-  factory TvDetail.fromJson(Map<String, dynamic> json) => TvDetail(
-        backdropPath: json["backdrop_path"],
-        createdBy: List<CreatedBy>.from(json["created_by"].map((x) => CreatedBy.fromJson(x))),
-        episodeRunTime: List<int>.from(json["episode_run_time"].map((x) => x)),
-        firstAirDate: json["first_air_date"],
-        genres: List<Genre>.from(json["genres"].map((x) => Genre.fromJson(x))),
-        homepage: json["homepage"],
-        id: json["id"],
-        inProduction: json["in_production"],
-        languages: List<String>.from(json["languages"].map((x) => x)),
-        lastAirDate: json["last_air_date"],
-        lastEpisodeToAir: getLastAirDate(json),
-        name: json["name"],
-        nextEpisodeToAir: json["next_episode_to_air"],
-        networks: List<Network>.from(json["networks"].map((x) => Network.fromJson(x))),
-        numberOfEpisodes: json["number_of_episodes"],
-        numberOfSeasons: json["number_of_seasons"],
-        originCountry: List<String>.from(json["origin_country"].map((x) => x)),
-        originalLanguage: json["original_language"],
-        originalName: json["original_name"],
-        overview: json["overview"],
-        popularity: json["popularity"].toDouble(),
-        posterPath: json["poster_path"],
-        productionCompanies:
-            List<Network>.from(json["production_companies"].map((x) => Network.fromJson(x))),
-        productionCountries: List<ProductionCountry>.from(
-            json["production_countries"].map((x) => ProductionCountry.fromJson(x))),
-        seasons: List<Season>.from(json["seasons"].map((x) => Season.fromJson(x))),
-        spokenLanguages: List<SpokenLanguage>.from(
-            json["spoken_languages"].map((x) => SpokenLanguage.fromJson(x))),
-        status: json["status"],
-        tagline: json["tagline"],
-        type: json["type"],
-        voteAverage: json["vote_average"].toDouble(),
-        voteCount: json["vote_count"],
-        adult: json["adult"],
-        belongsToCollection: json["belongs_to_collection"],
-        budget: json["budget"],
-        imdbId: json["imdb_id"],
-        originalTitle: json["original_title"],
-        releaseDate: json["release_date"],
-        revenue: json["revenue"],
-        runtime: json["runtime"],
-        title: json["title"],
-        video: json["video"],
-      );
+  @JsonKey(name: 'backdrop_path')
+  final String? backdropPath;
+
+  @JsonKey(name: 'created_by')
+  final List<dynamic>? createdBy;
+
+  @JsonKey(name: 'episode_run_time')
+  final List<int>? episodeRunTime;
+
+  @JsonKey(name: 'first_air_date')
+  final DateTime? firstAirDate;
+
+  @JsonKey(name: 'genres')
+  final List<Genre>? genres;
+
+  @JsonKey(name: 'homepage')
+  final String? homepage;
+
+  @JsonKey(name: 'id')
+  final int? id;
+
+  @JsonKey(name: 'in_production')
+  final bool? inProduction;
+
+  @JsonKey(name: 'languages')
+  final List<String>? languages;
+
+  @JsonKey(name: 'last_air_date')
+  final DateTime? lastAirDate;
+
+  @JsonKey(name: 'last_episode_to_air')
+  final LastEpisodeToAir? lastEpisodeToAir;
+
+  @JsonKey(name: 'name')
+  final String? name;
+
+  @JsonKey(name: 'next_episode_to_air')
+  final dynamic nextEpisodeToAir;
+
+  @JsonKey(name: 'networks')
+  final List<Network>? networks;
+
+  @JsonKey(name: 'number_of_episodes')
+  final int? numberOfEpisodes;
+
+  @JsonKey(name: 'number_of_seasons')
+  final int? numberOfSeasons;
+
+  @JsonKey(name: 'origin_country')
+  final List<String>? originCountry;
+
+  @JsonKey(name: 'original_language')
+  final String? originalLanguage;
+
+  @JsonKey(name: 'original_name')
+  final String? originalName;
+
+  @JsonKey(name: 'overview')
+  final String? overview;
+
+  @JsonKey(name: 'popularity')
+  final double? popularity;
+
+  @JsonKey(name: 'poster_path')
+  final String? posterPath;
+
+  @JsonKey(name: 'production_companies')
+  final List<Network>? productionCompanies;
+
+  @JsonKey(name: 'production_countries')
+  final List<ProductionCountry>? productionCountries;
+
+  @JsonKey(name: 'seasons')
+  final List<Season>? seasons;
+
+  @JsonKey(name: 'spoken_languages')
+  final List<SpokenLanguage>? spokenLanguages;
+
+  @JsonKey(name: 'status')
+  final String? status;
+
+  @JsonKey(name: 'tagline')
+  final String? tagline;
+
+  @JsonKey(name: 'type')
+  final String? type;
+
+  @JsonKey(name: 'vote_average')
+  final double? voteAverage;
+
+  @JsonKey(name: 'vote_count')
+  final int? voteCount;
+
+  factory TvDetail.fromJson(Map<String, dynamic> json) => _$TvDetailFromJson(json);
+
 }
 
-getLastAirDate(Map<String, dynamic> json) {
-  //todo simplify
-  try {
-    return LastEpisodeToAir.fromJson(json["last_episode_to_air"]);
-  } catch (e) {
-    return null;
-  }
-}
-
-class CreatedBy {
-  CreatedBy({
-    this.id,
-    this.creditId,
-    this.name,
-    this.gender,
-    this.profilePath,
-  });
-
-  int id;
-  String creditId;
-  String name;
-  int gender;
-  String profilePath;
-
-  factory CreatedBy.fromJson(Map<String, dynamic> json) => CreatedBy(
-        id: json["id"],
-        creditId: json["credit_id"],
-        name: json["name"],
-        gender: json["gender"],
-        profilePath: json["profile_path"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "credit_id": creditId,
-        "name": name,
-        "gender": gender,
-        "profile_path": profilePath,
-      };
-}
-
+@JsonSerializable()
 class Genre {
   Genre({
-    this.id,
-    this.name,
+    required this.id,
+    required this.name,
   });
 
-  int id;
-  String name;
+  @JsonKey(name: 'id')
+  final int? id;
 
-  factory Genre.fromJson(Map<String, dynamic> json) => Genre(
-        id: json["id"],
-        name: json["name"],
-      );
+  @JsonKey(name: 'name')
+  final String? name;
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-      };
+  factory Genre.fromJson(Map<String, dynamic> json) => _$GenreFromJson(json);
+
 }
 
+@JsonSerializable()
 class LastEpisodeToAir {
   LastEpisodeToAir({
-    this.airDate,
-    this.episodeNumber,
-    this.id,
-    this.name,
-    this.overview,
-    this.productionCode,
-    this.seasonNumber,
-    this.stillPath,
-    this.voteAverage,
-    this.voteCount,
+    required this.airDate,
+    required this.episodeNumber,
+    required this.id,
+    required this.name,
+    required this.overview,
+    required this.productionCode,
+    required this.runtime,
+    required this.seasonNumber,
+    required this.stillPath,
+    required this.voteAverage,
+    required this.voteCount,
   });
 
-  String airDate;
-  int episodeNumber;
-  int id;
-  String name;
-  String overview;
-  String productionCode;
-  int seasonNumber;
-  String stillPath;
-  double voteAverage;
-  int voteCount;
+  @JsonKey(name: 'air_date')
+  final DateTime? airDate;
 
-  factory LastEpisodeToAir.fromJson(Map<String, dynamic> json) => LastEpisodeToAir(
-        airDate: json["air_date"],
-        episodeNumber: json["episode_number"],
-        id: json["id"],
-        name: json["name"],
-        overview: json["overview"],
-        productionCode: json["production_code"],
-        seasonNumber: json["season_number"],
-        stillPath: json["still_path"],
-        voteAverage: json["vote_average"].toDouble(),
-        voteCount: json["vote_count"],
-      );
+  @JsonKey(name: 'episode_number')
+  final int? episodeNumber;
+
+  @JsonKey(name: 'id')
+  final int? id;
+
+  @JsonKey(name: 'name')
+  final String? name;
+
+  @JsonKey(name: 'overview')
+  final String? overview;
+
+  @JsonKey(name: 'production_code')
+  final String? productionCode;
+
+  @JsonKey(name: 'runtime')
+  final int? runtime;
+
+  @JsonKey(name: 'season_number')
+  final int? seasonNumber;
+
+  @JsonKey(name: 'still_path')
+  final String? stillPath;
+
+  @JsonKey(name: 'vote_average')
+  final double? voteAverage;
+
+  @JsonKey(name: 'vote_count')
+  final int? voteCount;
+
+  factory LastEpisodeToAir.fromJson(Map<String, dynamic> json) => _$LastEpisodeToAirFromJson(json);
+
 }
 
+@JsonSerializable()
 class Network {
   Network({
-    this.name,
-    this.id,
-    this.logoPath,
-    this.originCountry,
+    required this.name,
+    required this.id,
+    required this.logoPath,
+    required this.originCountry,
   });
 
-  String name;
-  int id;
-  String logoPath;
-  String originCountry;
+  @JsonKey(name: 'name')
+  final String? name;
 
-  factory Network.fromJson(Map<String, dynamic> json) => Network(
-        name: json["name"],
-        id: json["id"],
-        logoPath: json["logo_path"] == null ? null : json["logo_path"],
-        originCountry: json["origin_country"],
-      );
+  @JsonKey(name: 'id')
+  final int? id;
 
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "id": id,
-        "logo_path": logoPath == null ? null : logoPath,
-        "origin_country": originCountry,
-      };
+  @JsonKey(name: 'logo_path')
+  final String? logoPath;
+
+  @JsonKey(name: 'origin_country')
+  final String? originCountry;
+
+  factory Network.fromJson(Map<String, dynamic> json) => _$NetworkFromJson(json);
+
 }
 
+@JsonSerializable()
 class ProductionCountry {
   ProductionCountry({
-    this.iso31661,
-    this.name,
+    required this.iso31661,
+    required this.name,
   });
 
-  String iso31661;
-  String name;
+  @JsonKey(name: 'iso_3166_1')
+  final String? iso31661;
 
-  factory ProductionCountry.fromJson(Map<String, dynamic> json) => ProductionCountry(
-        iso31661: json["iso_3166_1"],
-        name: json["name"],
-      );
+  @JsonKey(name: 'name')
+  final String? name;
 
-  Map<String, dynamic> toJson() => {
-        "iso_3166_1": iso31661,
-        "name": name,
-      };
+  factory ProductionCountry.fromJson(Map<String, dynamic> json) => _$ProductionCountryFromJson(json);
+
 }
 
+@JsonSerializable()
 class Season {
   Season({
-    this.airDate,
-    this.episodeCount,
-    this.id,
-    this.name,
-    this.overview,
-    this.posterPath,
-    this.seasonNumber,
+    required this.airDate,
+    required this.episodeCount,
+    required this.id,
+    required this.name,
+    required this.overview,
+    required this.posterPath,
+    required this.seasonNumber,
   });
 
-  String airDate;
-  int episodeCount;
-  int id;
-  String name;
-  String overview;
-  String posterPath;
-  int seasonNumber;
+  @JsonKey(name: 'air_date')
+  final DateTime? airDate;
 
-  factory Season.fromJson(Map<String, dynamic> json) => Season(
-        airDate: json["air_date"],
-        episodeCount: json["episode_count"],
-        id: json["id"],
-        name: json["name"],
-        overview: json["overview"],
-        posterPath: json["poster_path"],
-        seasonNumber: json["season_number"],
-      );
+  @JsonKey(name: 'episode_count')
+  final int? episodeCount;
+
+  @JsonKey(name: 'id')
+  final int? id;
+
+  @JsonKey(name: 'name')
+  final String? name;
+
+  @JsonKey(name: 'overview')
+  final String? overview;
+
+  @JsonKey(name: 'poster_path')
+  final String? posterPath;
+
+  @JsonKey(name: 'season_number')
+  final int? seasonNumber;
+
+  factory Season.fromJson(Map<String, dynamic> json) => _$SeasonFromJson(json);
+
 }
 
+@JsonSerializable()
 class SpokenLanguage {
   SpokenLanguage({
-    this.iso6391,
-    this.name,
+    required this.englishName,
+    required this.iso6391,
+    required this.name,
   });
 
-  String iso6391;
-  String name;
+  @JsonKey(name: 'english_name')
+  final String? englishName;
 
-  factory SpokenLanguage.fromJson(Map<String, dynamic> json) => SpokenLanguage(
-        iso6391: json["iso_639_1"],
-        name: json["name"],
-      );
+  @JsonKey(name: 'iso_639_1')
+  final String? iso6391;
+
+  @JsonKey(name: 'name')
+  final String? name;
+
+  factory SpokenLanguage.fromJson(Map<String, dynamic> json) => _$SpokenLanguageFromJson(json);
+
 }

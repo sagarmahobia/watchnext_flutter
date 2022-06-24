@@ -33,13 +33,23 @@ abstract class TMDBService extends ChopperService {
 
   @Get(path: '{url}')
   Future<Response> getPeople(@Path("url") String url,
-      {@Query("page") int page});
+      {@Query("page") int page = 1});
 
   @Get(path: '{type}/{id}')
   Future<Response> getDetails(@Path("type") String type, @Path("id") int id);
 
   @Get(path: 'person/{person_id}')
   Future<Response> getPersonDetail(@Path("person_id") int personId);
+
+// @Get(path: '/tv/{tv_id}/watch/providers')
+// Future<Response> getWatchProviders(@pdkjsdnhs)
+
+
+  @Get(path: '/tv/{tv_id}/season/{season_number}')
+  Future<Response> getSeasonDetail(@Path("tv_id") int tv_id,
+      @Path("season_number") int season_number);
+
+
 }
 
 class KeyParameterInterceptor extends RequestInterceptor {

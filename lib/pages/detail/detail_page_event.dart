@@ -4,5 +4,8 @@ part of 'detail_page_bloc.dart';
 abstract class DetailPageEvent {}
 
 class LoadPageDetail extends DetailPageEvent {
-  LoadPageDetail();
+  final int id;
+
+  final String type;
+  LoadPageDetail(  this.id, this.type);
 }

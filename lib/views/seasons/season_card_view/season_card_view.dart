@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:watchnext/models/tv-detail-models.dart';
+import 'package:watchnext/pages/seaons/season_detail.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/views/seasons/season_card_view/season_card_input_model.dart';
 
 class SeasonCard extends StatelessWidget {
-  SeasonCardInputModel inputModel;
+  // late SeasonCardInputModel inputModel;
+  final Season inputModel;
+  final int tvId;
 
   SeasonCard({
-    Key key,
-    Season inputModel,
+    Key? key,
+    required this.inputModel,
+    required this.tvId,
   }) : super(key: key) {
-    this.inputModel = SeasonCardInputModel(
-        inputModel.id,
-        "https://image.tmdb.org/t/p/w185" + inputModel.posterPath,
-          inputModel.name ,
-        inputModel.episodeCount);
+    // this.inputModel = SeasonCardInputModel(
+    //     inputModel.id ?? 0,
+    //     "https://image.tmdb.org/t/p/w185" + (inputModel.posterPath ?? ""),
+    //     inputModel.name ?? "N/A",
+    //     inputModel.episodeCount ?? 0);
   }
 
   @override
@@ -24,15 +28,16 @@ class SeasonCard extends StatelessWidget {
       color: lightBackGround,
       child: InkWell(
         onTap: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => DetailPage(
-          //       id: inputModel.id,
-          //       pictureType: inputModel.type,
-          //     ),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SeasonDetail(
+                tvId: this.tvId,
+                seasonNumber: inputModel.seasonNumber ?? 0,
+                name: inputModel.name??""
+              ),
+            ),
+          );
         },
         child: Container(
           child: Stack(
@@ -54,7 +59,7 @@ class SeasonCard extends StatelessWidget {
                         ),
                       );
                     },
-                    image: this.inputModel.imageUrl,
+                    image: "https://image.tmdb.org/t/p/w185" + (this.inputModel.posterPath ?? ""),
                     fit: BoxFit.fitWidth,
                   ),
                   Expanded(
@@ -66,7 +71,7 @@ class SeasonCard extends StatelessWidget {
                       minHeight: 56,
                     ),
                     child: Text(
-                      inputModel.title,
+                      inputModel.name ?? "N/A",
                       textAlign: TextAlign.start,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -93,7 +98,7 @@ class SeasonCard extends StatelessWidget {
                     bottom: 6,
                   ),
                   child: Text(
-                    this.inputModel.episodes.toString() + " Episodes",
+                    (this.inputModel.episodeCount ?? 0).toString() + " Episodes",
                     style: TextStyle(fontSize: 12),
                   ),
                 ),

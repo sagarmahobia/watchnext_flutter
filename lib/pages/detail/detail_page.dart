@@ -5,36 +5,33 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:watchnext/pages/detail/detail_page_bloc.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/views/ad_views/native_ad_view.dart';
+import 'package:watchnext/views/person_slider_view/person_slider_input_model.dart';
+import 'package:watchnext/views/person_slider_view/person_slider_view.dart';
 import 'package:watchnext/views/seasons/seasons_view.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
 import 'package:watchnext/views/sliderview/slider_view.dart';
 import 'package:watchnext/views/text_banner/text_banner.dart';
 import 'package:watchnext/views/video_slider_view/video_slider_input_model.dart';
 import 'package:watchnext/views/video_slider_view/video_slider_view.dart';
+import 'package:watchnext/views/watch_providers/watch_providers_view.dart';
 
 class DetailPage extends StatefulWidget {
   final int id;
   final String pictureType;
 
-  const DetailPage({Key key, this.id, this.pictureType}) : super(key: key);
+  const DetailPage({Key? key, required this.id, required this.pictureType}) : super(key: key);
 
   @override
-  _DetailPageState createState() => _DetailPageState(this.id, this.pictureType);
+  _DetailPageState createState() => _DetailPageState();
 }
 
 class _DetailPageState extends State<DetailPage> {
-  DetailPageBloc bloc;
-
-  final int id;
-  final String type;
-
-  _DetailPageState(this.id, this.type);
+  DetailPageBloc bloc = DetailPageBloc();
 
   @override
   void initState() {
     super.initState();
-    bloc = DetailPageBloc(this.type, this.id);
-    bloc.add(LoadPageDetail());
+    bloc.add(LoadPageDetail(widget.id, widget.pictureType));
   }
 
 //
@@ -43,6 +40,7 @@ class _DetailPageState extends State<DetailPage> {
     return Scaffold(
       backgroundColor: backGroundColor,
       appBar: AppBar(
+        elevation: 1,
         title: Text("Detail"),
       ),
       body: SingleChildScrollView(
@@ -71,8 +69,7 @@ class _DetailPageState extends State<DetailPage> {
                                           (state.stateModel.backdrop ?? ""),
                                       width: double.infinity,
                                       fit: BoxFit.fill,
-                                      errorBuilder:
-                                          (context, error, xstackTrace) {
+                                      errorBuilder: (context, error, xstackTrace) {
                                         return Container(
                                           height: 200,
                                           child: Center(
@@ -89,30 +86,21 @@ class _DetailPageState extends State<DetailPage> {
                                 ),
                                 Container(
                                   margin: EdgeInsets.fromLTRB(
-                                      state.stateModel.poster != null
-                                          ? 130
-                                          : 16,
-                                      16,
-                                      16,
-                                      28),
+                                      state.stateModel.poster != null ? 130 : 16, 16, 16, 28),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        state.stateModel.title,
+                                        state.stateModel.title ?? "N/A",
                                         maxLines: 2,
-                                        style: TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w600),
+                                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 8.0),
+                                        padding: const EdgeInsets.only(top: 8.0),
                                         child: Row(
                                           children: [
                                             Text(
-                                              state.stateModel.year,
+                                              state.stateModel.year ?? "N/A",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
@@ -121,7 +109,7 @@ class _DetailPageState extends State<DetailPage> {
                                             Container(
                                               margin: EdgeInsets.only(left: 8),
                                               child: Text(
-                                                state.stateModel.runtime,
+                                                state.stateModel.runtime ?? "N/A",
                                                 style: TextStyle(fontSize: 14),
                                               ),
                                             ),
@@ -129,10 +117,9 @@ class _DetailPageState extends State<DetailPage> {
                                         ),
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 8.0),
+                                        padding: const EdgeInsets.only(top: 8.0),
                                         child: Text(
-                                          state.stateModel.genres,
+                                          state.stateModel.genres ?? "N/A",
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,
@@ -140,12 +127,12 @@ class _DetailPageState extends State<DetailPage> {
                                         ),
                                       ),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 8.0),
-                                        child: Text(state.stateModel.vote +
-                                            " (" +
-                                            state.stateModel.voteCount +
-                                            " votes)"),
+                                        padding: const EdgeInsets.only(top: 8.0),
+                                        child: Text(state.stateModel.vote ??
+                                            "0" +
+                                                " (" +
+                                                (state.stateModel.voteCount ?? "0") +
+                                                " votes)"),
                                       ),
                                     ],
                                   ),
@@ -185,21 +172,23 @@ class _DetailPageState extends State<DetailPage> {
                       Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: getTextBanners(
-                              state.stateModel.textBannersInputModels),
+                          children: getTextBanners(state.stateModel.textBannersInputModels),
                         ),
                       ),
                       buildCollection(state),
                       Visibility(
-                        visible: this.type == "tv",
-                        child: SeasonsSlider(seasons: state.stateModel.seasons),
+                        visible: widget.pictureType == "tv",
+                        child: SeasonsSlider(
+                          seasons: state.stateModel.seasons,
+                          tvId: widget.id,
+                        ),
                       )
                     ],
                   );
                 } else if (state is DetailPageError) {
                   return InkWell(
                     onTap: () {
-                      bloc.add(LoadPageDetail());
+                      bloc.add(LoadPageDetail(widget.id, widget.pictureType));
                     },
                     child: Container(
                       height: 300,
@@ -219,37 +208,40 @@ class _DetailPageState extends State<DetailPage> {
               },
             ),
             NativeAdView(false),
+            // WatchProvidersView(this.id),//todo
             VideoSliderView(
               inputModel: VideoSliderInputModel(
-                id,
-                this.type,
+                widget.id,
+                widget.pictureType,
               ),
             ),
             SliderView(
               inputModel: SliderInputModel(
-                  url: this.type + "/" + this.id.toString() + "/similar",
+                  url: widget.pictureType + "/" + widget.id.toString() + "/similar",
                   sliderTitle: "Similar",
-                  pictureType: this.type,
+                  pictureType: widget.pictureType,
                   isEmbedded: true),
             ),
             SliderView(
               inputModel: SliderInputModel(
-                  url:
-                      this.type + "/" + this.id.toString() + "/recommendations",
+                  url: widget.pictureType + "/" + widget.id.toString() + "/recommendations",
                   sliderTitle: "Recommendation",
-                  pictureType: this.type,
+                  pictureType: widget.pictureType,
                   isEmbedded: true),
             ),
             Container(
               height: 28,
             ),
-            // PersonSliderView(
-            //   inputModel: PersonSliderInputModel(
-            //     "movie/" + this.id.toString() + "/credits",
-            //     "",
-            //     isCredit: true,
-            //   ),
-            // )
+            PersonSliderView(
+              inputModel: PersonSliderInputModel(
+                "movie/" + widget.id.toString() + "/credits",
+                "",
+                isCredit: true,
+              ),
+            ),
+            Container(
+              height: MediaQuery.of(context).padding.bottom,
+            ),
           ],
         ),
       ),
@@ -257,15 +249,14 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Widget buildCollection(DetailPageLoaded state) {
-    if (this.type == "movie" && state.stateModel.showCollection) {
+    if (widget.pictureType == "movie" && (state.stateModel.showCollection ?? false)) {
       return Container(
         padding: EdgeInsets.all(16),
         child: Stack(
           alignment: Alignment.center,
           children: [
             Image.network(
-              "https://image.tmdb.org/t/p/w500/" +
-                  (state.stateModel.collectionImage ?? ""),
+              "https://image.tmdb.org/t/p/w500/" + (state.stateModel.collectionImage ?? ""),
               width: double.infinity,
               fit: BoxFit.fill,
               errorBuilder: (context, error, xStackTrace) {
@@ -284,7 +275,7 @@ class _DetailPageState extends State<DetailPage> {
             Column(
               children: [
                 Text(
-                  "Part of the " + state.stateModel.collectionName,
+                  "Part of the " + (state.stateModel.collectionName ?? "N/A"),
                   style: TextStyle(fontSize: 22),
                   textAlign: TextAlign.center,
                 ),

@@ -4,5 +4,8 @@ part of 'video_slider_view_bloc.dart';
 abstract class VideoSliderViewEvent {}
 
 class LoadItemsEvent extends VideoSliderViewEvent {
-  LoadItemsEvent();
+  final int id;
+
+  final String type;
+  LoadItemsEvent(this.id, this.type);
 }

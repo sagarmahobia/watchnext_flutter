@@ -5,7 +5,7 @@ class BaseWidget extends StatelessWidget {
   final Widget Function(
       BuildContext context, SizingInformation sizingInformation) builder;
 
-  const BaseWidget({Key key, this.builder}) : super(key: key);
+  const BaseWidget({Key? key, required this.builder}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

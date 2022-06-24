@@ -13,42 +13,34 @@ part 'people_list_event.dart';
 part 'people_list_state.dart';
 
 class PeopleListBloc extends Bloc<PeopleListEvent, PeopleListState> {
-  TMDBService rest;
+  TMDBService rest = getIt<TMDBService>();
 
-  String url;
+  PeopleListBloc() : super(PeopleListInitial()) {
+    on((event, emit) async {
+      emit.call(PeoplePageLoading());
+      try {
+        if (event is LoadNextPage) {
+          Response response = await rest.getPeople(event.url, page: event.page);
 
-  PeopleListBloc(this.url) : super(PeopleListInitial()) {
-    rest = getIt<TMDBService>();
-  }
+          People items = peopleFromJson(response.bodyString);
 
-  @override
-  Stream<PeopleListState> mapEventToState(
-    PeopleListEvent event,
-  ) async* {
-    yield PeoplePageLoading();
-    try {
-      if (event is LoadNextPage) {
-        Response response = await rest.getPeople(url, page: event.page);
+          List<PersonCardInputModel> cards = [];
 
-        People items = peopleFromJson(response.bodyString);
+          for (var result in items.results??[]) {
+            var x = PersonCardInputModel(
+              result.id ?? 0,
+              result.name ?? "N/A",
+              "https://image.tmdb.org/t/p/w342" + (result.profilePath ?? ""),
+            );
 
-        List<PersonCardInputModel> cards = List();
+            cards.add(x);
+          }
 
-        for (var result in items.results) {
-          var x = PersonCardInputModel(
-            result.id,
-            result.name,
-            "https://image.tmdb.org/t/p/w342" +
-                (result.profilePath != null ? result.profilePath : ""),
-          );
-
-          cards.add(x);
+          emit.call(PeoplePageLoaded(cards, event.page + 1));
         }
-
-        yield PeoplePageLoaded(cards, event.page + 1);
+      } catch (e) {
+        emit.call(PeoplePageError(e));
       }
-    } catch (e) {
-      yield PeoplePageError(e);
-    }
+    });
   }
 }

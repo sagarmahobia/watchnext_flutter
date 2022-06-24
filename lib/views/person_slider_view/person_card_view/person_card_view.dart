@@ -10,8 +10,8 @@ class PersonCardView extends StatelessWidget {
   final PersonCardInputModel inputModel;
 
   const PersonCardView({
-    Key key,
-    this.inputModel,
+    Key? key,
+    required this.inputModel,
   }) : super(key: key);
 
   @override
@@ -27,7 +27,7 @@ class PersonCardView extends StatelessWidget {
                 id: inputModel.id,
               ),
             ),
-          ); //todo what
+          );
         },
         child: Container(
           child: Column(

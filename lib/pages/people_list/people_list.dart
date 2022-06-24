@@ -7,32 +7,28 @@ import 'package:watchnext/views/person_slider_view/person_card_view/person_card_
 class PeopleList extends StatefulWidget {
   final String url;
 
-  const PeopleList({Key key, this.url}) : super(key: key);
+  const PeopleList({Key? key, required this.url}) : super(key: key);
 
   @override
-  _PeopleListState createState() => _PeopleListState(this.url);
+  _PeopleListState createState() => _PeopleListState( );
 }
 
 class _PeopleListState extends State<PeopleList> {
-  PeopleListBloc bloc;
+  PeopleListBloc     bloc = PeopleListBloc( );
+
 
   final PagingController<int, PersonCardInputModel> _pagingController =
       PagingController(firstPageKey: 1);
 
-  final String url;
-
-  _PeopleListState(this.url);
-
   @override
   void initState() {
     super.initState();
-    bloc = PeopleListBloc(this.url);
     // bloc.add(LoadFirstPage());
     _pagingController.addPageRequestListener((pageKey) {
-      bloc.add(LoadNextPage(pageKey));
+      bloc.add(LoadNextPage(widget.url,pageKey));
     });
 
-    bloc.listen((PeopleListState state) {
+    bloc.stream.listen((PeopleListState state) {
       if (state is PeoplePageLoaded) {
         _pagingController.appendPage(state.cardModels, state.nextPageKey);
       }

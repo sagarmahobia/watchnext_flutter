@@ -9,8 +9,8 @@ class VideoCardView extends StatelessWidget {
   final VideoCardInputModel inputModel;
 
   const VideoCardView({
-    Key key,
-    this.inputModel,
+    Key? key,
+    required this.inputModel,
   }) : super(key: key);
 
   @override

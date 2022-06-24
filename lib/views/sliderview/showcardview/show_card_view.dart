@@ -9,8 +9,8 @@ class ShowCardView extends StatelessWidget {
   final ShowCardInputModel inputModel;
 
   const ShowCardView({
-    Key key,
-    this.inputModel,
+    Key? key,
+    required this.inputModel,
   }) : super(key: key);
 
   @override

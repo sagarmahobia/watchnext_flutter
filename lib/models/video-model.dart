@@ -1,56 +1,72 @@
-// To parse this JSON data, do
-//
-//     final welcome = welcomeFromJson(jsonString);
-
 import 'dart:convert';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'video-model.g.dart';
 
 Videos videosFromJson(String str) => Videos.fromJson(json.decode(str));
 
+@JsonSerializable()
 class Videos {
   Videos({
-    this.id,
-    this.results,
+    required this.id,
+    required this.results,
   });
 
-  int id;
-  List<Result> results;
+  @JsonKey(name: 'id')
+  final int? id;
 
-  factory Videos.fromJson(Map<String, dynamic> json) => Videos(
-        id: json["id"],
-        results: List<Result>.from(
-            json["results"]?.map((x) => Result.fromJson(x)) ?? []),
-      );
+  @JsonKey(name: 'results')
+  final List<Result>? results;
+
+  factory Videos.fromJson(Map<String, dynamic> json) => _$VideosFromJson(json);
+
 }
 
+@JsonSerializable()
 class Result {
   Result({
-    this.id,
-    this.iso6391,
-    this.iso31661,
-    this.key,
-    this.name,
-    this.site,
-    this.size,
-    this.type,
+    required this.iso6391,
+    required this.iso31661,
+    required this.name,
+    required this.key,
+    required this.site,
+    required this.size,
+    required this.type,
+    required this.official,
+    required this.publishedAt,
+    required this.id,
   });
 
-  String id;
-  String iso6391;
-  String iso31661;
-  String key;
-  String name;
-  String site;
-  int size;
-  String type;
+  @JsonKey(name: 'iso_639_1')
+  final String? iso6391;
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
-        id: json["id"],
-        iso6391: json["iso_639_1"],
-        iso31661: json["iso_3166_1"],
-        key: json["key"],
-        name: json["name"],
-        site: json["site"],
-        size: json["size"],
-        type: json["type"],
-      );
+  @JsonKey(name: 'iso_3166_1')
+  final String? iso31661;
+
+  @JsonKey(name: 'name')
+  final String? name;
+
+  @JsonKey(name: 'key')
+  final String? key;
+
+  @JsonKey(name: 'site')
+  final String? site;
+
+  @JsonKey(name: 'size')
+  final int? size;
+
+  @JsonKey(name: 'type')
+  final String? type;
+
+  @JsonKey(name: 'official')
+  final bool? official;
+
+  @JsonKey(name: 'published_at')
+  final DateTime? publishedAt;
+
+  @JsonKey(name: 'id')
+  final String? id;
+
+  factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
+
 }

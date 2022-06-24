@@ -13,41 +13,34 @@ part 'slider_view_event.dart';
 part 'slider_view_state.dart';
 
 class SliderViewBloc extends Bloc<SliderViewEvent, SliderViewState> {
-  final String url;
-  final String type;
+  SliderViewBloc() : super(SliderViewInitial()) {
+    on((e, emit) async {
+      if (e is LoadItemsEvent) {
+        TMDBService rest = getIt<TMDBService>();
 
-  SliderViewBloc(this.url, this.type) : super(SliderViewInitial());
+        emit.call(SliderViewLoading());
+        try {
+          Response response = await rest.getItems(e.url);
 
-  @override
-  Stream<SliderViewState> mapEventToState(
-    SliderViewEvent e,
-  ) async* {
-    if (e is LoadItemsEvent) {
-      TMDBService rest = getIt<TMDBService>();
+          ListResponse items = listResponseFromJson(response.bodyString);
+          List<ShowCardInputModel> cardModels = [];
 
-      yield SliderViewLoading();
-      try {
-        Response response = await rest.getItems(this.url);
+          for (var result in items.results ?? []) {
+            var x = ShowCardInputModel(
+                result.id ?? 0,
+                "https://image.tmdb.org/t/p/w185" + (result.posterPath ?? ""),
+                result.title != null ? (result.title ?? "N/A") : (result.name ?? "N/A"),
+                e.type,
+                result.voteAverage?.toStringAsFixed(1) ?? "0");
 
-        ListResponse items = listResponseFromJson(response.bodyString);
-        List<ShowCardInputModel> cardModels = List();
+            cardModels.add(x);
+          }
 
-        for (var result in items.results) {
-          var x = ShowCardInputModel(
-              result.id,
-              "https://image.tmdb.org/t/p/w185" +
-                  (result.posterPath != null ? result.posterPath : ""),
-              result.title != null ? result.title : result.name,
-              this.type,
-              result.voteAverage.toStringAsFixed(1));
-
-          cardModels.add(x);
+          emit.call(SliderViewSuccess(cardModels));
+        } catch (e) {
+          emit.call(SliderViewError(e));
         }
-
-        yield SliderViewSuccess(cardModels);
-      } catch (e) {
-        yield SliderViewError(e);
       }
-    }
+    });
   }
 }

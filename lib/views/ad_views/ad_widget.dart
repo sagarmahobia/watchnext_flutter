@@ -3,15 +3,15 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:watchnext/admanager.dart';
 
 abstract class FullAdWidgetState<T extends StatefulWidget> extends State<T> {
-  InterstitialAd _interstitialAd;
+  InterstitialAd? _interstitialAd;
 
-  set interstitialAd(InterstitialAd value) {
+  FullAdWidgetState( );
+
+  set interstitialAd(InterstitialAd? value) {
     _interstitialAd = value;
   }
 
-
-  InterstitialAd get interstitialAd => _interstitialAd;
-
+  InterstitialAd? get interstitialAd => _interstitialAd;
 
   @override
   void initState() {
@@ -26,10 +26,10 @@ abstract class FullAdWidgetState<T extends StatefulWidget> extends State<T> {
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (InterstitialAd ad) {
           this._interstitialAd = ad;
-          _interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+          _interstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (InterstitialAd ad) {
               ad.dispose();
-              _interstitialAd.dispose();
+              _interstitialAd?.dispose();
             },
             onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
               ad.dispose();
@@ -47,7 +47,7 @@ abstract class FullAdWidgetState<T extends StatefulWidget> extends State<T> {
   void dispose() {
     super.dispose();
     if (_interstitialAd != null) {
-      _interstitialAd.dispose();
+      _interstitialAd?.dispose();
     }
   }
 }

@@ -6,14 +6,14 @@ import 'package:watchnext/res/app_colors.dart';
 class NativeAdView extends StatefulWidget {
   final bool useCard;
 
-  const NativeAdView(this.useCard, {Key key}) : super(key: key);
+  const NativeAdView(this.useCard, {Key? key}) : super(key: key);
 
   @override
   _NativeAdViewState createState() => _NativeAdViewState(useCard);
 }
 
 class _NativeAdViewState extends State<NativeAdView> {
-  NativeAd myNative;
+  NativeAd? myNative;
 
   bool loaded = false;
 
@@ -43,7 +43,7 @@ class _NativeAdViewState extends State<NativeAdView> {
       ),
     );
 
-    myNative.load();
+    myNative?.load();
   }
 
   getAdWidget() {
@@ -57,7 +57,7 @@ class _NativeAdViewState extends State<NativeAdView> {
             padding: EdgeInsets.all(8),
             height: 380,
             child: AdWidget(
-              ad: myNative,
+              ad: myNative!,
             ),
           ),
         ),
@@ -67,7 +67,7 @@ class _NativeAdViewState extends State<NativeAdView> {
         padding: EdgeInsets.all(8),
         height: 360,
         child: AdWidget(
-          ad: myNative,
+          ad: myNative!,
         ),
       );
     }

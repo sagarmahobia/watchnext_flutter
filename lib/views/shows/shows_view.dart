@@ -21,7 +21,7 @@ class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixi
   }
 
   List<Widget> getSliderModels() {
-    List<SliderInputModel> models = List();
+    List<SliderInputModel> models = [];
     List<Widget> widgets = [];
 
     widgets.addAll(
