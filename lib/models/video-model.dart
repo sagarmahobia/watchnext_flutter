@@ -5,7 +5,7 @@ part 'video-model.g.dart';
 
 Videos videosFromJson(String str) => Videos.fromJson(json.decode(str));
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class Videos {
   Videos({
     required this.id,
@@ -19,10 +19,9 @@ class Videos {
   final List<Result>? results;
 
   factory Videos.fromJson(Map<String, dynamic> json) => _$VideosFromJson(json);
-
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class Result {
   Result({
     required this.iso6391,
@@ -68,5 +67,4 @@ class Result {
   final String? id;
 
   factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
-
 }

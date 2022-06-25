@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -20,8 +21,7 @@ class SeasonDetailBloc extends Bloc<SeasonDetailEvent, SeasonDetailState> {
         try {
           var response = await rest.getSeasonDetail(event.tvId, event.seasonNumber);
 
-          var bodyString = response.bodyString;
-          var seasonDetail = seasonDetailFromJson(bodyString);
+          var seasonDetail = response.body ?? SeasonDetailModel.fromJson(jsonDecode("{}"));
 
           emit.call(SeasonDetailsLoaded(seasonDetail));
         } catch (e) {

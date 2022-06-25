@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:chopper/chopper.dart';
@@ -23,11 +24,11 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
       if (e is LoadPageDetail) {
         emit.call(DetailPageLoading());
         try {
-          Response response = await rest.getDetails(e.type, e.id);
           var stateModel = DetailPageStateModels();
 
           if (e.type == 'movie') {
-            MovieDetail movieDetail = movieDetailFromJson(response.bodyString);
+            MovieDetail movieDetail =
+                (await rest.getMovieDetails(e.id)).body ?? MovieDetail.fromJson(jsonDecode("{}}"));
 
             stateModel.backdrop = movieDetail.backdropPath;
             stateModel.poster = movieDetail.posterPath;
@@ -111,7 +112,8 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
             //////todo what
 
           } else if (e.type == 'tv') {
-            TvDetail tvDetail = tvDetailFromJson(response.bodyString);
+            TvDetail tvDetail =
+                (await rest.getTvDetails(e.id)).body ?? TvDetail.fromJson(jsonDecode("{}}"));
 
             stateModel.backdrop = tvDetail.backdropPath;
             stateModel.poster = tvDetail.posterPath;
@@ -123,7 +125,7 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
             stateModel.voteCount = tvDetail.voteCount.toString();
             stateModel.vote = tvDetail.voteAverage.toString();
 
-            List<int> episodeRunTime = tvDetail.episodeRunTime??[];
+            List<int> episodeRunTime = tvDetail.episodeRunTime ?? [];
             if (episodeRunTime != null && episodeRunTime.isNotEmpty) {
               int t = episodeRunTime.first;
               int hours = (t / 60).truncate(); //since both are ints, you get an int
