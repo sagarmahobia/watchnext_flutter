@@ -1,12 +1,8 @@
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'list-models.g.dart';
 
-ListResponse listResponseFromJson(String str) => ListResponse.fromJson(json.decode(str));
-
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class ListResponse {
   ListResponse({
     required this.dates,
@@ -34,7 +30,7 @@ class ListResponse {
   factory ListResponse.fromJson(Map<String, dynamic> json) => _$ListResponseFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class Dates {
   Dates({
     required this.maximum,
@@ -50,7 +46,7 @@ class Dates {
   factory Dates.fromJson(Map<String, dynamic> json) => _$DatesFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class Result {
   Result({
     required this.adult,

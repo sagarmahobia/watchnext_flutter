@@ -6,7 +6,7 @@ part 'tv-detail-models.g.dart';
 
 TvDetail tvDetailFromJson(String str) => TvDetail.fromJson(json.decode(str));
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class TvDetail {
   TvDetail({
     required this.adult,
@@ -143,7 +143,7 @@ class TvDetail {
 
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class Genre {
   Genre({
     required this.id,
@@ -160,7 +160,7 @@ class Genre {
 
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class LastEpisodeToAir {
   LastEpisodeToAir({
     required this.airDate,
@@ -213,7 +213,7 @@ class LastEpisodeToAir {
 
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class Network {
   Network({
     required this.name,
@@ -238,7 +238,7 @@ class Network {
 
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class ProductionCountry {
   ProductionCountry({
     required this.iso31661,
@@ -255,7 +255,7 @@ class ProductionCountry {
 
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class Season {
   Season({
     required this.airDate,
@@ -292,7 +292,7 @@ class Season {
 
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class SpokenLanguage {
   SpokenLanguage({
     required this.englishName,

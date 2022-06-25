@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:chopper/chopper.dart';
@@ -21,10 +22,9 @@ class PersonDetailBloc extends Bloc<PersonDetailEvent, PersonDetailState> {
 
         emit.call(PersonDetailLoading());
         try {
-          Response response = await rest.getPersonDetail(event.id);
+          Response<PersonDetail> response = await rest.getPersonDetail(event.id);
 
-          var bodyString = response.bodyString;
-          PersonDetail personDetail = personDetailFromJson(bodyString);
+          PersonDetail? personDetail = response.body ?? PersonDetail.fromJson(jsonDecode('{}'));
 
           var stateModel = PersonDetailStateModel(personDetail);
 

@@ -20,12 +20,11 @@ class VideoSliderViewBloc extends Bloc<VideoSliderViewEvent, VideoSliderViewStat
 
         emit.call(VideoSliderViewLoading());
         try {
-          Response response = await rest.getVideos(e.type, e.id);
+          Response<Videos> response = await rest.getVideos(e.type, e.id);
 
-          Videos items = videosFromJson(response.bodyString);
           List<VideoCardInputModel> cardModels = [];
 
-          for (var result in items.results??[]) {
+          for (var result in response.body?.results ?? []) {
             if (result.site == null || result.site != "YouTube") {
               continue;
             }

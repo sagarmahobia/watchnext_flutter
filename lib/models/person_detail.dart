@@ -6,7 +6,7 @@ part 'person_detail.g.dart';
 
 PersonDetail personDetailFromJson(String str) => PersonDetail.fromJson(json.decode(str));
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class PersonDetail {
   PersonDetail({
     required this.adult,

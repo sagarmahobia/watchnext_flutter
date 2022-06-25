@@ -20,12 +20,11 @@ class SliderViewBloc extends Bloc<SliderViewEvent, SliderViewState> {
 
         emit.call(SliderViewLoading());
         try {
-          Response response = await rest.getItems(e.url);
+          Response<ListResponse> response = await rest.getItems(e.url);
 
-          ListResponse items = listResponseFromJson(response.bodyString);
           List<ShowCardInputModel> cardModels = [];
 
-          for (var result in items.results ?? []) {
+          for (var result in response.body?.results ?? []) {
             var x = ShowCardInputModel(
                 result.id ?? 0,
                 "https://image.tmdb.org/t/p/w185" + (result.posterPath ?? ""),

@@ -22,17 +22,16 @@ class PersonSliderViewBloc extends Bloc<VideoSliderViewEvent, VideoSliderViewSta
 
         emit.call(VideoSliderViewLoading());
         try {
-          Response response = await rest.getPeople(e.url);
-
           List<Cast> results = [];
-          var bodyString = response.bodyString;
           if (e.isCredit) {
-            var castAndCrew = castAndCrewFromJson(bodyString);
-            results.addAll(castAndCrew.cast??[]);
-            results.addAll(castAndCrew.crew??[]);
+            Response<CastAndCrew> response = await rest.getCastAndCrew(e.url);
+
+            results.addAll(response.body?.cast ?? []);
+            results.addAll(response.body?.crew ?? []);
           } else {
-            People people = peopleFromJson(bodyString);
-            results = people.results??[];
+            Response<People> response = await rest.getPeople(e.url);
+
+            results = response.body?.results ?? [];
           }
 
           List<PersonCardInputModel> cardModels = [];

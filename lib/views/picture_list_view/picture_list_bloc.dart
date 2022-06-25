@@ -21,16 +21,15 @@ class PictureListBloc extends Bloc<PictureListEvent, PictureListState> {
     on((event, emit) async {
       emit.call(ListPageLoading());
       try {
-        Response response;
-
         if (event is LoadNextPage) {
-          response = await rest.getItems(event.url, page: event.page, query: query);
+          Response<ListResponse> response =
+              await rest.getItems(event.url, page: event.page, query: query);
 
-          ListResponse items = listResponseFromJson(response.bodyString);
+          ListResponse? items = response.body;
 
           List<ShowCardInputModel> cards = [];
 
-          for (var result in items.results??[]) {
+          for (var result in items?.results ?? []) {
             var x = ShowCardInputModel(
                 result.id ?? 0,
                 "https://image.tmdb.org/t/p/w342" + (result.posterPath ?? ""),

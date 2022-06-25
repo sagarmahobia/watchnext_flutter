@@ -20,7 +20,7 @@ class PeopleListBloc extends Bloc<PeopleListEvent, PeopleListState> {
       emit.call(PeoplePageLoading());
       try {
         if (event is LoadNextPage) {
-          Response response = await rest.getPeople(event.url, page: event.page);
+          Response<People> response = await rest.getPeople(event.url, page: event.page);
 
           People items = peopleFromJson(response.bodyString);
 

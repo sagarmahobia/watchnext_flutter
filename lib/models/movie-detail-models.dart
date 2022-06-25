@@ -6,7 +6,7 @@ part 'movie-detail-models.g.dart';
 
 MovieDetail movieDetailFromJson(String str) => MovieDetail.fromJson(json.decode(str));
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class MovieDetail {
   MovieDetail({
     required this.adult,
@@ -114,7 +114,7 @@ class MovieDetail {
   factory MovieDetail.fromJson(Map<String, dynamic> json) => _$MovieDetailFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class BelongsToCollection {
   BelongsToCollection({
     required this.id,
@@ -139,7 +139,7 @@ class BelongsToCollection {
       _$BelongsToCollectionFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class Genre {
   Genre({
     required this.id,
@@ -155,7 +155,7 @@ class Genre {
   factory Genre.fromJson(Map<String, dynamic> json) => _$GenreFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class ProductionCompany {
   ProductionCompany({
     required this.id,
@@ -180,7 +180,7 @@ class ProductionCompany {
       _$ProductionCompanyFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class ProductionCountry {
   ProductionCountry({
     required this.iso31661,
@@ -197,7 +197,7 @@ class ProductionCountry {
       _$ProductionCountryFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class SpokenLanguage {
   SpokenLanguage({
     required this.englishName,
