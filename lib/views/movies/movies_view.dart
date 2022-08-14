@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:watchnext/pages/home/home_page.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/utils/genre_utils.dart';
 import 'package:watchnext/views/ad_views/native_ad_view.dart';
@@ -11,6 +12,8 @@ class MoviesView extends StatefulWidget {
 }
 
 class _MoviesViewState extends State<MoviesView> with AutomaticKeepAliveClientMixin<MoviesView> {
+  var reload = IntCubit();
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -105,6 +108,7 @@ class _MoviesViewState extends State<MoviesView> with AutomaticKeepAliveClientMi
       } else {
         widgets.add(
           SliderView(
+            reload: reload,
             inputModel: value,
           ),
         );

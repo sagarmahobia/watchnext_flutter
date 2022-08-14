@@ -16,7 +16,7 @@ class TextBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Visibility(
-      visible: value != null,
+      visible: value != null && (value?.isNotEmpty??false),
       child: Container(
         margin: EdgeInsets.only(top: 8, left: 12, right: 12, bottom: 4),
         child: Column(

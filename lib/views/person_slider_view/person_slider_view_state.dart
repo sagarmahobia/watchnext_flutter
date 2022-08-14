@@ -1,20 +1,27 @@
 part of 'person_slider_view_bloc.dart';
 
 @immutable
-abstract class VideoSliderViewState {}
+abstract class PersonSliderViewState {}
 
-class VideoSliderViewInitial extends VideoSliderViewState {}
+class PersonSliderViewInitial extends PersonSliderViewState {}
 
-class VideoSliderViewLoading extends VideoSliderViewState {}
+class PersonSliderViewLoading extends PersonSliderViewState {}
 
-class VideoSliderViewSuccess extends VideoSliderViewState {
+class PersonSliderViewSuccess extends PersonSliderViewState {
   final List<PersonCardInputModel> cardModels;
 
-  VideoSliderViewSuccess(this.cardModels);
+  PersonSliderViewSuccess(this.cardModels);
 }
 
-class VideoSliderViewError extends VideoSliderViewState {
-  var error;
+class CastAndCrewCredit extends PersonSliderViewState {
+  final List<PersonCardInputModel> cast;
+  final List<PersonCardInputModel> crew;
 
-  VideoSliderViewError(this.error);
+  CastAndCrewCredit(this.cast, this.crew);
+}
+
+class PersonSliderViewError extends PersonSliderViewState {
+  final dynamic error;
+
+  PersonSliderViewError(this.error);
 }

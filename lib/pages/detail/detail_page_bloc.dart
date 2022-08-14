@@ -36,7 +36,7 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
             stateModel.year = movieDetail.releaseDate?.year.toString();
 
             stateModel.genres =
-                movieDetail.genres.map((e) => getMovieGenreById(e.id ?? 0)).toList().join(', ');
+                movieDetail.genres?.map((e) => getMovieGenreById(e.id ?? 0)).toList().join(', ');
 
             stateModel.voteCount = movieDetail.voteCount.toString();
             stateModel.vote = movieDetail.voteAverage.toString();
@@ -92,8 +92,10 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
 
               TextBannerInputModel(
                 title: "Production Companies",
-                value:
-                    movieDetail.productionCompanies.map((e) => e.name ?? "N/A").toList().join(", "),
+                value: movieDetail.productionCompanies
+                    ?.map((e) => e.name ?? "N/A")
+                    .toList()
+                    .join(", "),
               ),
               TextBannerInputModel(
                 title: "Homepage",
@@ -109,11 +111,15 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
             } else {
               stateModel.showCollection = false;
             }
-            //////todo what
+            stateModel.videos = movieDetail.videos?.results;
+            stateModel.similar = movieDetail.similar?.results;
 
+            stateModel.recommendations = movieDetail.recommendations?.results;
+            stateModel.credits = movieDetail.credits;
+            //////todo what
           } else if (e.type == 'tv') {
             TvDetail tvDetail =
-                (await rest.getTvDetails(e.id)).body ?? TvDetail.fromJson(jsonDecode("{}}"));
+                (await rest.getTvDetails(e.id)).body ?? TvDetail.fromJson(jsonDecode("{}"));
 
             stateModel.backdrop = tvDetail.backdropPath;
             stateModel.poster = tvDetail.posterPath;
@@ -185,6 +191,10 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
             ]);
 
             stateModel.seasons = tvDetail.seasons;
+            stateModel.videos = tvDetail.videos?.results;
+            stateModel.similar = tvDetail.similar?.results;
+            stateModel.recommendations = tvDetail.recommendations?.results;
+            stateModel.credits = tvDetail.credits;
           }
 
           emit.call(DetailPageLoaded(stateModel));

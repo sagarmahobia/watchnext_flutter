@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:watchnext/models/list-models.dart';
+import 'package:watchnext/models/verify_date.dart';
 
 part 'person_detail.g.dart';
 
@@ -23,6 +25,8 @@ class PersonDetail {
     required this.placeOfBirth,
     required this.popularity,
     required this.profilePath,
+    required this.movieCredits,
+    required this.tvCredits
   });
 
   @JsonKey(name: 'adult')
@@ -34,10 +38,10 @@ class PersonDetail {
   @JsonKey(name: 'biography')
   final String? biography;
 
-  @JsonKey(name: 'birthday')
+  @JsonKey(name: 'birthday', readValue: verify_date)
   final DateTime? birthday;
 
-  @JsonKey(name: 'deathday')
+  @JsonKey(name: 'deathday',  readValue: verify_date)
   final DateTime? deathday;
 
   @JsonKey(name: 'gender')
@@ -67,6 +71,27 @@ class PersonDetail {
   @JsonKey(name: 'profile_path')
   final String? profilePath;
 
-  factory PersonDetail.fromJson(Map<String, dynamic> json) => _$PersonDetailFromJson(json);
+  @JsonKey(name: 'movie_credits')
+  final MovieCredits? movieCredits;
 
+  @JsonKey(name: 'tv_credits')
+  final MovieCredits? tvCredits;
+
+  factory PersonDetail.fromJson(Map<String, dynamic> json) => _$PersonDetailFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class MovieCredits {
+  MovieCredits({
+    required this.cast,
+    required this.crew,
+  });
+
+  @JsonKey(name: "cast")
+  final List<Show>? cast;
+
+  @JsonKey(name: "crew")
+  final List<Show>? crew;
+
+  factory MovieCredits.fromJson(Map<String, dynamic> json) => _$MovieCreditsFromJson(json);
 }

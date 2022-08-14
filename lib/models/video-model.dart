@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:watchnext/models/verify_date.dart';
 
 part 'video-model.g.dart';
 
@@ -60,7 +61,7 @@ class Result {
   @JsonKey(name: 'official')
   final bool? official;
 
-  @JsonKey(name: 'published_at')
+  @JsonKey(name: 'published_at', readValue: verify_date)
   final DateTime? publishedAt;
 
   @JsonKey(name: 'id')

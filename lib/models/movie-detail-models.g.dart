@@ -14,8 +14,8 @@ MovieDetail _$MovieDetailFromJson(Map<String, dynamic> json) => MovieDetail(
           : BelongsToCollection.fromJson(
               json['belongs_to_collection'] as Map<String, dynamic>),
       budget: json['budget'] as int?,
-      genres: (json['genres'] as List<dynamic>)
-          .map((e) => Genre.fromJson(e as Map<String, dynamic>))
+      genres: (json['genres'] as List<dynamic>?)
+          ?.map((e) => Genre.fromJson(e as Map<String, dynamic>))
           .toList(),
       homepage: json['homepage'] as String?,
       id: json['id'] as int?,
@@ -25,19 +25,19 @@ MovieDetail _$MovieDetailFromJson(Map<String, dynamic> json) => MovieDetail(
       overview: json['overview'] as String?,
       popularity: (json['popularity'] as num?)?.toDouble(),
       posterPath: json['poster_path'] as String?,
-      productionCompanies: (json['production_companies'] as List<dynamic>)
-          .map((e) => ProductionCompany.fromJson(e as Map<String, dynamic>))
+      productionCompanies: (json['production_companies'] as List<dynamic>?)
+          ?.map((e) => ProductionCompany.fromJson(e as Map<String, dynamic>))
           .toList(),
-      productionCountries: (json['production_countries'] as List<dynamic>)
-          .map((e) => ProductionCountry.fromJson(e as Map<String, dynamic>))
+      productionCountries: (json['production_countries'] as List<dynamic>?)
+          ?.map((e) => ProductionCountry.fromJson(e as Map<String, dynamic>))
           .toList(),
-      releaseDate: json['release_date'] == null
+      releaseDate: verify_date(json, 'release_date') == null
           ? null
-          : DateTime.parse(json['release_date'] as String),
+          : DateTime.parse(verify_date(json, 'release_date') as String),
       revenue: json['revenue'] as int?,
       runtime: json['runtime'] as int?,
-      spokenLanguages: (json['spoken_languages'] as List<dynamic>)
-          .map((e) => SpokenLanguage.fromJson(e as Map<String, dynamic>))
+      spokenLanguages: (json['spoken_languages'] as List<dynamic>?)
+          ?.map((e) => SpokenLanguage.fromJson(e as Map<String, dynamic>))
           .toList(),
       status: json['status'] as String?,
       tagline: json['tagline'] as String?,
@@ -45,36 +45,20 @@ MovieDetail _$MovieDetailFromJson(Map<String, dynamic> json) => MovieDetail(
       video: json['video'] as bool?,
       voteAverage: (json['vote_average'] as num?)?.toDouble(),
       voteCount: json['vote_count'] as int?,
+      similar: json['similar'] == null
+          ? null
+          : Recommendations.fromJson(json['similar'] as Map<String, dynamic>),
+      recommendations: json['recommendations'] == null
+          ? null
+          : Recommendations.fromJson(
+              json['recommendations'] as Map<String, dynamic>),
+      credits: json['credits'] == null
+          ? null
+          : Credits.fromJson(json['credits'] as Map<String, dynamic>),
+      videos: json['videos'] == null
+          ? null
+          : Videos.fromJson(json['videos'] as Map<String, dynamic>),
     );
-
-Map<String, dynamic> _$MovieDetailToJson(MovieDetail instance) =>
-    <String, dynamic>{
-      'adult': instance.adult,
-      'backdrop_path': instance.backdropPath,
-      'belongs_to_collection': instance.belongsToCollection,
-      'budget': instance.budget,
-      'genres': instance.genres,
-      'homepage': instance.homepage,
-      'id': instance.id,
-      'imdb_id': instance.imdbId,
-      'original_language': instance.originalLanguage,
-      'original_title': instance.originalTitle,
-      'overview': instance.overview,
-      'popularity': instance.popularity,
-      'poster_path': instance.posterPath,
-      'production_companies': instance.productionCompanies,
-      'production_countries': instance.productionCountries,
-      'release_date': instance.releaseDate?.toIso8601String(),
-      'revenue': instance.revenue,
-      'runtime': instance.runtime,
-      'spoken_languages': instance.spokenLanguages,
-      'status': instance.status,
-      'tagline': instance.tagline,
-      'title': instance.title,
-      'video': instance.video,
-      'vote_average': instance.voteAverage,
-      'vote_count': instance.voteCount,
-    };
 
 BelongsToCollection _$BelongsToCollectionFromJson(Map<String, dynamic> json) =>
     BelongsToCollection(
@@ -84,24 +68,19 @@ BelongsToCollection _$BelongsToCollectionFromJson(Map<String, dynamic> json) =>
       backdropPath: json['backdrop_path'] as String?,
     );
 
-Map<String, dynamic> _$BelongsToCollectionToJson(
-        BelongsToCollection instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'poster_path': instance.posterPath,
-      'backdrop_path': instance.backdropPath,
-    };
+Credits _$CreditsFromJson(Map<String, dynamic> json) => Credits(
+      cast: (json['cast'] as List<dynamic>?)
+          ?.map((e) => Cast.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      crew: (json['crew'] as List<dynamic>?)
+          ?.map((e) => Cast.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Genre _$GenreFromJson(Map<String, dynamic> json) => Genre(
       id: json['id'] as int?,
       name: json['name'] as String?,
     );
-
-Map<String, dynamic> _$GenreToJson(Genre instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-    };
 
 ProductionCompany _$ProductionCompanyFromJson(Map<String, dynamic> json) =>
     ProductionCompany(
@@ -111,25 +90,21 @@ ProductionCompany _$ProductionCompanyFromJson(Map<String, dynamic> json) =>
       originCountry: json['origin_country'] as String?,
     );
 
-Map<String, dynamic> _$ProductionCompanyToJson(ProductionCompany instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'logo_path': instance.logoPath,
-      'name': instance.name,
-      'origin_country': instance.originCountry,
-    };
-
 ProductionCountry _$ProductionCountryFromJson(Map<String, dynamic> json) =>
     ProductionCountry(
       iso31661: json['iso_3166_1'] as String?,
       name: json['name'] as String?,
     );
 
-Map<String, dynamic> _$ProductionCountryToJson(ProductionCountry instance) =>
-    <String, dynamic>{
-      'iso_3166_1': instance.iso31661,
-      'name': instance.name,
-    };
+Recommendations _$RecommendationsFromJson(Map<String, dynamic> json) =>
+    Recommendations(
+      page: json['page'] as int?,
+      results: (json['results'] as List<dynamic>?)
+          ?.map((e) => Show.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      totalPages: json['total_pages'] as int?,
+      totalResults: json['total_results'] as int?,
+    );
 
 SpokenLanguage _$SpokenLanguageFromJson(Map<String, dynamic> json) =>
     SpokenLanguage(
@@ -138,9 +113,23 @@ SpokenLanguage _$SpokenLanguageFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String?,
     );
 
-Map<String, dynamic> _$SpokenLanguageToJson(SpokenLanguage instance) =>
-    <String, dynamic>{
-      'english_name': instance.englishName,
-      'iso_639_1': instance.iso6391,
-      'name': instance.name,
-    };
+Videos _$VideosFromJson(Map<String, dynamic> json) => Videos(
+      results: (json['results'] as List<dynamic>?)
+          ?.map((e) => VideosResult.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+VideosResult _$VideosResultFromJson(Map<String, dynamic> json) => VideosResult(
+      iso6391: json['iso_639_1'] as String?,
+      iso31661: json['iso_3166_1'] as String?,
+      name: json['name'] as String?,
+      key: json['key'] as String?,
+      site: json['site'] as String?,
+      size: json['size'] as int?,
+      type: json['type'] as String?,
+      official: json['official'] as bool?,
+      publishedAt: verify_date(json, 'published_at') == null
+          ? null
+          : DateTime.parse(verify_date(json, 'published_at') as String),
+      id: json['id'] as String?,
+    );

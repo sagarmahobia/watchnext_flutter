@@ -5,11 +5,13 @@ abstract class PeopleListEvent {}
 
 class LoadNextPage extends PeopleListEvent {
   final String url;
-
   final int page;
+
+  final String? query;
 
   LoadNextPage(
     this.url,
-    this.page,
-  );
+    this.page, {
+    this.query,
+  });
 }

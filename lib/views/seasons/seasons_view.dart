@@ -55,28 +55,18 @@ class _SeasonsSliderState extends State<SeasonsSlider> {
             margin: EdgeInsets.only(top: 16.0),
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: getSeasonCards(widget.seasons ?? []),
+              children: (widget.seasons ?? [])
+                  .map(
+                    (e) => Container(
+                      width: 135,
+                      child: SeasonCard(inputModel: e, tvId: widget.tvId),
+                    ),
+                  )
+                  .toList(),
             ),
           ),
         ],
       ),
     );
-  }
-
-  List<Widget> getSeasonCards(List<Season> cardModels) {
-    List<Widget> showCards = [];
-
-    for (Season model in cardModels) {
-      showCards.add(
-        Container(
-          width: 135,
-          child: SeasonCard(
-            inputModel: model,
-            tvId: widget.tvId
-          ),
-        ),
-      );
-    }
-    return showCards;
   }
 }

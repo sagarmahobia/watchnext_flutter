@@ -12,12 +12,12 @@ PersonDetail _$PersonDetailFromJson(Map<String, dynamic> json) => PersonDetail(
           ?.map((e) => e as String)
           .toList(),
       biography: json['biography'] as String?,
-      birthday: json['birthday'] == null
+      birthday: verify_date(json, 'birthday') == null
           ? null
-          : DateTime.parse(json['birthday'] as String),
-      deathday: json['deathday'] == null
+          : DateTime.parse(verify_date(json, 'birthday') as String),
+      deathday: verify_date(json, 'deathday') == null
           ? null
-          : DateTime.parse(json['deathday'] as String),
+          : DateTime.parse(verify_date(json, 'deathday') as String),
       gender: json['gender'] as int?,
       homepage: json['homepage'],
       id: json['id'] as int?,
@@ -27,22 +27,20 @@ PersonDetail _$PersonDetailFromJson(Map<String, dynamic> json) => PersonDetail(
       placeOfBirth: json['place_of_birth'] as String?,
       popularity: (json['popularity'] as num?)?.toDouble(),
       profilePath: json['profile_path'] as String?,
+      movieCredits: json['movie_credits'] == null
+          ? null
+          : MovieCredits.fromJson(
+              json['movie_credits'] as Map<String, dynamic>),
+      tvCredits: json['tv_credits'] == null
+          ? null
+          : MovieCredits.fromJson(json['tv_credits'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$PersonDetailToJson(PersonDetail instance) =>
-    <String, dynamic>{
-      'adult': instance.adult,
-      'also_known_as': instance.alsoKnownAs,
-      'biography': instance.biography,
-      'birthday': instance.birthday?.toIso8601String(),
-      'deathday': instance.deathday?.toIso8601String(),
-      'gender': instance.gender,
-      'homepage': instance.homepage,
-      'id': instance.id,
-      'imdb_id': instance.imdbId,
-      'known_for_department': instance.knownForDepartment,
-      'name': instance.name,
-      'place_of_birth': instance.placeOfBirth,
-      'popularity': instance.popularity,
-      'profile_path': instance.profilePath,
-    };
+MovieCredits _$MovieCreditsFromJson(Map<String, dynamic> json) => MovieCredits(
+      cast: (json['cast'] as List<dynamic>?)
+          ?.map((e) => Show.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      crew: (json['crew'] as List<dynamic>?)
+          ?.map((e) => Show.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );

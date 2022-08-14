@@ -24,9 +24,7 @@ class PersonDetailBloc extends Bloc<PersonDetailEvent, PersonDetailState> {
         try {
           Response<PersonDetail> response = await rest.getPersonDetail(event.id);
 
-          PersonDetail? personDetail = response.body ?? PersonDetail.fromJson(jsonDecode('{}'));
-
-          var stateModel = PersonDetailStateModel(personDetail);
+          var stateModel = PersonDetailStateModel(response.body);
 
           emit.call(DetailPageLoaded(stateModel));
         } catch (e) {

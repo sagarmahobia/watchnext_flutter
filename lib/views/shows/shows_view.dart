@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:watchnext/pages/home/home_page.dart';
 import 'package:watchnext/utils/genre_utils.dart';
 import 'package:watchnext/views/ad_views/native_ad_view.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
@@ -10,6 +11,9 @@ class ShowsView extends StatefulWidget {
 }
 
 class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixin<ShowsView> {
+
+  var reload = IntCubit();
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -136,6 +140,7 @@ class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixi
       } else {
         widgets.add(
           SliderView(
+            reload: reload,
             inputModel: value,
           ),
         );

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:watchnext/pages/home/home_page.dart';
 import 'package:watchnext/pages/search/search_page.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/views/ad_views/native_ad_view.dart';
@@ -16,6 +17,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin<HomeView> {
+  var reload = IntCubit();
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -229,6 +232,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin<
       } else {
         widgets.add(
           SliderView(
+            reload: reload,
             inputModel: value,
           ),
         );

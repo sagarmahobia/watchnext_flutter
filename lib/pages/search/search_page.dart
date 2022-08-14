@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:watchnext/pages/people_list/people_list.dart';
 import 'package:watchnext/res/app_colors.dart';
+import 'package:watchnext/views/person_slider_view/person_slider_input_model.dart';
 import 'package:watchnext/views/picture_list_view/picture_list.dart';
 
 class EmptyAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -26,7 +28,7 @@ class _SearchPageState extends State<SearchPage>
     implements MyListenable {
   final _searchController = new TextEditingController();
   var _debounce;
-  late TabController _tabController = TabController(length: 2, vsync: this);
+  late TabController _tabController = TabController(length: 3, vsync: this);
 
   List<MyListener> _listeners = [];
 
@@ -126,6 +128,7 @@ class _SearchPageState extends State<SearchPage>
                           tabs: [
                             Tab(text: "Movie"),
                             Tab(text: "TV"),
+                            Tab(text: "People"),
                           ],
                         ),
                         Expanded(
@@ -148,6 +151,13 @@ class _SearchPageState extends State<SearchPage>
                                 child: PictureListView(
                                   url: "search/tv",
                                   pictureType: "tv",
+                                  myListenable: this,
+                                ),
+                              ),
+                              Container(
+                                color: backGroundColor,
+                                child: PeopleList(
+                                  model: PersonSliderInputModel("search/person", ""),
                                   myListenable: this,
                                 ),
                               )

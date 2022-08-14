@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:watchnext/models/list-models.dart';
+import 'package:watchnext/models/movie-detail-models.dart';
+import 'package:watchnext/models/verify_date.dart';
 
 part 'tv-detail-models.g.dart';
 
@@ -41,51 +44,42 @@ class TvDetail {
     required this.type,
     required this.voteAverage,
     required this.voteCount,
+    required this.similar,
+    required this.recommendations,
+    required this.credits,
+    required this.videos,
   });
 
-  @JsonKey(name: 'adult')
   final bool? adult;
 
   @JsonKey(name: 'backdrop_path')
   final String? backdropPath;
 
   @JsonKey(name: 'created_by')
-  final List<dynamic>? createdBy;
+  final List<CreatedBy>? createdBy;
 
   @JsonKey(name: 'episode_run_time')
   final List<int>? episodeRunTime;
 
   @JsonKey(name: 'first_air_date')
   final DateTime? firstAirDate;
-
-  @JsonKey(name: 'genres')
   final List<Genre>? genres;
-
-  @JsonKey(name: 'homepage')
   final String? homepage;
-
-  @JsonKey(name: 'id')
   final int? id;
 
   @JsonKey(name: 'in_production')
   final bool? inProduction;
-
-  @JsonKey(name: 'languages')
   final List<String>? languages;
 
   @JsonKey(name: 'last_air_date')
   final DateTime? lastAirDate;
 
   @JsonKey(name: 'last_episode_to_air')
-  final LastEpisodeToAir? lastEpisodeToAir;
-
-  @JsonKey(name: 'name')
+  final TEpisodeToAir? lastEpisodeToAir;
   final String? name;
 
   @JsonKey(name: 'next_episode_to_air')
-  final dynamic nextEpisodeToAir;
-
-  @JsonKey(name: 'networks')
+  final TEpisodeToAir? nextEpisodeToAir;
   final List<Network>? networks;
 
   @JsonKey(name: 'number_of_episodes')
@@ -102,11 +96,7 @@ class TvDetail {
 
   @JsonKey(name: 'original_name')
   final String? originalName;
-
-  @JsonKey(name: 'overview')
   final String? overview;
-
-  @JsonKey(name: 'popularity')
   final double? popularity;
 
   @JsonKey(name: 'poster_path')
@@ -117,20 +107,12 @@ class TvDetail {
 
   @JsonKey(name: 'production_countries')
   final List<ProductionCountry>? productionCountries;
-
-  @JsonKey(name: 'seasons')
   final List<Season>? seasons;
 
   @JsonKey(name: 'spoken_languages')
   final List<SpokenLanguage>? spokenLanguages;
-
-  @JsonKey(name: 'status')
   final String? status;
-
-  @JsonKey(name: 'tagline')
   final String? tagline;
-
-  @JsonKey(name: 'type')
   final String? type;
 
   @JsonKey(name: 'vote_average')
@@ -138,31 +120,44 @@ class TvDetail {
 
   @JsonKey(name: 'vote_count')
   final int? voteCount;
+  final Recommendations? similar;
+  final Recommendations? recommendations;
+  final Credits? credits;
+  final Videos? videos;
 
   factory TvDetail.fromJson(Map<String, dynamic> json) => _$TvDetailFromJson(json);
 
 }
 
 @JsonSerializable(createToJson: false)
-class Genre {
-  Genre({
+class CreatedBy {
+  CreatedBy({
     required this.id,
+    required this.creditId,
     required this.name,
+    required this.gender,
+    required this.profilePath,
   });
 
-  @JsonKey(name: 'id')
   final int? id;
 
-  @JsonKey(name: 'name')
+  @JsonKey(name: 'credit_id')
+  final String? creditId;
   final String? name;
+  final int? gender;
 
-  factory Genre.fromJson(Map<String, dynamic> json) => _$GenreFromJson(json);
+  @JsonKey(name: 'profile_path')
+  final dynamic profilePath;
+
+  factory CreatedBy.fromJson(Map<String, dynamic> json) => _$CreatedByFromJson(json);
 
 }
 
+
+
 @JsonSerializable(createToJson: false)
-class LastEpisodeToAir {
-  LastEpisodeToAir({
+class TEpisodeToAir {
+  TEpisodeToAir({
     required this.airDate,
     required this.episodeNumber,
     required this.id,
@@ -181,20 +176,12 @@ class LastEpisodeToAir {
 
   @JsonKey(name: 'episode_number')
   final int? episodeNumber;
-
-  @JsonKey(name: 'id')
   final int? id;
-
-  @JsonKey(name: 'name')
   final String? name;
-
-  @JsonKey(name: 'overview')
   final String? overview;
 
   @JsonKey(name: 'production_code')
   final String? productionCode;
-
-  @JsonKey(name: 'runtime')
   final int? runtime;
 
   @JsonKey(name: 'season_number')
@@ -209,51 +196,51 @@ class LastEpisodeToAir {
   @JsonKey(name: 'vote_count')
   final int? voteCount;
 
-  factory LastEpisodeToAir.fromJson(Map<String, dynamic> json) => _$LastEpisodeToAirFromJson(json);
+  factory TEpisodeToAir.fromJson(Map<String, dynamic> json) => _$TEpisodeToAirFromJson(json);
 
 }
 
 @JsonSerializable(createToJson: false)
 class Network {
   Network({
-    required this.name,
     required this.id,
+    required this.name,
     required this.logoPath,
     required this.originCountry,
+    required this.logo,
   });
 
-  @JsonKey(name: 'name')
-  final String? name;
-
-  @JsonKey(name: 'id')
   final int? id;
+  final String? name;
 
   @JsonKey(name: 'logo_path')
   final String? logoPath;
 
   @JsonKey(name: 'origin_country')
   final String? originCountry;
+  final Logo? logo;
 
   factory Network.fromJson(Map<String, dynamic> json) => _$NetworkFromJson(json);
 
 }
 
 @JsonSerializable(createToJson: false)
-class ProductionCountry {
-  ProductionCountry({
-    required this.iso31661,
-    required this.name,
+class Logo {
+  Logo({
+    required this.path,
+    required this.aspectRatio,
   });
 
-  @JsonKey(name: 'iso_3166_1')
-  final String? iso31661;
+  final String? path;
 
-  @JsonKey(name: 'name')
-  final String? name;
+  @JsonKey(name: 'aspect_ratio')
+  final double? aspectRatio;
 
-  factory ProductionCountry.fromJson(Map<String, dynamic> json) => _$ProductionCountryFromJson(json);
+  factory Logo.fromJson(Map<String, dynamic> json) => _$LogoFromJson(json);
 
 }
+
+
 
 @JsonSerializable(createToJson: false)
 class Season {
@@ -265,6 +252,7 @@ class Season {
     required this.overview,
     required this.posterPath,
     required this.seasonNumber,
+    required this.networks,
   });
 
   @JsonKey(name: 'air_date')
@@ -272,14 +260,8 @@ class Season {
 
   @JsonKey(name: 'episode_count')
   final int? episodeCount;
-
-  @JsonKey(name: 'id')
   final int? id;
-
-  @JsonKey(name: 'name')
   final String? name;
-
-  @JsonKey(name: 'overview')
   final String? overview;
 
   @JsonKey(name: 'poster_path')
@@ -287,28 +269,11 @@ class Season {
 
   @JsonKey(name: 'season_number')
   final int? seasonNumber;
+  final List<Network>? networks;
 
   factory Season.fromJson(Map<String, dynamic> json) => _$SeasonFromJson(json);
 
 }
 
-@JsonSerializable(createToJson: false)
-class SpokenLanguage {
-  SpokenLanguage({
-    required this.englishName,
-    required this.iso6391,
-    required this.name,
-  });
 
-  @JsonKey(name: 'english_name')
-  final String? englishName;
 
-  @JsonKey(name: 'iso_639_1')
-  final String? iso6391;
-
-  @JsonKey(name: 'name')
-  final String? name;
-
-  factory SpokenLanguage.fromJson(Map<String, dynamic> json) => _$SpokenLanguageFromJson(json);
-
-}

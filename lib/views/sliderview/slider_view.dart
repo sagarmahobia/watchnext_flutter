@@ -1,16 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:watchnext/models/list-models.dart';
+import 'package:watchnext/pages/home/home_page.dart';
 import 'package:watchnext/pages/picture_list/list_page.dart';
-import 'package:watchnext/views/sliderview/showcardview/show_card_input_model.dart';
 import 'package:watchnext/views/sliderview/showcardview/show_card_view.dart';
-import 'package:watchnext/views/sliderview/slider_view_bloc.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
+import 'package:watchnext/views/sliderview/slider_view_bloc.dart';
 
 class SliderView extends StatefulWidget {
+  final IntCubit reload;
   final SliderInputModel inputModel;
+  final List<Show>? shows;
 
-  SliderView({required this.inputModel});
+  SliderView({required this.inputModel, this.shows, required this.reload});
 
   @override
   _SliderViewState createState() => _SliderViewState();
@@ -26,7 +28,16 @@ class _SliderViewState extends State<SliderView> {
   @override
   void initState() {
     super.initState();
+
+    widget.reload.stream.listen((event) {
+      if (bloc.state is SliderViewError) {
+        bloc.add(LoadItemsEvent(widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
+      }
+    });
+
+
     bloc.add(LoadItemsEvent(widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
+
     bloc.stream.listen((state) {
       if (state is SliderViewSuccess) {
         setState(
@@ -37,13 +48,13 @@ class _SliderViewState extends State<SliderView> {
           },
         );
       } else if (state is SliderViewError) {
-        Future.delayed(Duration(seconds: 2), () {
-          retries++;
-          if (retries < 3) {
-            bloc.add(
-                LoadItemsEvent(widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
-          }
-        });
+        // Future.delayed(Duration(seconds: 2), () {
+        //   retries++;
+        //   if (retries < 1) {
+        //     bloc.add(
+        //         LoadItemsEvent(widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
+        //   }
+        // });
       }
     });
   }
@@ -121,7 +132,16 @@ class _SliderViewState extends State<SliderView> {
                       height: 260,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
-                        children: getShowCards(state.cardModels),
+                        children: state.cardModels
+                            .map(
+                              (e) => Container(
+                                width: 135,
+                                child: ShowCardView(
+                                  inputModel: e,
+                                ),
+                              ),
+                            )
+                            .toList(),
                       ),
                     );
                   } else if (state is SliderViewError && retries >= 3) {
@@ -129,8 +149,10 @@ class _SliderViewState extends State<SliderView> {
 
                     return InkWell(
                       onTap: () {
-                        bloc.add(LoadItemsEvent(
-                            widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
+                        // bloc.add(LoadItemsEvent(
+                        //     widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
+
+                        widget.reload.setValue(0);
                       },
                       child: Container(
                         height: 235,
@@ -154,22 +176,6 @@ class _SliderViewState extends State<SliderView> {
         ),
       ),
     );
-  }
-
-  List<Widget> getShowCards(List<ShowCardInputModel> cardModels) {
-    List<Widget> showCards = [];
-
-    for (ShowCardInputModel model in cardModels) {
-      showCards.add(
-        Container(
-          width: 135,
-          child: ShowCardView(
-            inputModel: model,
-          ),
-        ),
-      );
-    }
-    return showCards;
   }
 
   String getType() {

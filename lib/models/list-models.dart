@@ -1,10 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:watchnext/models/verify_date.dart';
 
 part 'list-models.g.dart';
 
 @JsonSerializable(createToJson: false)
 class ListResponse {
-  ListResponse({
+  ListResponse( {
     required this.dates,
     required this.page,
     required this.results,
@@ -19,13 +20,14 @@ class ListResponse {
   final int? page;
 
   @JsonKey(name: 'results')
-  final List<Result>? results;
+  final List<Show>? results;
 
   @JsonKey(name: 'total_pages')
   final int? totalPages;
 
   @JsonKey(name: 'total_results')
   final int? totalResults;
+
 
   factory ListResponse.fromJson(Map<String, dynamic> json) => _$ListResponseFromJson(json);
 }
@@ -37,18 +39,18 @@ class Dates {
     required this.minimum,
   });
 
-  @JsonKey(name: 'maximum')
+  @JsonKey(name: 'maximum', readValue: verify_date)
   final DateTime? maximum;
 
-  @JsonKey(name: 'minimum')
+  @JsonKey(name: 'minimum' , readValue: verify_date)
   final DateTime? minimum;
 
   factory Dates.fromJson(Map<String, dynamic> json) => _$DatesFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
-class Result {
-  Result({
+class Show {
+  Show( {
     required this.adult,
     required this.backdropPath,
     required this.genreIds,
@@ -64,6 +66,7 @@ class Result {
     required this.video,
     required this.voteAverage,
     required this.voteCount,
+    required this.character,
   });
 
   @JsonKey(name: 'adult')
@@ -93,7 +96,7 @@ class Result {
   @JsonKey(name: 'poster_path')
   final String? posterPath;
 
-  @JsonKey(name: 'release_date')
+  @JsonKey(name: 'release_date',  readValue: verify_date)
   final DateTime? releaseDate;
 
   @JsonKey(name: 'title')
@@ -111,5 +114,9 @@ class Result {
   @JsonKey(name: 'vote_count')
   final int? voteCount;
 
-  factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
+
+  @JsonKey(name: 'character')
+  final String? character;
+
+  factory Show.fromJson(Map<String, dynamic> json) => _$ShowFromJson(json);
 }

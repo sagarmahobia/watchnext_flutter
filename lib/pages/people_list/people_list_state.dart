@@ -11,13 +11,12 @@ class PeoplePageLoaded extends PeopleListState {
   final int nextPageKey;
 
   PeoplePageLoaded(this.cardModels, this.nextPageKey);
-
 }
 
 class PeoplePageLoading extends PeopleListState {}
 
 class PeoplePageError extends PeopleListState {
-    var error;
+  final dynamic error;
 
   PeoplePageError(this.error);
 }

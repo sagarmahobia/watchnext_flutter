@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:watchnext/pages/person_detail/person_detail_bloc.dart';
+import 'package:watchnext/res/app_colors.dart';
+import 'package:watchnext/res/app_values.dart';
+import 'package:watchnext/utils/utils.dart';
+import 'package:watchnext/views/sliderview/sliderview_static.dart';
 import 'package:watchnext/views/text_banner/text_banner.dart';
 
 class PersonDetailPage extends StatefulWidget {
@@ -29,6 +33,7 @@ class _PersonDetailPageState extends State<PersonDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backGroundColor,
       appBar: AppBar(
         elevation: 1,
         title: Text("Detail"),
@@ -37,8 +42,8 @@ class _PersonDetailPageState extends State<PersonDetailPage> {
         bloc: bloc,
         builder: (context, state) {
           if (state is DetailPageLoaded) {
-            DateTime? bday = state.stateModel.personDetail.birthday;
-            DateTime? dday = state.stateModel.personDetail.deathday;
+            DateTime? bday = state.stateModel.personDetail?.birthday;
+            DateTime? dday = state.stateModel.personDetail?.deathday;
             Duration? age;
             if (bday != null) {
               age = (dday ?? DateTime.now()).difference(bday);
@@ -56,10 +61,9 @@ class _PersonDetailPageState extends State<PersonDetailPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.network(
+                          getImage(
                             "https://image.tmdb.org/t/p/original" +
-                                (state.stateModel.personDetail.profilePath ?? ""),
-                            fit: BoxFit.fitHeight,
+                                (state.stateModel.personDetail?.profilePath ?? ""),
                             height: 300 * 0.6,
                             width: 200 * 0.6,
                           ),
@@ -71,13 +75,13 @@ class _PersonDetailPageState extends State<PersonDetailPage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    state.stateModel.personDetail.name ?? "N/A",
+                                    state.stateModel.personDetail?.name ?? "N/A",
                                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 8.0),
                                     child: Text(
-                                      (state.stateModel.personDetail.gender ?? 0) == 1
+                                      (state.stateModel.personDetail?.gender ?? 0) == 1
                                           ? "Female"
                                           : "Male",
                                       style: TextStyle(
@@ -104,41 +108,61 @@ class _PersonDetailPageState extends State<PersonDetailPage> {
                   // ),
                   TextBanner(
                     title: "Biography",
-                    value: state.stateModel.personDetail.biography,
+                    value: state.stateModel.personDetail?.biography,
                   ),
 
                   TextBanner(
                     title: "Birthday",
-                    value: state.stateModel.personDetail.birthday.toString(),
+                    value: DateUtil.getPrettyDate(state.stateModel.personDetail?.birthday),
                   ),
 
                   TextBanner(
                     title: "Place of Birth",
-                    value: state.stateModel.personDetail.placeOfBirth,
+                    value: state.stateModel.personDetail?.placeOfBirth,
                   ),
                   TextBanner(
                     title: "Died",
-                    value: state.stateModel.personDetail.deathday != null
-                        ? state.stateModel.personDetail.deathday.toString()
+                    value: state.stateModel.personDetail?.deathday != null
+                        ? DateUtil.getPrettyDate(state.stateModel.personDetail?.deathday)
                         : null,
                   ),
                   TextBanner(
                     title: "Also Know As",
-                    value: state.stateModel.personDetail.alsoKnownAs != null
-                        ? state.stateModel.personDetail.alsoKnownAs?.join(", ")
+                    value: state.stateModel.personDetail?.alsoKnownAs != null
+                        ? state.stateModel.personDetail?.alsoKnownAs?.join(", ")
                         : null,
                   ),
                   TextBanner(
                     title: "Known For",
-                    value: state.stateModel.personDetail.knownForDepartment,
+                    value: state.stateModel.personDetail?.knownForDepartment,
                   ),
                   TextBanner(
                     title: "Homepage",
-                    value: state.stateModel.personDetail.homepage,
+                    value: state.stateModel.personDetail?.homepage,
                   ),
                   Container(
                     height: MediaQuery.of(context).padding.bottom + 8,
-                  )
+                  ),
+                  StaticShowSlider(
+                    type: "movie",
+                    title: "Cast",
+                    shows: state.stateModel.personDetail?.movieCredits?.cast,
+                  ),
+                  StaticShowSlider(
+                    type: "movie",
+                    title: "Crew",
+                    shows: state.stateModel.personDetail?.movieCredits?.crew,
+                  ),
+                  StaticShowSlider(
+                    type: "tv",
+                    title: "Cast",
+                    shows: state.stateModel.personDetail?.tvCredits?.cast,
+                  ),
+                  StaticShowSlider(
+                    type: "tv",
+                    title: "Crew",
+                    shows: state.stateModel.personDetail?.tvCredits?.cast,
+                  ),
                 ],
               ),
             );

@@ -1,6 +1,10 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:watchnext/models/list-models.dart';
+import 'package:watchnext/models/verify_date.dart';
+
+import 'credits_model.dart';
 
 part 'movie-detail-models.g.dart';
 
@@ -34,9 +38,12 @@ class MovieDetail {
     required this.video,
     required this.voteAverage,
     required this.voteCount,
+    required this.similar,
+    required this.recommendations,
+    required this.credits,
+    required this.videos,
   });
 
-  @JsonKey(name: 'adult')
   final bool? adult;
 
   @JsonKey(name: 'backdrop_path')
@@ -44,17 +51,9 @@ class MovieDetail {
 
   @JsonKey(name: 'belongs_to_collection')
   final BelongsToCollection? belongsToCollection;
-
-  @JsonKey(name: 'budget')
   final int? budget;
-
-  @JsonKey(name: 'genres')
-  final List<Genre> genres;
-
-  @JsonKey(name: 'homepage')
+  final List<Genre>? genres;
   final String? homepage;
-
-  @JsonKey(name: 'id')
   final int? id;
 
   @JsonKey(name: 'imdb_id')
@@ -65,44 +64,28 @@ class MovieDetail {
 
   @JsonKey(name: 'original_title')
   final String? originalTitle;
-
-  @JsonKey(name: 'overview')
   final String? overview;
-
-  @JsonKey(name: 'popularity')
   final double? popularity;
 
   @JsonKey(name: 'poster_path')
   final String? posterPath;
 
   @JsonKey(name: 'production_companies')
-  final List<ProductionCompany> productionCompanies;
+  final List<ProductionCompany>? productionCompanies;
 
   @JsonKey(name: 'production_countries')
-  final List<ProductionCountry> productionCountries;
+  final List<ProductionCountry>? productionCountries;
 
-  @JsonKey(name: 'release_date')
+  @JsonKey(name: 'release_date', readValue: verify_date)
   final DateTime? releaseDate;
-
-  @JsonKey(name: 'revenue')
   final int? revenue;
-
-  @JsonKey(name: 'runtime')
   final int? runtime;
 
   @JsonKey(name: 'spoken_languages')
-  final List<SpokenLanguage> spokenLanguages;
-
-  @JsonKey(name: 'status')
+  final List<SpokenLanguage>? spokenLanguages;
   final String? status;
-
-  @JsonKey(name: 'tagline')
   final String? tagline;
-
-  @JsonKey(name: 'title')
   final String? title;
-
-  @JsonKey(name: 'video')
   final bool? video;
 
   @JsonKey(name: 'vote_average')
@@ -110,6 +93,10 @@ class MovieDetail {
 
   @JsonKey(name: 'vote_count')
   final int? voteCount;
+  final Recommendations? similar;
+  final Recommendations? recommendations;
+  final Credits? credits;
+  final Videos? videos;
 
   factory MovieDetail.fromJson(Map<String, dynamic> json) => _$MovieDetailFromJson(json);
 }
@@ -123,10 +110,7 @@ class BelongsToCollection {
     required this.backdropPath,
   });
 
-  @JsonKey(name: 'id')
   final int? id;
-
-  @JsonKey(name: 'name')
   final String? name;
 
   @JsonKey(name: 'poster_path')
@@ -140,16 +124,26 @@ class BelongsToCollection {
 }
 
 @JsonSerializable(createToJson: false)
+class Credits {
+  Credits({
+    required this.cast,
+    required this.crew,
+  });
+
+  final List<Cast>? cast;
+  final List<Cast>? crew;
+
+  factory Credits.fromJson(Map<String, dynamic> json) => _$CreditsFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
 class Genre {
   Genre({
     required this.id,
     required this.name,
   });
 
-  @JsonKey(name: 'id')
   final int? id;
-
-  @JsonKey(name: 'name')
   final String? name;
 
   factory Genre.fromJson(Map<String, dynamic> json) => _$GenreFromJson(json);
@@ -164,13 +158,10 @@ class ProductionCompany {
     required this.originCountry,
   });
 
-  @JsonKey(name: 'id')
   final int? id;
 
   @JsonKey(name: 'logo_path')
   final String? logoPath;
-
-  @JsonKey(name: 'name')
   final String? name;
 
   @JsonKey(name: 'origin_country')
@@ -189,12 +180,31 @@ class ProductionCountry {
 
   @JsonKey(name: 'iso_3166_1')
   final String? iso31661;
-
-  @JsonKey(name: 'name')
   final String? name;
 
   factory ProductionCountry.fromJson(Map<String, dynamic> json) =>
       _$ProductionCountryFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class Recommendations {
+  Recommendations({
+    required this.page,
+    required this.results,
+    required this.totalPages,
+    required this.totalResults,
+  });
+
+  final int? page;
+  final List<Show>? results;
+
+  @JsonKey(name: 'total_pages')
+  final int? totalPages;
+
+  @JsonKey(name: 'total_results')
+  final int? totalResults;
+
+  factory Recommendations.fromJson(Map<String, dynamic> json) => _$RecommendationsFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
@@ -210,9 +220,52 @@ class SpokenLanguage {
 
   @JsonKey(name: 'iso_639_1')
   final String? iso6391;
-
-  @JsonKey(name: 'name')
   final String? name;
 
   factory SpokenLanguage.fromJson(Map<String, dynamic> json) => _$SpokenLanguageFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class Videos {
+  Videos({
+    required this.results,
+  });
+
+  final List<VideosResult>? results;
+
+  factory Videos.fromJson(Map<String, dynamic> json) => _$VideosFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class VideosResult {
+  VideosResult({
+    required this.iso6391,
+    required this.iso31661,
+    required this.name,
+    required this.key,
+    required this.site,
+    required this.size,
+    required this.type,
+    required this.official,
+    required this.publishedAt,
+    required this.id,
+  });
+
+  @JsonKey(name: 'iso_639_1')
+  final String? iso6391;
+
+  @JsonKey(name: 'iso_3166_1')
+  final String? iso31661;
+  final String? name;
+  final String? key;
+  final String? site;
+  final int? size;
+  final String? type;
+  final bool? official;
+
+  @JsonKey(name: 'published_at', readValue: verify_date)
+  final DateTime? publishedAt;
+  final String? id;
+
+  factory VideosResult.fromJson(Map<String, dynamic> json) => _$VideosResultFromJson(json);
 }

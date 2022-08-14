@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:watchnext/models/cast_and_crew.dart';
+import 'package:watchnext/models/credits_model.dart';
 
 SeasonDetailModel seasonDetailFromJson(String str) => SeasonDetailModel.fromJson(jsonDecode(str));
 
