@@ -1,7 +1,4 @@
-import 'package:chopper/chopper.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:watchnext/pages/collection_detail/collection_detail.dart';
 import 'package:watchnext/pages/detail/detail_page_bloc.dart';
@@ -173,7 +170,7 @@ class _DetailPageState extends State<DetailPage> {
                         children: (state.stateModel.textBannersInputModels)
                             .map(
                               (e) => TextBanner(title: e.title, value: e.value),
-                        )
+                            )
                             .toList(),
                       ),
                     ),
@@ -191,6 +188,7 @@ class _DetailPageState extends State<DetailPage> {
                                     (state.stateModel.collectionImage ?? ""),
                                 width: double.infinity,
                                 fit: BoxFit.fill,
+                                height: 200,
                                 errorBuilder: (context, error, xStackTrace) {
                                   return Container(
                                     height: 200,
@@ -204,37 +202,53 @@ class _DetailPageState extends State<DetailPage> {
                                   );
                                 },
                               ),
-                              Column(
-                                children: [
-                                  Visibility(
-                                    visible: state.stateModel.collectionName != null,
-                                    child: Text(
-                                      "Part of the " + (state.stateModel.collectionName ?? "N/A"),
-                                      style: TextStyle(fontSize: 22),
-                                      textAlign: TextAlign.center,
+                              SizedBox(
+                                height: 200,
+                                width: double.infinity,
+                                child: ColoredBox(color: Colors.black.withOpacity(0.4)),
+                              ),
+                              InkWell(
+                                onTap: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CollectionDetail(
+                                        id: state.stateModel.collectionId ?? 0,
+                                      ),
                                     ),
-                                  ),
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                      backgroundColor: Color(0x99000000),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    Visibility(
+                                      visible: state.stateModel.collectionName != null,
+                                      child: Text(
+                                        "Part of the " + (state.stateModel.collectionName ?? "N/A"),
+                                        style: TextStyle(fontSize: 22),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              CollectionDetail(
-                                                id: state.stateModel.collectionId ?? 0,
-                                              ),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      "View Collection",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  )
-                                ],
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                        backgroundColor: Color(0x99000000),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => CollectionDetail(
+                                              id: state.stateModel.collectionId ?? 0,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        "View Collection",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               )
                             ],
                           ),
@@ -252,11 +266,11 @@ class _DetailPageState extends State<DetailPage> {
                     ),
                     VideoSliderView(
                       cardModels: state.stateModel.videos?.map((e) {
-                        var image =
-                            "https://img.youtube.com/vi/" + (e.key ?? "") + "/mqdefault.jpg";
-                        var url = "https://www.youtube.com/watch?v=" + (e.key ?? "");
-                        return VideoCardInputModel(e.name ?? "", e.type ?? "", image, url);
-                      }).toList() ??
+                            var image =
+                                "https://img.youtube.com/vi/" + (e.key ?? "") + "/mqdefault.jpg";
+                            var url = "https://www.youtube.com/watch?v=" + (e.key ?? "");
+                            return VideoCardInputModel(e.name ?? "", e.type ?? "", image, url);
+                          }).toList() ??
                           [],
                     ),
                     StaticShowSlider(
@@ -271,7 +285,14 @@ class _DetailPageState extends State<DetailPage> {
                       shows: state.stateModel.recommendations,
                       url: widget.pictureType + "/" + widget.id.toString() + "/recommendations",
                     ),
-                    StaticPersonSliderView(credits: state.stateModel.credits),
+                    StaticPersonSliderView(
+                      cast: state.stateModel.credits?.cast,
+                      crew: state.stateModel.credits?.crew,
+                    ),
+                    NativeAdView(false),
+                    Container(
+                      height:30,
+                    )
                   ],
                 ),
               );

@@ -41,6 +41,7 @@ class VideoCardView extends StatelessWidget {
                     );
                   },
                 ),
+
                 Container(
                   width: 216,
                   padding: EdgeInsets.all(8.0),

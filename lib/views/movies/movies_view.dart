@@ -70,6 +70,8 @@ class _MoviesViewState extends State<MoviesView> with AutomaticKeepAliveClientMi
       ),
     );
 
+    models.add(SliderInputModel(isAd: true));
+
     models.add(
       SliderInputModel(
         url: "movie/popular",
@@ -79,18 +81,20 @@ class _MoviesViewState extends State<MoviesView> with AutomaticKeepAliveClientMi
     );
 
     models.add(
-      SliderInputModel(isAd: true),
-    );
-
-    models.add(
       SliderInputModel(
         url: "movie/top_rated",
         sliderTitle: "Top Rated",
         pictureType: "movie",
       ),
     );
-
+    int count = 1;
     for (MovieGenres genre in MovieGenres.values) {
+      if (count == 3) {
+        models.add(SliderInputModel(isAd: true));
+        count = 1;
+      } else {
+        count++;
+      }
       models.add(
         SliderInputModel(
           url: "discover/movie?sort_by=popularity.desc&with_genres=" + genre.id.toString(),

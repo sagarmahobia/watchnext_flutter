@@ -49,3 +49,22 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+/*
+
+done 7. dates in detail screen.
+done 1. movie detail > collection detail .check
+todo 2. Images
+done 3. Episode detail
+todo 4. change layout to make it easy to find genres and change bottom options to home , search, categories etc.
+todo 5. put more full screen ads to where?
+todo -1. Watch Providers.
+done 7. put more Native Ads screen ads.
+todo 6. swipe down to refresh in every page.
+
+
+
+
+
+
+*/

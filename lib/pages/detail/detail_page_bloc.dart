@@ -10,6 +10,7 @@ import 'package:watchnext/models/tv-detail-models.dart';
 import 'package:watchnext/pages/detail/detail_page_state_model.dart';
 import 'package:watchnext/services/tmdb_service.dart';
 import 'package:watchnext/utils/genre_utils.dart';
+import 'package:watchnext/utils/utils.dart';
 import 'package:watchnext/views/text_banner/text_banner.dart';
 
 part 'detail_page_event.dart';
@@ -75,7 +76,7 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
               //MOVIE
               TextBannerInputModel(
                 title: "Release Date",
-                value: movieDetail.releaseDate.toString(),
+                value: DateUtil.getPrettyDate(movieDetail.releaseDate),
               ),
               TextBannerInputModel(
                 title: "Budget",
@@ -132,7 +133,7 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
             stateModel.vote = tvDetail.voteAverage.toString();
 
             List<int> episodeRunTime = tvDetail.episodeRunTime ?? [];
-            if (episodeRunTime != null && episodeRunTime.isNotEmpty) {
+            if (episodeRunTime.isNotEmpty) {
               int t = episodeRunTime.first;
               int hours = (t / 60).truncate(); //since both are ints, you get an int
               int minutes = t % 60;
@@ -170,11 +171,11 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
 
               TextBannerInputModel(
                 title: "First Air Date",
-                value: tvDetail.firstAirDate.toString(),
+                value: DateUtil.getPrettyDate(tvDetail.firstAirDate),
               ), //
               TextBannerInputModel(
                 title: "Last Air Date",
-                value: tvDetail.lastAirDate.toString(),
+                value: DateUtil.getPrettyDate(tvDetail.lastAirDate),
               ), //
               TextBannerInputModel(
                 title: "Networks",

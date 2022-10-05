@@ -6,7 +6,6 @@ import 'package:watchnext/views/video_slider_view/video_card_view/video_card_inp
 import 'package:watchnext/views/video_slider_view/video_card_view/video_card_view.dart';
 
 
-//todo use append to page
 class VideoSliderView extends StatefulWidget {
   final List<VideoCardInputModel> cardModels;
 

@@ -4,6 +4,7 @@ import 'package:watchnext/pages/person_detail/person_detail_bloc.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/res/app_values.dart';
 import 'package:watchnext/utils/utils.dart';
+import 'package:watchnext/views/ad_views/native_ad_view.dart';
 import 'package:watchnext/views/sliderview/sliderview_static.dart';
 import 'package:watchnext/views/text_banner/text_banner.dart';
 
@@ -27,8 +28,6 @@ class _PersonDetailPageState extends State<PersonDetailPage> {
 
     bloc.add(LoadPersonDetail(widget.id));
   }
-
-  //todo movie and tv credit
 
   @override
   Widget build(BuildContext context) {
@@ -140,9 +139,7 @@ class _PersonDetailPageState extends State<PersonDetailPage> {
                     title: "Homepage",
                     value: state.stateModel.personDetail?.homepage,
                   ),
-                  Container(
-                    height: MediaQuery.of(context).padding.bottom + 8,
-                  ),
+                  NativeAdView(false),
                   StaticShowSlider(
                     type: "movie",
                     title: "Cast",
@@ -161,8 +158,9 @@ class _PersonDetailPageState extends State<PersonDetailPage> {
                   StaticShowSlider(
                     type: "tv",
                     title: "Crew",
-                    shows: state.stateModel.personDetail?.tvCredits?.cast,
+                    shows: state.stateModel.personDetail?.tvCredits?.crew,
                   ),
+                  NativeAdView(false),
                 ],
               ),
             );

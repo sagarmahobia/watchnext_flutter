@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:watchnext/models/movie-detail-models.dart';
+import 'package:watchnext/models/credits_model.dart';
 import 'package:watchnext/views/person_slider_view/person_card_view/person_card_view.dart';
 
 import 'person_card_view/person_card_input_model.dart';
 
 class StaticPersonSliderView extends StatelessWidget {
-  final Credits? credits;
+  final List<Cast>? cast;
+  final List<Cast>? crew;
 
-  const StaticPersonSliderView({Key? key, required this.credits}) : super(key: key);
+  final String? titleCast;
+  final String? titleCrew;
+
+  const StaticPersonSliderView(
+      {Key? key, required this.cast, required this.crew, this.titleCast, this.titleCrew})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Visibility(
-      visible: credits != null,
+      visible: cast != null || crew != null,
       child: Column(
         children: [
           Visibility(
-            visible: credits?.cast != null && (credits?.cast?.isNotEmpty ?? false),
+            visible: cast != null && (cast?.isNotEmpty ?? false),
             child: Container(
               margin: EdgeInsets.only(top: 24),
               child: Column(
@@ -28,7 +34,7 @@ class StaticPersonSliderView extends StatelessWidget {
                       right: 8.0,
                     ),
                     child: Text(
-                      "Cast",
+                      titleCast ?? "Cast",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -41,7 +47,7 @@ class StaticPersonSliderView extends StatelessWidget {
                       height: 240,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
-                        children: credits?.cast
+                        children: cast
                                 ?.map((e) => Container(
                                       width: 130,
                                       padding: EdgeInsets.only(left: 4, right: 4),
@@ -63,7 +69,7 @@ class StaticPersonSliderView extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: credits?.crew != null && (credits?.crew?.isNotEmpty ?? false),
+            visible: crew != null && (crew?.isNotEmpty ?? false),
             child: Container(
               margin: EdgeInsets.only(top: 24),
               child: Column(
@@ -75,7 +81,7 @@ class StaticPersonSliderView extends StatelessWidget {
                       right: 8.0,
                     ),
                     child: Text(
-                      "Crew",
+                      titleCrew ?? "Crew",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -88,7 +94,7 @@ class StaticPersonSliderView extends StatelessWidget {
                       height: 235,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
-                        children: credits?.crew
+                        children: crew
                                 ?.map((e) => Container(
                                       width: 130,
                                       padding: EdgeInsets.only(left: 4, right: 4),

@@ -36,99 +36,112 @@ class _CollectionDetailState extends State<CollectionDetail> {
           if (state is CollectionDetailLoaded) {
             return Container(
               color: backGroundColor,
-              child: Column(
-                children: [
-                  Container(
-                    color: lightBackGround,
-                    child: Stack(
-                      alignment: AlignmentDirectional.bottomStart,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Center(
-                              child: Container(
-                                child: Image.network(
-                                  "https://image.tmdb.org/t/p/original" +
-                                      (state.model?.backdropPath ?? ""),
-                                  width: double.infinity,
-                                  fit: BoxFit.fill,
-                                  errorBuilder: (context, error, xstackTrace) {
-                                    return Container(
-                                      height: 200,
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.broken_image_outlined,
-                                          size: 75,
-                                          color: Colors.white24,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      color: lightBackGround,
+                      child: Stack(
+                        alignment: AlignmentDirectional.bottomStart,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: Container(
+                                  child: Image.network(
+                                    "https://image.tmdb.org/t/p/original" +
+                                        (state.model?.backdropPath ?? ""),
+                                    width: double.infinity,
+                                    fit: BoxFit.fill,
+                                    errorBuilder: (context, error, xstackTrace) {
+                                      return Container(
+                                        height: 200,
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.broken_image_outlined,
+                                            size: 75,
+                                            color: Colors.white24,
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.fromLTRB(
-                                  state.model?.posterPath != null ? 130 : 16, 8, 16, 8),
-                              child: Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      state.model?.name ?? "N/A",
-                                      maxLines: 2,
-                                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                                    ),
-                                    InkWell(
-                                      onTap: (){
-                                        //todo show overview
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 8.0),
-                                        child: Text(state.model?.overview ?? "N/A", maxLines: 6, overflow: TextOverflow.ellipsis,),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Visibility(
-                          visible: state.model?.posterPath != null,
-                          child: Positioned(
-                            bottom: 12,
-                            left: 12,
-                            child: Image.network(
-                              "https://image.tmdb.org/t/p/original" +
-                                  (state.model?.posterPath ?? ""),
-                              fit: BoxFit.fitHeight,
-                              height: 150,
-                              width: 100,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  height: 150,
-                                  width: 100,
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.broken_image_outlined,
-                                      size: 50,
-                                      color: Colors.white24,
-                                    ),
+                                      );
+                                    },
                                   ),
-                                );
-                              },
-                            ),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(
+                                    state.model?.posterPath != null ? 130 : 16, 8, 16, 8),
+                                child: Container(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        state.model?.name ?? "N/A",
+                                        maxLines: 2,
+                                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  content: SingleChildScrollView(
+                                                    child: Text(state.model?.overview ?? "N/A"),
+                                                  ),
+                                                );
+                                              });
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(top: 8.0),
+                                          child: Text(
+                                            state.model?.overview ?? "N/A",
+                                            maxLines: 6,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        )
-                      ],
+                          Visibility(
+                            visible: state.model?.posterPath != null,
+                            child: Positioned(
+                              bottom: 12,
+                              left: 12,
+                              child: Image.network(
+                                "https://image.tmdb.org/t/p/original" +
+                                    (state.model?.posterPath ?? ""),
+                                fit: BoxFit.fitHeight,
+                                height: 150,
+                                width: 100,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    height: 150,
+                                    width: 100,
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.broken_image_outlined,
+                                        size: 50,
+                                        color: Colors.white24,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-
-                  StaticShowSlider(type: "movie", title: "Parts", shows: (state.model?.parts))
-                ],
+                    StaticShowSlider(type: "movie", title: "Parts", shows: (state.model?.parts))
+                  ],
+                ),
               ),
             );
           } else if (state is CollectionDetailLoadError) {

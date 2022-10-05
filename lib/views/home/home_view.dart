@@ -223,6 +223,7 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin<
         pictureType: "tv",
       ),
     );
+    models.add(SliderInputModel(isAd: true));
 
     for (var value in models) {
       if (value.isAd) {

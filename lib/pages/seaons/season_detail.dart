@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:watchnext/pages/episode_detail/episode_detail.dart';
 import 'package:watchnext/pages/seaons/season_detail_bloc.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/res/app_values.dart';
@@ -89,7 +90,9 @@ class _SeasonDetailState extends State<SeasonDetail> {
                     ),
                   ),
                   TextBanner(title: "Overview", value: state.seasonDetail.overview),
-                  Container(height: 6,),
+                  Container(
+                    height: 6,
+                  ),
                   Column(
                     children: (state.seasonDetail.episodes)
                         .map(
@@ -99,7 +102,12 @@ class _SeasonDetailState extends State<SeasonDetail> {
                               color: lightBackGround,
                               child: InkWell(
                                 onTap: () {
-                                  //todo episode detail
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EpisodeDetail(e),
+                                    ),
+                                  );
                                 },
                                 child: Row(
                                   children: [

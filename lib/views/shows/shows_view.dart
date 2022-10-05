@@ -11,7 +11,6 @@ class ShowsView extends StatefulWidget {
 }
 
 class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixin<ShowsView> {
-
   var reload = IntCubit();
 
   @override
@@ -79,6 +78,10 @@ class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixi
     );
 
     models.add(
+      SliderInputModel(isAd: true),
+    );
+
+    models.add(
       SliderInputModel(
         url: "discover/tv?sort_by=popularity.desc&with_networks=2552",
         sliderTitle: "Apple TV",
@@ -92,10 +95,6 @@ class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixi
         sliderTitle: "Disney Plus",
         pictureType: "tv",
       ),
-    );
-
-    models.add(
-      SliderInputModel(isAd: true),
     );
 
     models.add(
@@ -115,14 +114,24 @@ class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixi
     );
 
     models.add(
+      SliderInputModel(isAd: true),
+    );
+
+    models.add(
       SliderInputModel(
         url: "tv/top_rated",
         sliderTitle: "Top Rated",
         pictureType: "tv",
       ),
     );
-
+    var count = 1;
     for (TVGenres genre in TVGenres.values) {
+      if (count == 3) {
+        models.add(SliderInputModel(isAd: true));
+        count = 1;
+      } else {
+        count++;
+      }
       models.add(
         SliderInputModel(
           url: "discover/tv?sort_by=popularity.desc&with_genres=" + genre.id.toString(),
