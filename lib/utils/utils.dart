@@ -1,5 +1,3 @@
-//todo date format
-// todo person detail image,kTra**
 import 'package:intl/intl.dart';
 
 class DateUtil {

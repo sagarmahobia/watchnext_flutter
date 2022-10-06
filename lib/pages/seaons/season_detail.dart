@@ -5,6 +5,7 @@ import 'package:watchnext/pages/seaons/season_detail_bloc.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/res/app_values.dart';
 import 'package:watchnext/utils/utils.dart';
+import 'package:watchnext/views/ad_views/native_ad_view.dart';
 import 'package:watchnext/views/text_banner/text_banner.dart';
 
 class SeasonDetail extends StatefulWidget {
@@ -90,6 +91,8 @@ class _SeasonDetailState extends State<SeasonDetail> {
                     ),
                   ),
                   TextBanner(title: "Overview", value: state.seasonDetail.overview),
+
+                  NativeAdView(true),
                   Container(
                     height: 6,
                   ),
@@ -139,9 +142,7 @@ class _SeasonDetailState extends State<SeasonDetail> {
                         )
                         .toList(),
                   ),
-                  Container(
-                    height: 24,
-                  )
+
                 ],
               ),
             );

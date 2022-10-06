@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:watchnext/adaptive_ui/base_widget.dart';
 import 'package:watchnext/pages/people_list/people_list_bloc.dart';
 import 'package:watchnext/pages/search/search_page.dart';
 import 'package:watchnext/res/app_colors.dart';
@@ -83,23 +84,25 @@ class _PeopleListState extends State<PeopleList> implements MyListener {
 
   @override
   Widget build(BuildContext context) {
-    var pagedGridView = PagedGridView<int, PersonCardInputModel>(
-      showNewPageProgressIndicatorAsGridChild: false,
-      showNewPageErrorIndicatorAsGridChild: false,
-      showNoMoreItemsIndicatorAsGridChild: false,
-      pagingController: _pagingController,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        childAspectRatio: 100 / 192,
-        crossAxisSpacing: 5,
-        mainAxisSpacing: 5,
-        crossAxisCount: 3,
-      ),
-      builderDelegate: PagedChildBuilderDelegate<PersonCardInputModel>(
-        itemBuilder: (context, item, index) {
-          return PersonCardView(inputModel: item);
-        },
-      ),
-    );
+    var pagedGridView = BaseWidget(builder: (context, sizingInformation) {
+      return PagedGridView<int, PersonCardInputModel>(
+        showNewPageProgressIndicatorAsGridChild: false,
+        showNewPageErrorIndicatorAsGridChild: false,
+        showNoMoreItemsIndicatorAsGridChild: false,
+        pagingController: _pagingController,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: 100 / 192,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 5,
+          crossAxisCount: sizingInformation.screenSize.width ~/ 125,
+        ),
+        builderDelegate: PagedChildBuilderDelegate<PersonCardInputModel>(
+          itemBuilder: (context, item, index) {
+            return PersonCardView(inputModel: item);
+          },
+        ),
+      );
+    });
 
     if (widget.myListenable != null) {
       return pagedGridView;

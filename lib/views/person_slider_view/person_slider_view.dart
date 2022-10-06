@@ -7,7 +7,6 @@ import 'package:watchnext/views/person_slider_view/person_slider_input_model.dar
 
 import 'person_slider_view_bloc.dart';
 
-//todo use append_to_page
 class PersonSliderView extends StatefulWidget {
   final PersonSliderInputModel inputModel;
 

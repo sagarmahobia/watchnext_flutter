@@ -48,6 +48,7 @@ class PersonCardView extends StatelessWidget {
                   );
                 },
                 image: this.inputModel.image,
+                width: double.infinity,
                 fit: BoxFit.fitWidth,
               ),
               Expanded(
