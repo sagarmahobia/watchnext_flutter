@@ -59,7 +59,7 @@ class StaticShowSlider extends StatelessWidget {
                 Visibility(
                   visible: url?.isNotEmpty ?? false,
                   child: Container(
-                    constraints: BoxConstraints(maxHeight: 30),
+                    constraints: BoxConstraints(maxHeight: 35),
                     child: TextButton(
                       onPressed: () {
                         Navigator.push(
