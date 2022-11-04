@@ -22,9 +22,12 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin<
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SingleChildScrollView(
-      child: Column(
-        children: getSliderModels(),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: SingleChildScrollView(
+        child: Column(
+          children: getSliderModels(),
+        ),
       ),
     );
   }
@@ -55,12 +58,16 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin<
       Container(
         margin: EdgeInsets.only(top: 16, left: 8, right: 8),
         child: Row(
+          //todo remove row
           children: <Widget>[
             Expanded(
               child: Container(
-                child: Card(
-                  color: darkBackGround,
-                  elevation: 2,
+                child: Container(
+                  margin: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: lightBackGround,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
                   child: InkWell(
                     onTap: () {
                       Navigator.push(

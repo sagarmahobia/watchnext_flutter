@@ -27,7 +27,6 @@ class _SearchPageState extends State<SearchPage>
     with SingleTickerProviderStateMixin
     implements MyListenable {
   final _searchController = new TextEditingController();
-  var _debounce;
   late TabController _tabController = TabController(length: 3, vsync: this);
 
   List<MyListener> _listeners = [];
@@ -35,6 +34,9 @@ class _SearchPageState extends State<SearchPage>
   late PageController _pageController;
 
   int _currentIndex = 0;
+
+
+  var _debounce;
 
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce.cancel();

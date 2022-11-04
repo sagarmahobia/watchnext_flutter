@@ -16,9 +16,12 @@ class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SingleChildScrollView(
-      child: Column(
-        children: getSliderModels(),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: SingleChildScrollView(
+        child: Column(
+          children: getSliderModels(),
+        ),
       ),
     );
   }

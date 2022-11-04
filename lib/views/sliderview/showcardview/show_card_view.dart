@@ -15,8 +15,12 @@ class ShowCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: lightBackGround,
+    return Container(
+      margin: EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: lightBackGround,
+        borderRadius: BorderRadius.circular(4),
+      ),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -32,43 +36,46 @@ class ShowCardView extends StatelessWidget {
         child: Container(
           child: Stack(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    imageErrorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        height: 180,
-                        child: Center(
-                          child: Icon(
-                            Icons.broken_image_outlined,
-                            size: 50,
-                            color: Colors.white24,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      imageErrorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          height: 180,
+                          child: Center(
+                            child: Icon(
+                              Icons.broken_image_outlined,
+                              size: 50,
+                              color: Colors.white24,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    image: this.inputModel.imageUrl,
-                    fit: BoxFit.fitWidth,
-                  ),
-                  Expanded(
-                    child: Container(),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(8.0),
-                    constraints: BoxConstraints(
-                      minHeight: 56,
+                        );
+                      },
+                      image: this.inputModel.imageUrl,
+                      fit: BoxFit.fitWidth,
                     ),
-                    child: Text(
-                      inputModel.title,
-                      textAlign: TextAlign.start,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 15),
+                    Expanded(
+                      child: Container(),
                     ),
-                  ),
-                ],
+                    Container(
+                      padding: EdgeInsets.all(8.0),
+                      constraints: BoxConstraints(
+                        minHeight: 56,
+                      ),
+                      child: Text(
+                        inputModel.title,
+                        textAlign: TextAlign.start,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Positioned(
                 top: 16,

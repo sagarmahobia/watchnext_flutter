@@ -16,8 +16,12 @@ class PersonCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: lightBackGround,
+    return Container(
+      margin: EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: lightBackGround,
+        borderRadius: BorderRadius.circular(4),
+      ),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -33,23 +37,27 @@ class PersonCardView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                imageErrorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    height: 170,
-                    child: Center(
-                      child: Icon(
-                        Icons.broken_image_outlined,
-                        size: 50,
-                        color: Colors.white24,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4.0),
+
+                child: FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  imageErrorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      height: 170,
+                      child: Center(
+                        child: Icon(
+                          Icons.broken_image_outlined,
+                          size: 50,
+                          color: Colors.white24,
+                        ),
                       ),
-                    ),
-                  );
-                },
-                image: this.inputModel.image,
-                width: double.infinity,
-                fit: BoxFit.fitWidth,
+                    );
+                  },
+                  image: this.inputModel.image,
+                  width: double.infinity,
+                  fit: BoxFit.fitWidth,
+                ),
               ),
               Expanded(
                 child: Container(),

@@ -91,7 +91,6 @@ class _SeasonDetailState extends State<SeasonDetail> {
                     ),
                   ),
                   TextBanner(title: "Overview", value: state.seasonDetail.overview),
-
                   NativeAdView(true),
                   Container(
                     height: 6,
@@ -101,8 +100,12 @@ class _SeasonDetailState extends State<SeasonDetail> {
                         .map(
                           (e) => Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0),
-                            child: Card(
-                              color: lightBackGround,
+                            child: Container(
+                              margin: EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: lightBackGround,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
                               child: InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -114,8 +117,13 @@ class _SeasonDetailState extends State<SeasonDetail> {
                                 },
                                 child: Row(
                                   children: [
-                                    getImage(getImageUrl(e.stillPath.toString()),
-                                        width: 180, height: 90),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(4),
+                                      ),
+                                      child: getImage(getImageUrl(e.stillPath.toString()),
+                                          width: 180, height: 90),
+                                    ),
                                     Expanded(
                                       child: Container(
                                         height: 90,
@@ -142,7 +150,6 @@ class _SeasonDetailState extends State<SeasonDetail> {
                         )
                         .toList(),
                   ),
-
                 ],
               ),
             );

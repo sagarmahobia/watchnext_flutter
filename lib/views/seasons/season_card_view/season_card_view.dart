@@ -24,18 +24,21 @@ class SeasonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: lightBackGround,
+    return Container(
+      margin: EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: lightBackGround,
+        borderRadius: BorderRadius.circular(4),
+      ),
       child: InkWell(
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => SeasonDetail(
-                tvId: this.tvId,
-                seasonNumber: inputModel.seasonNumber ?? 0,
-                name: inputModel.name??""
-              ),
+                  tvId: this.tvId,
+                  seasonNumber: inputModel.seasonNumber ?? 0,
+                  name: inputModel.name ?? ""),
             ),
           );
         },
@@ -45,22 +48,26 @@ class SeasonCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    imageErrorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        height: 180,
-                        child: Center(
-                          child: Icon(
-                            Icons.broken_image_outlined,
-                            size: 50,
-                            color: Colors.white24,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(4.0),
+
+                    child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      imageErrorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          height: 180,
+                          child: Center(
+                            child: Icon(
+                              Icons.broken_image_outlined,
+                              size: 50,
+                              color: Colors.white24,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    image: "https://image.tmdb.org/t/p/w185" + (this.inputModel.posterPath ?? ""),
-                    fit: BoxFit.fitWidth,
+                        );
+                      },
+                      image: "https://image.tmdb.org/t/p/w185" + (this.inputModel.posterPath ?? ""),
+                      fit: BoxFit.fitWidth,
+                    ),
                   ),
                   Expanded(
                     child: Container(),

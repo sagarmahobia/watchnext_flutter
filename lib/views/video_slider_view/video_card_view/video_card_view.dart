@@ -15,31 +15,39 @@ class VideoCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: lightBackGround,
+    return Container(
+      margin: EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: lightBackGround,
+        borderRadius: BorderRadius.circular(4),
+      ),
       child: Container(
         child: Stack(
           children: [
             Column(
               children: [
-                FadeInImage.memoryNetwork(
-                  width: 216,
-                  height: 120,
-                  placeholder: kTransparentImage,
-                  image: this.inputModel.image,
-                  fit: BoxFit.fitWidth,
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      height: 120,
-                      child: Center(
-                        child: Icon(
-                          Icons.broken_image_outlined,
-                          size: 50,
-                          color: Colors.white24,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4.0),
+
+                  child: FadeInImage.memoryNetwork(
+                    width: 216,
+                    height: 120,
+                    placeholder: kTransparentImage,
+                    image: this.inputModel.image,
+                    fit: BoxFit.fitWidth,
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        height: 120,
+                        child: Center(
+                          child: Icon(
+                            Icons.broken_image_outlined,
+                            size: 50,
+                            color: Colors.white24,
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
 
                 Container(

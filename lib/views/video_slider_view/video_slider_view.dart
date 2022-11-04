@@ -5,7 +5,6 @@ import 'package:watchnext/views/ad_views/ad_widget.dart';
 import 'package:watchnext/views/video_slider_view/video_card_view/video_card_input_model.dart';
 import 'package:watchnext/views/video_slider_view/video_card_view/video_card_view.dart';
 
-
 class VideoSliderView extends StatefulWidget {
   final List<VideoCardInputModel> cardModels;
 
@@ -16,8 +15,6 @@ class VideoSliderView extends StatefulWidget {
 }
 
 class _VideoSliderViewState extends FullAdWidgetState<VideoSliderView> {
-
-
   bool isVisible = true;
 
   @override
@@ -48,18 +45,22 @@ class _VideoSliderViewState extends FullAdWidgetState<VideoSliderView> {
                         .map(
                           (e) => InkWell(
                             onTap: () {
+                              var call = () {
+                                launch(e.url,  );
+                              };
+
                               if (super.interstitialAd != null) {
                                 super.interstitialAd?.show();
                                 super.interstitialAd?.fullScreenContentCallback =
                                     FullScreenContentCallback(
                                   onAdDismissedFullScreenContent: (ad) {
-                                    launch(e.url);
+                                    call.call();
                                     super.interstitialAd?.dispose();
                                     super.interstitialAd = null;
                                   },
                                 );
                               } else {
-                                launch(e.url);
+                                call.call();
                               }
                             },
                             child: VideoCardView(
@@ -75,6 +76,4 @@ class _VideoSliderViewState extends FullAdWidgetState<VideoSliderView> {
           )),
     );
   }
-
-
 }

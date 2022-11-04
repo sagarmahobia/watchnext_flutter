@@ -59,63 +59,69 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: backGroundColor,
-      bottomNavigationBar: BottomNavigationBar(
-        fixedColor: accentColor,
-        onTap: (int index) {
-          if (_currentIndex.state == index) {
-            while (keys[_currentIndex.state].currentState?.canPop() ?? false) {
-              keys[_currentIndex.state].currentState?.pop();
-            }
-            return;
-          }
-          // pageController.jumpToPage(page);
-          _currentIndex.setValue(index);
-        },
-        currentIndex: _currentIndex.state,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.movie), label: "Movies"),
-          BottomNavigationBarItem(icon: Icon(Icons.tv), label: "TV Shows"),
-        ],
-      ),
-      body: WillPopScope(
-        onWillPop: _willPopCallback,
-        child: PageView(
-          controller: pageController,
-          physics: NeverScrollableScrollPhysics(),
-          children: [
-            HomeView(),
-            MoviesView(),
-            ShowsView(),
-          ]
-              .asMap()
-              .map(
-                (index, e) => MapEntry(
-                  index,
-                  Navigator(
-                    key: keys[index],
-                    pages: [
-                      MaterialPage(
-                        child: Container(
-                          child: e,
-                          padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).padding.top,
-                          ),
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            color: backGroundColor,
+            child: WillPopScope(
+              onWillPop: _willPopCallback,
+              child: PageView(
+                controller: pageController,
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  HomeView(),
+                  MoviesView(),
+                  ShowsView(),
+                ]
+                    .asMap()
+                    .map(
+                      (index, e) => MapEntry(
+                        index,
+                        Navigator(
+                          key: keys[index],
+                          pages: [
+                            MaterialPage(
+                              child: Container(
+                                child: e,
+                                padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).padding.top,
+                                ),
+                              ),
+                            ),
+                          ],
+                          onPopPage: (r, r2) {
+                            return r.didPop(r2);
+                          },
                         ),
                       ),
-                    ],
-                    onPopPage: (r, r2) {
-                      return r.didPop(r2);
-                    },
-                  ),
-                ),
-              )
-              .values
-              .toList(),
+                    )
+                    .values
+                    .toList(),
+              ),
+            ),
+          ),
         ),
-      ),
+        BottomNavigationBar(
+          fixedColor: accentColor,
+          onTap: (int index) {
+            if (_currentIndex.state == index) {
+              while (keys[_currentIndex.state].currentState?.canPop() ?? false) {
+                keys[_currentIndex.state].currentState?.pop();
+              }
+              return;
+            }
+            // pageController.jumpToPage(page);
+            _currentIndex.setValue(index);
+          },
+          currentIndex: _currentIndex.state,
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+            BottomNavigationBarItem(icon: Icon(Icons.movie), label: "Movies"),
+            BottomNavigationBarItem(icon: Icon(Icons.tv), label: "TV Shows"),
+          ],
+        )
+      ],
     );
   }
 }

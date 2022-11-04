@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:watchnext/pages/collection_detail/collection_detail.dart';
 import 'package:watchnext/pages/detail/detail_page_bloc.dart';
 import 'package:watchnext/res/app_colors.dart';
@@ -174,6 +176,38 @@ class _DetailPageState extends State<DetailPage> {
                             .toList(),
                       ),
                     ),
+                    InkWell(
+                      onTap: () {
+                        launch(Uri.parse(
+                                "https://www.google.com/search?q=${state.stateModel.title}+${state.stateModel.year}+Stream")
+                            .toString());
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(8),
+                          ),
+                          border: Border.all(
+                            color: Colors.white70,
+                            width: 2,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "Find Where To Watch",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Icon(Icons.outbond_outlined)
+                          ],
+                        ),
+                        padding: EdgeInsets.all(12),
+                        margin: EdgeInsets.all(12),
+                      ),
+                    ),
                     NativeAdView(false),
                     Builder(builder: (context) {
                       if (widget.pictureType == "movie" &&
@@ -208,7 +242,7 @@ class _DetailPageState extends State<DetailPage> {
                                 child: ColoredBox(color: Colors.black.withOpacity(0.4)),
                               ),
                               InkWell(
-                                onTap: (){
+                                onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -291,7 +325,7 @@ class _DetailPageState extends State<DetailPage> {
                     ),
                     NativeAdView(false),
                     Container(
-                      height:30,
+                      height: 30,
                     )
                   ],
                 ),
@@ -305,9 +339,132 @@ class _DetailPageState extends State<DetailPage> {
                   child: Text("Something went wrong. Tap to try again."),
                 ),
               );
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
+            }
+            {
+              return SingleChildScrollView(
+                physics: NeverScrollableScrollPhysics(),
+                child: Container(
+                  child: Shimmer.fromColors(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 200,
+                            color: Colors.white,
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 8, top: 8),
+                                height: 150,
+                                width: 90,
+                                color: Colors.white,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.all(8),
+                                      height: 20,
+                                      color: Colors.white,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.all(8).copyWith(right: 156),
+                                      height: 20,
+                                      color: Colors.white,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.all(8).copyWith(right: 156),
+                                      height: 20,
+                                      color: Colors.white,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.all(8).copyWith(right: 156),
+                                      height: 20,
+                                      color: Colors.white,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            height: 20,
+                            margin: EdgeInsets.all(8).copyWith(top: 16),
+                            color: Colors.white,
+                            width: 120,
+                          ),
+                          Container(
+                            height: 20,
+                            margin: EdgeInsets.all(8).copyWith(top: 0),
+                            color: Colors.white,
+                            width: double.infinity,
+                          ),
+                          Container(
+                            height: 20,
+                            margin: EdgeInsets.all(8).copyWith(top: 16),
+                            color: Colors.white,
+                            width: 120,
+                          ),
+                          Container(
+                            height: 20,
+                            margin: EdgeInsets.all(8).copyWith(top: 0),
+                            color: Colors.white,
+                            width: double.infinity,
+                          ),
+                          Container(
+                            height: 20,
+                            margin: EdgeInsets.all(8).copyWith(top: 16),
+                            color: Colors.white,
+                            width: 120,
+                          ),
+                          Container(
+                            height: 20,
+                            margin: EdgeInsets.all(8).copyWith(top: 0),
+                            color: Colors.white,
+                            width: double.infinity,
+                          ),
+                          Container(
+                            height: 20,
+                            margin: EdgeInsets.all(8).copyWith(top: 16),
+                            color: Colors.white,
+                            width: 120,
+                          ),
+                          Container(
+                            height: 20,
+                            margin: EdgeInsets.all(8).copyWith(top: 0),
+                            color: Colors.white,
+                            width: double.infinity,
+                          ),
+                          Container(
+                            height: 20,
+                            margin: EdgeInsets.all(8).copyWith(top: 16),
+                            color: Colors.white,
+                            width: 120,
+                          ),
+                          Container(
+                            height: 20,
+                            margin: EdgeInsets.all(8).copyWith(top: 0),
+                            color: Colors.white,
+                            width: double.infinity,
+                          ),
+                          Container(
+                            height: 20,
+                            margin: EdgeInsets.all(8).copyWith(top: 16),
+                            color: Colors.white,
+                            width: 120,
+                          ),
+                          Container(
+                            height: 20,
+                            margin: EdgeInsets.all(8).copyWith(top: 0),
+                            color: Colors.white,
+                            width: double.infinity,
+                          ),
+                        ],
+                      ),
+                      baseColor: darkBackGround,
+                      highlightColor: lightBackGround),
+                ),
               );
             }
           },

@@ -51,8 +51,12 @@ class _NativeAdViewState extends State<NativeAdView> {
       return Container(
         margin: EdgeInsets.only(top: 32),
 
-        child: Card(
-          color: lightBackGround,
+        child: Container(
+          margin: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: lightBackGround,
+            borderRadius: BorderRadius.circular(4),
+          ),
           child: Container(
             padding: EdgeInsets.all(8),
             height: 380,

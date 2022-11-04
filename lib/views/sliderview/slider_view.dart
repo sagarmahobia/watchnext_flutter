@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:watchnext/models/list-models.dart';
 import 'package:watchnext/pages/home/home_page.dart';
 import 'package:watchnext/pages/picture_list/list_page.dart';
+import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/views/sliderview/showcardview/show_card_view.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
 import 'package:watchnext/views/sliderview/slider_view_bloc.dart';
@@ -34,7 +36,6 @@ class _SliderViewState extends State<SliderView> {
         bloc.add(LoadItemsEvent(widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
       }
     });
-
 
     bloc.add(LoadItemsEvent(widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
 
@@ -161,14 +162,61 @@ class _SliderViewState extends State<SliderView> {
                         ),
                       ),
                     );
-                  } else {
-                    return Container(
-                      height: 235,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
                   }
+                  return SingleChildScrollView(
+                    physics: NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    child: Shimmer.fromColors(
+                      baseColor: darkBackGround,
+                      highlightColor: lightBackGround,
+                      child: Row(
+                        children: [0, 1, 2, 4]
+                            .map(
+                              (e) => Container(
+                                width: 135,
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(4),
+                                  ),
+                                ),
+                                padding: EdgeInsets.all(4),
+                                child: Container(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 252,
+                                        decoration: BoxDecoration(
+                                          color: lightBackGround,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(4),
+                                          ),
+                                        ),
+                                      ),
+                                      // Container(
+                                      //   height: 20,
+                                      //   margin: EdgeInsets.only(top: 8, right: 16),
+                                      //   decoration: BoxDecoration(
+                                      //     color: lightBackGround,
+                                      //   ),
+                                      // ),
+                                      // Container(
+                                      //   height: 20,
+                                      //   margin: EdgeInsets.only(top: 4, bottom: 8, right: 64),
+                                      //   decoration: BoxDecoration(
+                                      //     color: lightBackGround,
+                                      //   ),
+                                      // ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  );
                 },
               ),
             ),

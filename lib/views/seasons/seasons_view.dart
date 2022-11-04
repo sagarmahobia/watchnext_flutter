@@ -25,7 +25,7 @@ class _SeasonsSliderState extends State<SeasonsSlider> {
       margin: EdgeInsets.only(top: 24),
       child: Column(
         children: [
-          Row(
+          Row(//todo Remove Row
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
