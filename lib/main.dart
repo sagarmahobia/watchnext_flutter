@@ -1,27 +1,39 @@
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:watchnext/pages/home/home_page.dart';
 import 'package:watchnext/res/app_colors.dart';
+import 'package:watchnext/services/pref_manager.dart';
 
 import 'di/injection.dart';
 
-void main() {
-  configureInjection();
-  WidgetsFlutterBinding.ensureInitialized();
+class IntIndex {
+  final int index;
 
-  requestTrackingAuthorization().then(
-    (value) => {
-      MobileAds.instance.initialize(),
-      MobileAds.instance.updateRequestConfiguration(RequestConfiguration(testDeviceIds: [
-        "B517205846B118100D2DDE8782532B8A",
-        "4D06A259E0AAA30DEA1436D28C159197",
-        "Simulator"
-      ])),
-      runApp(MyApp())
-    },
-  );
+  IntIndex(this.index);
+
+  @override
+  bool operator ==(Object other) => false;
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureInjection();
+
+  await requestTrackingAuthorization();
+
+  await MobileAds.instance.initialize();
+  await MobileAds.instance.updateRequestConfiguration(RequestConfiguration(
+    testDeviceIds: [
+      "B517205846B118100D2DDE8782532B8A",
+      "4D06A259E0AAA30DEA1436D28C159197",
+      "Simulator"
+    ],
+  ));
+
+  runApp(MyApp());
 }
 
 Future<void> requestTrackingAuthorization() async {
@@ -33,6 +45,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+
+
     return MaterialApp(
       title: 'WatchNext',
       debugShowCheckedModeBanner: false,
@@ -60,10 +74,5 @@ todo 5. put more full screen ads to where?
 todo -1. Watch Providers.
 done 7. put more Native Ads screen ads.
 todo 6. swipe down to refresh in every page.
-
-
-
-
-
 
 */

@@ -3,7 +3,6 @@ part of 'person_slider_view_bloc.dart';
 @immutable
 abstract class PersonSliderViewState {}
 
-class PersonSliderViewInitial extends PersonSliderViewState {}
 
 class PersonSliderViewLoading extends PersonSliderViewState {}
 

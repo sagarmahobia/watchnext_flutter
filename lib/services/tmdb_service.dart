@@ -74,13 +74,13 @@ abstract class TMDBService extends ChopperService {
   @Get(path: '{url}')
   Future<Response<CastAndCrew>> getCastAndCrew(@Path("url") String url);
 
-  @Get(path: 'movie/{id}?append_to_response=similar,recommendations,credits,videos')
+  @Get(path: 'movie/{id}?append_to_response=similar,recommendations,credits,videos,images')
   Future<Response<MovieDetail>> getMovieDetails(@Path("id") int id);
 
-  @Get(path: 'tv/{id}?append_to_response=similar,recommendations,credits,videos')
+  @Get(path: 'tv/{id}?append_to_response=similar,recommendations,credits,videos,images')
   Future<Response<TvDetail>> getTvDetails(@Path("id") int id);
 
-  @Get(path: 'person/{person_id}?append_to_response=movie_credits,tv_credits')
+  @Get(path: 'person/{person_id}?append_to_response=movie_credits,tv_credits,images,videos')
   Future<Response<PersonDetail>> getPersonDetail(@Path("person_id") int personId);
 
 // @Get(path: '/tv/{tv_id}/watch/providers')

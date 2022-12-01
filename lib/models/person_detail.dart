@@ -10,24 +10,24 @@ PersonDetail personDetailFromJson(String str) => PersonDetail.fromJson(json.deco
 
 @JsonSerializable(createToJson: false)
 class PersonDetail {
-  PersonDetail({
-    required this.adult,
-    required this.alsoKnownAs,
-    required this.biography,
-    required this.birthday,
-    required this.deathday,
-    required this.gender,
-    required this.homepage,
-    required this.id,
-    required this.imdbId,
-    required this.knownForDepartment,
-    required this.name,
-    required this.placeOfBirth,
-    required this.popularity,
-    required this.profilePath,
-    required this.movieCredits,
-    required this.tvCredits
-  });
+  PersonDetail(
+      {required this.adult,
+      required this.alsoKnownAs,
+      required this.biography,
+      required this.birthday,
+      required this.deathday,
+      required this.gender,
+      required this.homepage,
+      required this.id,
+      required this.imdbId,
+      required this.knownForDepartment,
+      required this.name,
+      required this.placeOfBirth,
+      required this.popularity,
+      required this.profilePath,
+      required this.movieCredits,
+      required this.tvCredits,
+      required this.images});
 
   @JsonKey(name: 'adult')
   final bool? adult;
@@ -41,7 +41,7 @@ class PersonDetail {
   @JsonKey(name: 'birthday', readValue: verify_date)
   final DateTime? birthday;
 
-  @JsonKey(name: 'deathday',  readValue: verify_date)
+  @JsonKey(name: 'deathday', readValue: verify_date)
   final DateTime? deathday;
 
   @JsonKey(name: 'gender')
@@ -77,7 +77,52 @@ class PersonDetail {
   @JsonKey(name: 'tv_credits')
   final MovieCredits? tvCredits;
 
+  final Images? images;
+
   factory PersonDetail.fromJson(Map<String, dynamic> json) => _$PersonDetailFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class Images {
+  Images({
+    required this.profiles,
+  });
+
+  final List<Profile>? profiles;
+
+  factory Images.fromJson(Map<String, dynamic> json) => _$ImagesFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class Profile {
+  Profile({
+    required this.aspectRatio,
+    required this.height,
+    required this.iso6391,
+    required this.filePath,
+    required this.voteAverage,
+    required this.voteCount,
+    required this.width,
+  });
+
+  @JsonKey(name: 'aspect_ratio')
+  final double? aspectRatio;
+  final int? height;
+
+  @JsonKey(name: 'iso_639_1')
+  final dynamic iso6391;
+
+  @JsonKey(name: 'file_path')
+  final String? filePath;
+
+  @JsonKey(name: 'vote_average')
+  final double? voteAverage;
+
+  @JsonKey(name: 'vote_count')
+  final int? voteCount;
+  final int? width;
+
+  factory Profile.fromJson(Map<String, dynamic> json) => _$ProfileFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)

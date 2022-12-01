@@ -58,6 +58,9 @@ MovieDetail _$MovieDetailFromJson(Map<String, dynamic> json) => MovieDetail(
       videos: json['videos'] == null
           ? null
           : Videos.fromJson(json['videos'] as Map<String, dynamic>),
+      images: json['images'] == null
+          ? null
+          : Images.fromJson(json['images'] as Map<String, dynamic>),
     );
 
 BelongsToCollection _$BelongsToCollectionFromJson(Map<String, dynamic> json) =>
@@ -132,4 +135,26 @@ VideosResult _$VideosResultFromJson(Map<String, dynamic> json) => VideosResult(
           ? null
           : DateTime.parse(verify_date(json, 'published_at') as String),
       id: json['id'] as String?,
+    );
+
+Images _$ImagesFromJson(Map<String, dynamic> json) => Images(
+      backdrops: (json['backdrops'] as List<dynamic>?)
+          ?.map((e) => Image.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      logos: (json['logos'] as List<dynamic>?)
+          ?.map((e) => Image.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      posters: (json['posters'] as List<dynamic>?)
+          ?.map((e) => Image.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Image _$ImageFromJson(Map<String, dynamic> json) => Image(
+      aspectRatio: (json['aspect_ratio'] as num?)?.toDouble(),
+      height: json['height'] as int?,
+      iso6391: json['iso_639_1'] as String?,
+      filePath: json['file_path'] as String?,
+      voteAverage: (json['vote_average'] as num?)?.toDouble(),
+      voteCount: json['vote_count'] as int?,
+      width: json['width'] as int?,
     );

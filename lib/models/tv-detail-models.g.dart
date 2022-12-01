@@ -15,9 +15,9 @@ TvDetail _$TvDetailFromJson(Map<String, dynamic> json) => TvDetail(
       episodeRunTime: (json['episode_run_time'] as List<dynamic>?)
           ?.map((e) => e as int)
           .toList(),
-      firstAirDate: json['first_air_date'] == null
+      firstAirDate: verify_date(json, 'first_air_date') == null
           ? null
-          : DateTime.parse(json['first_air_date'] as String),
+          : DateTime.parse(verify_date(json, 'first_air_date') as String),
       genres: (json['genres'] as List<dynamic>?)
           ?.map((e) => Genre.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -27,9 +27,9 @@ TvDetail _$TvDetailFromJson(Map<String, dynamic> json) => TvDetail(
       languages: (json['languages'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      lastAirDate: json['last_air_date'] == null
+      lastAirDate: verify_date(json, 'last_air_date') == null
           ? null
-          : DateTime.parse(json['last_air_date'] as String),
+          : DateTime.parse(verify_date(json, 'last_air_date') as String),
       lastEpisodeToAir: json['last_episode_to_air'] == null
           ? null
           : TEpisodeToAir.fromJson(
@@ -82,6 +82,9 @@ TvDetail _$TvDetailFromJson(Map<String, dynamic> json) => TvDetail(
       videos: json['videos'] == null
           ? null
           : Videos.fromJson(json['videos'] as Map<String, dynamic>),
+      images: json['images'] == null
+          ? null
+          : Images.fromJson(json['images'] as Map<String, dynamic>),
     );
 
 CreatedBy _$CreatedByFromJson(Map<String, dynamic> json) => CreatedBy(
@@ -94,9 +97,9 @@ CreatedBy _$CreatedByFromJson(Map<String, dynamic> json) => CreatedBy(
 
 TEpisodeToAir _$TEpisodeToAirFromJson(Map<String, dynamic> json) =>
     TEpisodeToAir(
-      airDate: json['air_date'] == null
+      airDate: verify_date(json, 'air_date') == null
           ? null
-          : DateTime.parse(json['air_date'] as String),
+          : DateTime.parse(verify_date(json, 'air_date') as String),
       episodeNumber: json['episode_number'] as int?,
       id: json['id'] as int?,
       name: json['name'] as String?,
@@ -125,9 +128,9 @@ Logo _$LogoFromJson(Map<String, dynamic> json) => Logo(
     );
 
 Season _$SeasonFromJson(Map<String, dynamic> json) => Season(
-      airDate: json['air_date'] == null
+      airDate: verify_date(json, 'air_date') == null
           ? null
-          : DateTime.parse(json['air_date'] as String),
+          : DateTime.parse(verify_date(json, 'air_date') as String),
       episodeCount: json['episode_count'] as int?,
       id: json['id'] as int?,
       name: json['name'] as String?,

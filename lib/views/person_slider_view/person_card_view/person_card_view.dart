@@ -47,7 +47,7 @@ class PersonCardView extends StatelessWidget {
                       height: 170,
                       child: Center(
                         child: Icon(
-                          Icons.broken_image_outlined,
+                          Icons.broken_image_rounded,
                           size: 50,
                           color: Colors.white24,
                         ),

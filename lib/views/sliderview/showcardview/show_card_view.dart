@@ -29,6 +29,7 @@ class ShowCardView extends StatelessWidget {
               builder: (context) => DetailPage(
                 id: inputModel.id,
                 pictureType: inputModel.type,
+
               ),
             ),
           );
@@ -48,7 +49,7 @@ class ShowCardView extends StatelessWidget {
                           height: 180,
                           child: Center(
                             child: Icon(
-                              Icons.broken_image_outlined,
+                              Icons.broken_image_rounded,
                               size: 50,
                               color: Colors.white24,
                             ),

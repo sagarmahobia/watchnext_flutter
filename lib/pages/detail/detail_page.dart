@@ -1,10 +1,17 @@
+import 'dart:ffi';
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:watchnext/pages/collection_detail/collection_detail.dart';
 import 'package:watchnext/pages/detail/detail_page_bloc.dart';
+import 'package:watchnext/pages/detail/homepagew_widget.dart';
+import 'package:watchnext/pages/image_viewer/image_viewer.dart';
 import 'package:watchnext/res/app_colors.dart';
+import 'package:watchnext/res/app_values.dart';
 import 'package:watchnext/views/ad_views/native_ad_view.dart';
 import 'package:watchnext/views/person_slider_view/static_person_slider_view.dart';
 import 'package:watchnext/views/seasons/seasons_view.dart';
@@ -25,11 +32,14 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   DetailPageBloc bloc = DetailPageBloc();
+  int currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    bloc.add(LoadPageDetail(widget.id, widget.pictureType));
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      bloc.add(LoadPageDetail(widget.id, widget.pictureType));
+    });
   }
 
 //
@@ -37,16 +47,22 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backGroundColor,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        elevation: 1,
-        title: Text("Detail"),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
       ),
       body: Container(
+        padding: EdgeInsets.only(
+          top: MediaQuery.of(context).padding.top,
+        ),
         child: BlocBuilder(
           bloc: bloc,
           builder: (context, state) {
             if (state is DetailPageLoaded) {
+              var get5backdrops = state.stateModel.get5Backdrops();
               return SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -58,28 +74,63 @@ class _DetailPageState extends State<DetailPage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Center(
-                                child: Container(
-                                  constraints: BoxConstraints(maxWidth: 900),
-                                  child: Image.network(
-                                    "https://image.tmdb.org/t/p/original" +
-                                        (state.stateModel.backdrop ?? ""),
-                                    width: double.infinity,
-                                    fit: BoxFit.fill,
-                                    errorBuilder: (context, error, xstackTrace) {
-                                      return Container(
-                                        height: 200,
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.broken_image_outlined,
-                                            size: 75,
-                                            color: Colors.white24,
-                                          ),
+                              Stack(
+                                children: [
+                                  CarouselSlider(
+                                    options: CarouselOptions(
+                                        // height: 400.0,
+                                        viewportFraction: 1,
+                                        autoPlay: true,
+                                        onPageChanged: (index, reason) {
+                                          setState(() {
+                                            currentIndex = index;
+                                          });
+                                        }),
+                                    items: get5backdrops.map((item) {
+                                      return InkWell(
+                                        onTap: () {
+                                          Navigator.of(context, rootNavigator: true).push(
+                                            MaterialPageRoute(
+                                              builder: (context) => ImageViewer(
+                                                state.stateModel.getAllBackdropsInHQ(),
+                                                currentIndex,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: getImage(
+                                          item ?? '',
+                                          fit: BoxFit.contain,
+                                          // height: 400,
+                                          width: double.infinity,
                                         ),
                                       );
-                                    },
+                                    }).toList(),
                                   ),
-                                ),
+                                  Positioned(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: get5backdrops.map(
+                                        (e) {
+                                          int index = get5backdrops.indexOf(e);
+                                          return Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Icon(
+                                              Icons.circle,
+                                              size: 5,
+                                              color: currentIndex == index
+                                                  ? Colors.red
+                                                  : Colors.black54,
+                                            ),
+                                          );
+                                        },
+                                      ).toList(),
+                                    ),
+                                    bottom: 20,
+                                    right: 0,
+                                    left: 0,
+                                  )
+                                ],
                               ),
                               Container(
                                 margin: EdgeInsets.fromLTRB(
@@ -141,25 +192,23 @@ class _DetailPageState extends State<DetailPage> {
                             child: Positioned(
                               bottom: 12,
                               left: 12,
-                              child: Image.network(
-                                "https://image.tmdb.org/t/p/original" +
-                                    (state.stateModel.poster ?? ""),
-                                fit: BoxFit.fitHeight,
-                                height: 150,
-                                width: 100,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    height: 150,
-                                    width: 100,
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.broken_image_outlined,
-                                        size: 50,
-                                        color: Colors.white24,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context, rootNavigator: true).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => ImageViewer(
+                                        state.stateModel.getAllPostersInHQ(),
+                                        0,
                                       ),
                                     ),
                                   );
                                 },
+                                child: getImage(
+                                  getImageUrlPosterLQ(state.stateModel.poster ?? ""),
+                                  fit: BoxFit.fitHeight,
+                                  height: 150,
+                                  width: 100,
+                                ),
                               ),
                             ),
                           )
@@ -176,38 +225,7 @@ class _DetailPageState extends State<DetailPage> {
                             .toList(),
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        launch(Uri.parse(
-                                "https://www.google.com/search?q=${state.stateModel.title}+${state.stateModel.year}+Stream")
-                            .toString());
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          border: Border.all(
-                            color: Colors.white70,
-                            width: 2,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "Find Where To Watch",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Icon(Icons.outbond_outlined)
-                          ],
-                        ),
-                        padding: EdgeInsets.all(12),
-                        margin: EdgeInsets.all(12),
-                      ),
-                    ),
+                    HomepageWidget(homepage: state.stateModel.homepage,),
                     NativeAdView(false),
                     Builder(builder: (context) {
                       if (widget.pictureType == "movie" &&
@@ -228,7 +246,7 @@ class _DetailPageState extends State<DetailPage> {
                                     height: 200,
                                     child: Center(
                                       child: Icon(
-                                        Icons.broken_image_outlined,
+                                        Icons.broken_image_rounded,
                                         size: 75,
                                         color: Colors.white24,
                                       ),
@@ -307,6 +325,110 @@ class _DetailPageState extends State<DetailPage> {
                           }).toList() ??
                           [],
                     ),
+
+                    Builder(builder: (context) {
+                      var imageBuilders = state.stateModel.getImagesBuilder();
+
+                      if (imageBuilders.isNotEmpty) {
+                        return Container(
+                            margin: EdgeInsets.only(top: 16.0),
+                            child: Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(left: 16.0, right: 8.0, bottom: 8.0),
+                                    child: Text(
+                                      "Media",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  SingleChildScrollView(
+                                    physics: BouncingScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: imageBuilders
+                                          .map(
+                                            (e) => Container(
+                                              margin: EdgeInsets.all(4),
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.of(context, rootNavigator: true).push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) => ImageViewer(
+                                                        e["images"] as List<String>,
+                                                        0,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Stack(
+                                                  alignment: Alignment.bottomCenter,
+                                                  children: [
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        color: lightBackGround,
+                                                        borderRadius: BorderRadius.circular(4),
+                                                      ),
+                                                      child: ClipRRect(
+                                                        borderRadius: BorderRadius.circular(4.0),
+                                                        child: getImage((e["image"] as String),
+                                                            height: e["height"] as double,
+                                                            width:
+                                                                (e["width"] as double).toDouble(),
+                                                            fit: BoxFit.fitHeight),
+                                                      ),
+                                                    ),
+                                                    Positioned(
+                                                      bottom: 0,
+                                                      child: Container(
+                                                        width: e["width"] as double,
+                                                        padding: EdgeInsets.all(8.0),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.only(
+                                                              bottomLeft: Radius.circular(4),
+                                                              bottomRight: Radius.circular(4)),
+                                                          gradient: LinearGradient(
+                                                              colors: [
+                                                                Colors.black.withOpacity(0.5),
+                                                                Colors.black.withOpacity(.4)
+                                                              ],
+                                                              begin: Alignment.bottomCenter,
+                                                              end: Alignment.topCenter,
+                                                              stops: [0.0, 1.0],
+                                                              tileMode: TileMode.clamp),
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            e["title"] as String,
+                                                            textAlign: TextAlign.start,
+                                                            maxLines: 2,
+                                                            overflow: TextOverflow.ellipsis,
+                                                            style: TextStyle(),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ));
+                      } else {
+                        return SizedBox();
+                      }
+                    }),
+                    NativeAdView(false),
+
                     StaticShowSlider(
                       type: widget.pictureType,
                       title: "Similar",
@@ -340,222 +462,141 @@ class _DetailPageState extends State<DetailPage> {
                 ),
               );
             }
-            {
-              return SingleChildScrollView(
-                physics: NeverScrollableScrollPhysics(),
-                child: Container(
-                  child: Shimmer.fromColors(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 200,
-                            color: Colors.white,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 8, top: 8),
-                                height: 150,
-                                width: 90,
-                                color: Colors.white,
+
+            return SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              child: Container(
+                child: Shimmer.fromColors(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 200,
+                          color: Colors.white,
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(left: 8, top: 8),
+                              height: 150,
+                              width: 90,
+                              color: Colors.white,
+                            ),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.all(8),
+                                    height: 20,
+                                    color: Colors.white,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.all(8).copyWith(right: 156),
+                                    height: 20,
+                                    color: Colors.white,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.all(8).copyWith(right: 156),
+                                    height: 20,
+                                    color: Colors.white,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.all(8).copyWith(right: 156),
+                                    height: 20,
+                                    color: Colors.white,
+                                  )
+                                ],
                               ),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.all(8),
-                                      height: 20,
-                                      color: Colors.white,
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.all(8).copyWith(right: 156),
-                                      height: 20,
-                                      color: Colors.white,
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.all(8).copyWith(right: 156),
-                                      height: 20,
-                                      color: Colors.white,
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.all(8).copyWith(right: 156),
-                                      height: 20,
-                                      color: Colors.white,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.all(8).copyWith(top: 16),
-                            color: Colors.white,
-                            width: 120,
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.all(8).copyWith(top: 0),
-                            color: Colors.white,
-                            width: double.infinity,
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.all(8).copyWith(top: 16),
-                            color: Colors.white,
-                            width: 120,
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.all(8).copyWith(top: 0),
-                            color: Colors.white,
-                            width: double.infinity,
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.all(8).copyWith(top: 16),
-                            color: Colors.white,
-                            width: 120,
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.all(8).copyWith(top: 0),
-                            color: Colors.white,
-                            width: double.infinity,
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.all(8).copyWith(top: 16),
-                            color: Colors.white,
-                            width: 120,
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.all(8).copyWith(top: 0),
-                            color: Colors.white,
-                            width: double.infinity,
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.all(8).copyWith(top: 16),
-                            color: Colors.white,
-                            width: 120,
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.all(8).copyWith(top: 0),
-                            color: Colors.white,
-                            width: double.infinity,
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.all(8).copyWith(top: 16),
-                            color: Colors.white,
-                            width: 120,
-                          ),
-                          Container(
-                            height: 20,
-                            margin: EdgeInsets.all(8).copyWith(top: 0),
-                            color: Colors.white,
-                            width: double.infinity,
-                          ),
-                        ],
-                      ),
-                      baseColor: darkBackGround,
-                      highlightColor: lightBackGround),
-                ),
-              );
-            }
+                            ),
+                          ],
+                        ),
+                        Container(
+                          height: 20,
+                          margin: EdgeInsets.all(8).copyWith(top: 16),
+                          color: Colors.white,
+                          width: 120,
+                        ),
+                        Container(
+                          height: 20,
+                          margin: EdgeInsets.all(8).copyWith(top: 0),
+                          color: Colors.white,
+                          width: double.infinity,
+                        ),
+                        Container(
+                          height: 20,
+                          margin: EdgeInsets.all(8).copyWith(top: 16),
+                          color: Colors.white,
+                          width: 120,
+                        ),
+                        Container(
+                          height: 20,
+                          margin: EdgeInsets.all(8).copyWith(top: 0),
+                          color: Colors.white,
+                          width: double.infinity,
+                        ),
+                        Container(
+                          height: 20,
+                          margin: EdgeInsets.all(8).copyWith(top: 16),
+                          color: Colors.white,
+                          width: 120,
+                        ),
+                        Container(
+                          height: 20,
+                          margin: EdgeInsets.all(8).copyWith(top: 0),
+                          color: Colors.white,
+                          width: double.infinity,
+                        ),
+                        Container(
+                          height: 20,
+                          margin: EdgeInsets.all(8).copyWith(top: 16),
+                          color: Colors.white,
+                          width: 120,
+                        ),
+                        Container(
+                          height: 20,
+                          margin: EdgeInsets.all(8).copyWith(top: 0),
+                          color: Colors.white,
+                          width: double.infinity,
+                        ),
+                        Container(
+                          height: 20,
+                          margin: EdgeInsets.all(8).copyWith(top: 16),
+                          color: Colors.white,
+                          width: 120,
+                        ),
+                        Container(
+                          height: 20,
+                          margin: EdgeInsets.all(8).copyWith(top: 0),
+                          color: Colors.white,
+                          width: double.infinity,
+                        ),
+                        Container(
+                          height: 20,
+                          margin: EdgeInsets.all(8).copyWith(top: 16),
+                          color: Colors.white,
+                          width: 120,
+                        ),
+                        Container(
+                          height: 20,
+                          margin: EdgeInsets.all(8).copyWith(top: 0),
+                          color: Colors.white,
+                          width: double.infinity,
+                        ),
+                      ],
+                    ),
+                    baseColor: darkBackGround,
+                    highlightColor: lightBackGround),
+              ),
+            );
           },
         ),
       ),
     );
   }
-}
-/*
-class MyScaffold extends StatefulWidget {
-  final PreferredSizeWidget? appBar;
-  final Color? backgroundColor;
-  final Widget body;
-
-  const MyScaffold({
-    Key? key,
-    this.appBar,
-    this.backgroundColor,
-    required this.body,
-  }) : super(key: key);
-
-  @override
-  State<MyScaffold> createState() => _MyScaffoldState();
-}
-
-class _MyScaffoldState extends State<MyScaffold> {
-  bool _showAppbar = true; //this is to show app bar
-  ScrollController _scrollBottomBarController =
-  new ScrollController(); // set controller on scrolling
-  bool isScrollingDown = false;
-  bool _show = true;
-  double bottomBarHeight = 75; // set bottom bar height
-  double _bottomBarOffset = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    myScroll();
-  }
 
   @override
   void dispose() {
-    _scrollBottomBarController.removeListener(() {});
     super.dispose();
+    bloc.close();
   }
-
-  void showBottomBar() {
-    setState(() {
-      _show = true;
-    });
-  }
-
-  void hideBottomBar() {
-    setState(() {
-      _show = false;
-    });
-  }
-
-  void myScroll() async {
-    _scrollBottomBarController.addListener(() {
-      if (_scrollBottomBarController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
-        if (!isScrollingDown) {
-          isScrollingDown = true;
-          _showAppbar = false;
-          hideBottomBar();
-        }
-      }
-      if (_scrollBottomBarController.position.userScrollDirection ==
-          ScrollDirection.forward) {
-        if (isScrollingDown) {
-          isScrollingDown = false;
-          _showAppbar = true;
-          showBottomBar();
-        }
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: _showAppbar
-            ? widget.appBar
-            : PreferredSize(
-          child: Container(),
-          preferredSize: Size(0.0, 0.0),
-        ),
-        backgroundColor: widget.backgroundColor,
-        body: SingleChildScrollView(
-        controller: _scrollBottomBarController
-        , child: widget.body),);
-  }
-}*/
+}

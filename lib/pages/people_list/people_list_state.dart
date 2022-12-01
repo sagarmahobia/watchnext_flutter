@@ -3,8 +3,6 @@ part of 'people_list_bloc.dart';
 @immutable
 abstract class PeopleListState {}
 
-class PeopleListInitial extends PeopleListState {}
-
 class PeoplePageLoaded extends PeopleListState {
   final List<PersonCardInputModel> cardModels;
 

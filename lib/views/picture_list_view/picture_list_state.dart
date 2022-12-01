@@ -3,19 +3,18 @@ part of 'picture_list_bloc.dart';
 @immutable
 abstract class PictureListState {}
 
-class ListPageInitial extends PictureListState {}
-
 class ListPageLoading extends PictureListState {}
 
 class ListPageLoaded extends PictureListState {
-  List<ShowCardInputModel> cardModels;
+  final List<ShowCardInputModel> cardModels;
 
-  int nextPageKey;
+  final int nextPageKey;
 
   ListPageLoaded(this.cardModels, this.nextPageKey);
 }
 
 class ListPageError extends PictureListState {
-  var e;
+  final dynamic e;
+
   ListPageError(this.e);
 }

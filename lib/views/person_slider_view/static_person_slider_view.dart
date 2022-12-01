@@ -46,6 +46,7 @@ class StaticPersonSliderView extends StatelessWidget {
                     child: Container(
                       height: 240,
                       child: ListView(
+                        physics: BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         children: cast
                                 ?.map((e) => Container(
@@ -93,6 +94,7 @@ class StaticPersonSliderView extends StatelessWidget {
                     child: Container(
                       height: 235,
                       child: ListView(
+                        physics: BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         children: crew
                                 ?.map((e) => Container(

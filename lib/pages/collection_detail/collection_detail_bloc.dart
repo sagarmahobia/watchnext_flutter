@@ -11,7 +11,7 @@ part 'collection_detail_event.dart';
 part 'collection_detail_state.dart';
 
 class CollectionDetailBloc extends Bloc<CollectionDetailEvent, CollectionDetailState> {
-  CollectionDetailBloc() : super(CollectionDetailInitial()) {
+  CollectionDetailBloc() : super(CollectionDetailLoading()) {
     on<CollectionDetailEvent>((event, emit) async {
       emit.call(CollectionDetailLoading());
 

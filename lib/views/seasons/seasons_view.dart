@@ -54,6 +54,7 @@ class _SeasonsSliderState extends State<SeasonsSlider> {
             height: 260,
             margin: EdgeInsets.only(top: 16.0),
             child: ListView(
+              physics: BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               children: (widget.seasons ?? [])
                   .map(

@@ -13,24 +13,35 @@ part 'slider_view_event.dart';
 part 'slider_view_state.dart';
 
 class SliderViewBloc extends Bloc<SliderViewEvent, SliderViewState> {
-  SliderViewBloc() : super(SliderViewInitial()) {
+  final rest = getIt<TMDBService>();
+
+  SliderViewBloc() : super(SliderViewLoading()) {
     on((e, emit) async {
       if (e is LoadItemsEvent) {
-        TMDBService rest = getIt<TMDBService>();
-
         emit.call(SliderViewLoading());
         try {
           Response<ListResponse> response = await rest.getItems(e.url);
 
           List<ShowCardInputModel> cardModels = [];
 
-          for (var result in response.body?.results ?? []) {
+          for (Show result in response.body?.results ?? []) {
+
+            //todo adult filter
+            // if(result.adult??false){
+            //   if(!getIt<PrefsManager>().isAdult()){
+            //     continue;
+            //   }
+            // }
+
             var x = ShowCardInputModel(
                 result.id ?? 0,
                 "https://image.tmdb.org/t/p/w185" + (result.posterPath ?? ""),
+                "https://image.tmdb.org/t/p/w300" + (result.backdropPath ?? ""),
+
                 result.title != null ? (result.title ?? "N/A") : (result.name ?? "N/A"),
                 e.type,
-                result.voteAverage?.toStringAsFixed(1) ?? "0");
+                result.voteAverage?.toStringAsFixed(1) ?? "0",
+                result.voteCount ?? 0,result.releaseDate);
 
             cardModels.add(x);
           }

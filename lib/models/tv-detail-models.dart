@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:watchnext/models/list-models.dart';
 import 'package:watchnext/models/movie-detail-models.dart';
 import 'package:watchnext/models/verify_date.dart';
 
@@ -48,6 +47,7 @@ class TvDetail {
     required this.recommendations,
     required this.credits,
     required this.videos,
+    required this.images,
   });
 
   final bool? adult;
@@ -61,7 +61,7 @@ class TvDetail {
   @JsonKey(name: 'episode_run_time')
   final List<int>? episodeRunTime;
 
-  @JsonKey(name: 'first_air_date')
+  @JsonKey(name: 'first_air_date', readValue: verify_date)
   final DateTime? firstAirDate;
   final List<Genre>? genres;
   final String? homepage;
@@ -71,7 +71,7 @@ class TvDetail {
   final bool? inProduction;
   final List<String>? languages;
 
-  @JsonKey(name: 'last_air_date')
+  @JsonKey(name: 'last_air_date', readValue: verify_date)
   final DateTime? lastAirDate;
 
   @JsonKey(name: 'last_episode_to_air')
@@ -124,9 +124,9 @@ class TvDetail {
   final Recommendations? recommendations;
   final Credits? credits;
   final Videos? videos;
+  final Images? images;
 
   factory TvDetail.fromJson(Map<String, dynamic> json) => _$TvDetailFromJson(json);
-
 }
 
 @JsonSerializable(createToJson: false)
@@ -150,10 +150,7 @@ class CreatedBy {
   final dynamic profilePath;
 
   factory CreatedBy.fromJson(Map<String, dynamic> json) => _$CreatedByFromJson(json);
-
 }
-
-
 
 @JsonSerializable(createToJson: false)
 class TEpisodeToAir {
@@ -171,7 +168,7 @@ class TEpisodeToAir {
     required this.voteCount,
   });
 
-  @JsonKey(name: 'air_date')
+  @JsonKey(name: 'air_date', readValue: verify_date)
   final DateTime? airDate;
 
   @JsonKey(name: 'episode_number')
@@ -197,7 +194,6 @@ class TEpisodeToAir {
   final int? voteCount;
 
   factory TEpisodeToAir.fromJson(Map<String, dynamic> json) => _$TEpisodeToAirFromJson(json);
-
 }
 
 @JsonSerializable(createToJson: false)
@@ -221,7 +217,6 @@ class Network {
   final Logo? logo;
 
   factory Network.fromJson(Map<String, dynamic> json) => _$NetworkFromJson(json);
-
 }
 
 @JsonSerializable(createToJson: false)
@@ -237,10 +232,7 @@ class Logo {
   final double? aspectRatio;
 
   factory Logo.fromJson(Map<String, dynamic> json) => _$LogoFromJson(json);
-
 }
-
-
 
 @JsonSerializable(createToJson: false)
 class Season {
@@ -255,7 +247,7 @@ class Season {
     required this.networks,
   });
 
-  @JsonKey(name: 'air_date')
+  @JsonKey(name: 'air_date', readValue: verify_date)
   final DateTime? airDate;
 
   @JsonKey(name: 'episode_count')
@@ -272,8 +264,4 @@ class Season {
   final List<Network>? networks;
 
   factory Season.fromJson(Map<String, dynamic> json) => _$SeasonFromJson(json);
-
 }
-
-
-

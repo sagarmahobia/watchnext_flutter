@@ -5,6 +5,7 @@ import 'package:chopper/chopper.dart';
 import 'package:meta/meta.dart';
 import 'package:watchnext/di/injection.dart';
 import 'package:watchnext/models/list-models.dart';
+import 'package:watchnext/res/app_values.dart';
 import 'package:watchnext/services/tmdb_service.dart';
 import 'package:watchnext/views/sliderview/showcardview/show_card_input_model.dart';
 
@@ -13,11 +14,11 @@ part 'picture_list_event.dart';
 part 'picture_list_state.dart';
 
 class PictureListBloc extends Bloc<PictureListEvent, PictureListState> {
-  TMDBService rest = getIt<TMDBService>();
+  final rest = getIt<TMDBService>();
 
   String query = "";
 
-  PictureListBloc() : super(ListPageInitial()) {
+  PictureListBloc() : super(ListPageLoading()) {
     on((event, emit) async {
       emit.call(ListPageLoading());
       try {
@@ -29,13 +30,23 @@ class PictureListBloc extends Bloc<PictureListEvent, PictureListState> {
 
           List<ShowCardInputModel> cards = [];
 
-          for (var result in items?.results ?? []) {
+          for (Show result in items?.results ?? []) {
+            //todo adult filter
+            // if(result.adult??false){
+            //   if(!getIt<PrefsManager>().isAdult()){
+            //     continue;
+            //   }
+            // }
+
             var x = ShowCardInputModel(
                 result.id ?? 0,
-                "https://image.tmdb.org/t/p/w342" + (result.posterPath ?? ""),
+                getImageUrlPosterLQ(result.posterPath ?? ""),
+                getImageUrlBackdropLQ(result.backdropPath ?? ""),
                 result.title != null ? (result.title ?? "N/A") : (result.name ?? "N/A"),
                 event.pictureType,
-                result.voteAverage?.toStringAsFixed(1) ?? "0");
+                result.voteAverage?.toStringAsFixed(1) ?? "0",
+                result.voteCount ?? 0,
+                result.releaseDate);
 
             cards.add(x);
           }

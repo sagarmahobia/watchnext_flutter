@@ -16,7 +16,7 @@ class SliderViewSuccess extends SliderViewState {
 }
 
 class SliderViewError extends SliderViewState {
-   var error;
+   final dynamic error;
 
   SliderViewError(this.error);
 }

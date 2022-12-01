@@ -12,8 +12,8 @@ part 'season_detail_event.dart';
 part 'season_detail_state.dart';
 
 class SeasonDetailBloc extends Bloc<SeasonDetailEvent, SeasonDetailState> {
-  SeasonDetailBloc() : super(SeasonDetailInitial()) {
-    var rest = getIt<TMDBService>();
+  final rest = getIt<TMDBService>();
+  SeasonDetailBloc() : super(SeasonDetailsLoading()) {
     on<SeasonDetailEvent>((event, emit) async {
       emit.call(SeasonDetailsLoading());
 

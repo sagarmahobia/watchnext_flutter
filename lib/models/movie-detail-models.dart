@@ -42,6 +42,7 @@ class MovieDetail {
     required this.recommendations,
     required this.credits,
     required this.videos,
+  required  this.images,
   });
 
   final bool? adult;
@@ -97,6 +98,8 @@ class MovieDetail {
   final Recommendations? recommendations;
   final Credits? credits;
   final Videos? videos;
+
+  final Images? images;
 
   factory MovieDetail.fromJson(Map<String, dynamic> json) => _$MovieDetailFromJson(json);
 }
@@ -268,4 +271,53 @@ class VideosResult {
   final String? id;
 
   factory VideosResult.fromJson(Map<String, dynamic> json) => _$VideosResultFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class Images {
+  Images({
+    required this.backdrops,
+    required this.logos,
+    required this.posters,
+  });
+
+  final List<Image>? backdrops;
+  final List<Image>? logos;
+  final List<Image>? posters;
+
+  factory Images.fromJson(Map<String, dynamic> json) => _$ImagesFromJson(json);
+
+}
+
+@JsonSerializable(createToJson: false)
+class Image {
+  Image({
+    required this.aspectRatio,
+    required this.height,
+    required this.iso6391,
+    required this.filePath,
+    required this.voteAverage,
+    required this.voteCount,
+    required this.width,
+  });
+
+  @JsonKey(name: 'aspect_ratio')
+  final double? aspectRatio;
+  final int? height;
+
+  @JsonKey(name: 'iso_639_1')
+  final String? iso6391;
+
+  @JsonKey(name: 'file_path')
+  final String? filePath;
+
+  @JsonKey(name: 'vote_average')
+  final double? voteAverage;
+
+  @JsonKey(name: 'vote_count')
+  final int? voteCount;
+  final int? width;
+
+  factory Image.fromJson(Map<String, dynamic> json) => _$ImageFromJson(json);
+
 }

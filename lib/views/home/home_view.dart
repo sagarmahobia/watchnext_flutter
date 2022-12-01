@@ -1,8 +1,10 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:watchnext/di/injection.dart';
 import 'package:watchnext/pages/home/home_page.dart';
-import 'package:watchnext/pages/search/search_page.dart';
 import 'package:watchnext/res/app_colors.dart';
+import 'package:watchnext/services/pref_manager.dart';
 import 'package:watchnext/views/ad_views/native_ad_view.dart';
 import 'package:watchnext/views/person_slider_view/person_slider_input_model.dart';
 import 'package:watchnext/views/person_slider_view/person_slider_view.dart';
@@ -22,12 +24,10 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin<
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        child: Column(
-          children: getSliderModels(),
-        ),
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Column(
+        children: getSliderModels(),
       ),
     );
   }
@@ -38,79 +38,110 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin<
 
     widgets.addAll(
       [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 0),
-            child: Text(
-              "WatchNext",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            getIt<PrefsManager>().hasBirthday()
+                ? SizedBox()
+                : Align(
+                    child: InkWell(
+                      onTap: () {
+                        if (Scaffold.of(context).isDrawerOpen) {
+                          Scaffold.of(context).closeDrawer();
+                        } else {
+                          Scaffold.of(context).openDrawer();
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16),
+                        child: Badge(
+                          badgeColor: Colors.red,
+                          badgeContent: Container(),
+                          child: Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                    ),
+                    alignment: Alignment.centerLeft,
+                  ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: getIt<PrefsManager>().hasBirthday() ? 16 : 0).copyWith(bottom: 0),
+              child: Text(
+                "WatchNext",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-          ),
+            SizedBox()
+          ].map((e) => Expanded(child: e)).toList(),
         )
       ],
     );
 
-    widgets.add(
-      Container(
-        margin: EdgeInsets.only(top: 16, left: 8, right: 8),
-        child: Row(
-          //todo remove row
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                child: Container(
-                  margin: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: lightBackGround,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SearchPage(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Container(
-                              child: Text(
-                                "Search...",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 16),
-                            child: Icon(
-                              Icons.search_rounded,
-                              color: Colors.white,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    // widgets.add(
+    //   Container(
+    //     margin: EdgeInsets.only(top: 16, left: 8, right: 8),
+    //     child: Row(
+    //       //todo remove row
+    //       children: <Widget>[
+    //         Expanded(
+    //           child: Container(
+    //             child: Container(
+    //               margin: EdgeInsets.all(4),
+    //               decoration: BoxDecoration(
+    //                 color: lightBackGround,
+    //                 borderRadius: BorderRadius.circular(4),
+    //               ),
+    //               child: InkWell(
+    //                 onTap: () {
+    //                   Navigator.push(
+    //                     context,
+    //                     MaterialPageRoute(
+    //                       builder: (context) => SearchPage(),
+    //                     ),
+    //                   );
+    //                 },
+    //                 child: Container(
+    //                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+    //                   child: Row(
+    //                     children: <Widget>[
+    //                       Expanded(
+    //                         child: Container(
+    //                           child: Text(
+    //                             "Search...",
+    //                             style: TextStyle(
+    //                               color: Colors.white,
+    //                               fontSize: 20,
+    //                               fontWeight: FontWeight.w500,
+    //                             ),
+    //                           ),
+    //                         ),
+    //                       ),
+    //                       Container(
+    //                         margin: EdgeInsets.only(left: 16),
+    //                         child: Icon(
+    //                           Icons.search_rounded,
+    //                           color: Colors.white,
+    //                         ),
+    //                       )
+    //                     ],
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
 
     models.add(
       SliderInputModel(

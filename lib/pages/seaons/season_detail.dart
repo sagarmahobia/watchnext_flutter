@@ -22,12 +22,15 @@ class SeasonDetail extends StatefulWidget {
 }
 
 class _SeasonDetailState extends State<SeasonDetail> {
-  var bloc = SeasonDetailBloc();
+  final bloc = SeasonDetailBloc();
 
   @override
   void initState() {
     super.initState();
-    load();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      load();
+    });
+
   }
 
   void load() {
@@ -51,6 +54,8 @@ class _SeasonDetailState extends State<SeasonDetail> {
         builder: (context, state) {
           if (state is SeasonDetailsLoaded) {
             return SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+
               child: Column(
                 children: [
                   Container(
@@ -60,7 +65,7 @@ class _SeasonDetailState extends State<SeasonDetail> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: getImage(
-                            getImageUrl(state.seasonDetail.posterPath?.toString() ?? ""),
+                            getImageUrlPosterLQ(state.seasonDetail.posterPath?.toString() ?? ""),
                             width: 120,
                             height: 180,
                           ),
@@ -121,7 +126,7 @@ class _SeasonDetailState extends State<SeasonDetail> {
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(4),
                                       ),
-                                      child: getImage(getImageUrl(e.stillPath.toString()),
+                                      child: getImage(getImageUrlBackdropLQ(e.stillPath.toString()),
                                           width: 180, height: 90),
                                     ),
                                     Expanded(

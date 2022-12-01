@@ -19,6 +19,7 @@ class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixi
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Column(
           children: getSliderModels(),
         ),

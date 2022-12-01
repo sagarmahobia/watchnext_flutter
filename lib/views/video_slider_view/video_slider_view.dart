@@ -40,6 +40,7 @@ class _VideoSliderViewState extends FullAdWidgetState<VideoSliderView> {
                 Container(
                   height: 182,
                   child: ListView(
+                    physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     children: widget.cardModels
                         .map(

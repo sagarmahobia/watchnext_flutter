@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:watchnext/adaptive_ui/base_widget.dart';
 import 'package:watchnext/pages/people_list/people_list_bloc.dart';
 import 'package:watchnext/pages/search/search_page.dart';
@@ -20,7 +21,7 @@ class PeopleList extends StatefulWidget {
 }
 
 class _PeopleListState extends State<PeopleList> implements MyListener {
-  PeopleListBloc bloc = PeopleListBloc();
+  final bloc = PeopleListBloc();
 
   final PagingController<int, PersonCardInputModel> _pagingController =
       PagingController(firstPageKey: 1);
@@ -87,18 +88,46 @@ class _PeopleListState extends State<PeopleList> implements MyListener {
     var pagedGridView = BaseWidget(builder: (context, sizingInformation) {
       return PagedGridView<int, PersonCardInputModel>(
         showNewPageProgressIndicatorAsGridChild: false,
+        physics: BouncingScrollPhysics(),
         showNewPageErrorIndicatorAsGridChild: false,
         showNoMoreItemsIndicatorAsGridChild: false,
         pagingController: _pagingController,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           childAspectRatio: 100 / 192,
-          crossAxisSpacing: 5,
-          mainAxisSpacing: 5,
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 0,
           crossAxisCount: sizingInformation.screenSize.width ~/ 125,
         ),
         builderDelegate: PagedChildBuilderDelegate<PersonCardInputModel>(
           itemBuilder: (context, item, index) {
             return PersonCardView(inputModel: item);
+          },
+          firstPageProgressIndicatorBuilder: (_) {
+            return Container(
+              height: 500,
+              child: Shimmer.fromColors(
+                baseColor: darkBackGround,
+                highlightColor: lightBackGround,
+                child: GridView.count(
+                  scrollDirection: Axis.vertical,
+                  crossAxisCount: sizingInformation.screenSize.width ~/ 125,
+                  crossAxisSpacing: 0,
+                  mainAxisSpacing: 0,
+                  childAspectRatio: 100 / 192,
+                  children: [0, 1, 2, 3, 4, 5, 0, 1, 2]
+                      .map((e) => Container(
+                            margin: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(4),
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                ),
+              ),
+            );
           },
         ),
       );
@@ -110,10 +139,18 @@ class _PeopleListState extends State<PeopleList> implements MyListener {
       return Scaffold(
         backgroundColor: backGroundColor,
         appBar: AppBar(
-          elevation: 1,
+          title: Text("Popular People"),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
         ),
         body: pagedGridView,
       );
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
   }
 }

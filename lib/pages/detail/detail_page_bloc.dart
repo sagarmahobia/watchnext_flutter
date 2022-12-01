@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:chopper/chopper.dart';
 import 'package:meta/meta.dart';
 import 'package:watchnext/di/injection.dart';
 import 'package:watchnext/models/movie-detail-models.dart';
@@ -20,7 +19,7 @@ part 'detail_page_state.dart';
 class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
   TMDBService rest = getIt<TMDBService>();
 
-  DetailPageBloc() : super(DetailPageInitial()) {
+  DetailPageBloc() : super(DetailPageLoading()) {
     on((e, emit) async {
       if (e is LoadPageDetail) {
         emit.call(DetailPageLoading());
@@ -98,10 +97,7 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
                     .toList()
                     .join(", "),
               ),
-              TextBannerInputModel(
-                title: "Homepage",
-                value: movieDetail.homepage ?? "N/A",
-              ),
+
             ]);
 
             if (movieDetail.belongsToCollection != null) {
@@ -114,9 +110,13 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
             }
             stateModel.videos = movieDetail.videos?.results;
             stateModel.similar = movieDetail.similar?.results;
+            stateModel.posters = movieDetail.images?.posters;
+            stateModel.backdrops = movieDetail.images?.backdrops;
 
             stateModel.recommendations = movieDetail.recommendations?.results;
             stateModel.credits = movieDetail.credits;
+            stateModel.homepage = movieDetail.homepage;
+
             //////todo what
           } else if (e.type == 'tv') {
             TvDetail tvDetail =
@@ -179,7 +179,7 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
               ), //
               TextBannerInputModel(
                 title: "Networks",
-                value: tvDetail.networks?.map((e) => e.name).toList().toString(),
+                value: tvDetail.networks?.map((e) => e.name).toList().join(", "),
               ), //
               TextBannerInputModel(
                 title: "Production Companies",
@@ -193,14 +193,19 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
 
             stateModel.seasons = tvDetail.seasons;
             stateModel.videos = tvDetail.videos?.results;
+            stateModel.posters = tvDetail.images?.posters;
+            stateModel.backdrops = tvDetail.images?.backdrops;
             stateModel.similar = tvDetail.similar?.results;
             stateModel.recommendations = tvDetail.recommendations?.results;
             stateModel.credits = tvDetail.credits;
+            stateModel.homepage = tvDetail.homepage;
+
           }
 
           emit.call(DetailPageLoaded(stateModel));
         } catch (e) {
           emit.call(DetailPageError(e));
+          print(e);
         }
       }
     });

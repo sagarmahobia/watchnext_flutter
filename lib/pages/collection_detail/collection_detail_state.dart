@@ -3,7 +3,6 @@ part of 'collection_detail_bloc.dart';
 @immutable
 abstract class CollectionDetailState {}
 
-class CollectionDetailInitial extends CollectionDetailState {}
 
 class CollectionDetailLoading extends CollectionDetailState {}
 

@@ -3,12 +3,11 @@ part of 'person_detail_bloc.dart';
 @immutable
 abstract class PersonDetailState {}
 
-class PersonDetailInitial extends PersonDetailState {}
 
 class PersonDetailLoading extends PersonDetailState {}
 
 class DetailPageError extends PersonDetailState {
-  var e;
+  final dynamic e;
 
   DetailPageError(this.e);
 }

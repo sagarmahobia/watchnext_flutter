@@ -34,6 +34,25 @@ PersonDetail _$PersonDetailFromJson(Map<String, dynamic> json) => PersonDetail(
       tvCredits: json['tv_credits'] == null
           ? null
           : MovieCredits.fromJson(json['tv_credits'] as Map<String, dynamic>),
+      images: json['images'] == null
+          ? null
+          : Images.fromJson(json['images'] as Map<String, dynamic>),
+    );
+
+Images _$ImagesFromJson(Map<String, dynamic> json) => Images(
+      profiles: (json['profiles'] as List<dynamic>?)
+          ?.map((e) => Profile.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
+      aspectRatio: (json['aspect_ratio'] as num?)?.toDouble(),
+      height: json['height'] as int?,
+      iso6391: json['iso_639_1'],
+      filePath: json['file_path'] as String?,
+      voteAverage: (json['vote_average'] as num?)?.toDouble(),
+      voteCount: json['vote_count'] as int?,
+      width: json['width'] as int?,
     );
 
 MovieCredits _$MovieCreditsFromJson(Map<String, dynamic> json) => MovieCredits(

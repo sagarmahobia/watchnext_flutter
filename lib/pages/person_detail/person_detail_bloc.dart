@@ -14,17 +14,18 @@ part 'person_detail_event.dart';
 part 'person_detail_state.dart';
 
 class PersonDetailBloc extends Bloc<PersonDetailEvent, PersonDetailState> {
-  PersonDetailBloc() : super(PersonDetailInitial()) {
-    on((e, emit) async {
-      if (e is LoadPersonDetail) {
-        LoadPersonDetail event = e;
-        TMDBService rest = getIt<TMDBService>();
+  PersonDetailBloc() : super(PersonDetailLoading()) {
+    on((event, emit) async {
+      if (event is LoadPersonDetail) {
+        emit.call(PersonDetailLoading());
+        final rest = getIt<TMDBService>();
 
         emit.call(PersonDetailLoading());
         try {
           Response<PersonDetail> response = await rest.getPersonDetail(event.id);
 
-          var stateModel = PersonDetailStateModel(response.body);
+          var body = response.body;
+          var stateModel = PersonDetailStateModel(body);
 
           emit.call(DetailPageLoaded(stateModel));
         } catch (e) {

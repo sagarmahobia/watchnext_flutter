@@ -5,6 +5,7 @@ import 'package:watchnext/models/list-models.dart';
 import 'package:watchnext/pages/home/home_page.dart';
 import 'package:watchnext/pages/picture_list/list_page.dart';
 import 'package:watchnext/res/app_colors.dart';
+import 'package:watchnext/res/app_values.dart';
 import 'package:watchnext/views/sliderview/showcardview/show_card_view.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
 import 'package:watchnext/views/sliderview/slider_view_bloc.dart';
@@ -21,7 +22,7 @@ class SliderView extends StatefulWidget {
 }
 
 class _SliderViewState extends State<SliderView> {
-  SliderViewBloc bloc = SliderViewBloc();
+  final bloc = SliderViewBloc();
 
   bool isVisible = true;
 
@@ -37,26 +38,8 @@ class _SliderViewState extends State<SliderView> {
       }
     });
 
-    bloc.add(LoadItemsEvent(widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
-
-    bloc.stream.listen((state) {
-      if (state is SliderViewSuccess) {
-        setState(
-          () {
-            if (state.cardModels.isEmpty) {
-              this.isVisible = false;
-            }
-          },
-        );
-      } else if (state is SliderViewError) {
-        // Future.delayed(Duration(seconds: 2), () {
-        //   retries++;
-        //   if (retries < 1) {
-        //     bloc.add(
-        //         LoadItemsEvent(widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
-        //   }
-        // });
-      }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      bloc.add(LoadItemsEvent(widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
     });
   }
 
@@ -105,11 +88,12 @@ class _SliderViewState extends State<SliderView> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ListPage(
-                                  url: widget.inputModel.url ?? "",
-                                  pictureType: widget.inputModel.pictureType ?? "",
-                                  title: (widget.inputModel.sliderTitle ?? "") + " " + getType(),
-                                )),
+                          builder: (context) => ListPage(
+                            url: widget.inputModel.url ?? "",
+                            pictureType: widget.inputModel.pictureType ?? "",
+                            title: (widget.inputModel.sliderTitle ?? "") + " " + getType(),
+                          ),
+                        ),
                       );
                     },
                     child: Text(
@@ -125,13 +109,33 @@ class _SliderViewState extends State<SliderView> {
             ),
             Container(
               margin: EdgeInsets.only(top: 16.0),
-              child: BlocBuilder(
+              child: BlocConsumer(
                 bloc: bloc,
+                listener: (context, state) {
+                  if (state is SliderViewSuccess) {
+                    setState(
+                      () {
+                        if (state.cardModels.isEmpty) {
+                          this.isVisible = false;
+                        }
+                      },
+                    );
+                  } else if (state is SliderViewError) {
+                    // Future.delayed(Duration(seconds: 2), () {
+                    //   retries++;
+                    //   if (retries < 1) {
+                    //     bloc.add(
+                    //         LoadItemsEvent(widget.inputModel.url ?? "", widget.inputModel.pictureType ?? ""));
+                    //   }
+                    // });
+                  }
+                },
                 builder: (context, SliderViewState state) {
                   if (state is SliderViewSuccess) {
                     return Container(
                       height: 260,
                       child: ListView(
+                        physics: BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         children: state.cardModels
                             .map(
@@ -163,60 +167,7 @@ class _SliderViewState extends State<SliderView> {
                       ),
                     );
                   }
-                  return SingleChildScrollView(
-                    physics: NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    child: Shimmer.fromColors(
-                      baseColor: darkBackGround,
-                      highlightColor: lightBackGround,
-                      child: Row(
-                        children: [0, 1, 2, 4]
-                            .map(
-                              (e) => Container(
-                                width: 135,
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(4),
-                                  ),
-                                ),
-                                padding: EdgeInsets.all(4),
-                                child: Container(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 252,
-                                        decoration: BoxDecoration(
-                                          color: lightBackGround,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(4),
-                                          ),
-                                        ),
-                                      ),
-                                      // Container(
-                                      //   height: 20,
-                                      //   margin: EdgeInsets.only(top: 8, right: 16),
-                                      //   decoration: BoxDecoration(
-                                      //     color: lightBackGround,
-                                      //   ),
-                                      // ),
-                                      // Container(
-                                      //   height: 20,
-                                      //   margin: EdgeInsets.only(top: 4, bottom: 8, right: 64),
-                                      //   decoration: BoxDecoration(
-                                      //     color: lightBackGround,
-                                      //   ),
-                                      // ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ),
-                  );
+                  return getSliderShimmer();
                 },
               ),
             ),
@@ -224,6 +175,12 @@ class _SliderViewState extends State<SliderView> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
   }
 
   String getType() {

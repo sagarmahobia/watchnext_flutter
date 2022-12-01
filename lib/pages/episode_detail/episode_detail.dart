@@ -28,11 +28,13 @@ class _EpisodeDetailState extends State<EpisodeDetail> {
         title: Text(widget.episode.name ?? ""),
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             getImage(
-              getImageUrl(widget.episode.stillPath.toString()),
+              getImageUrlPosterLQ(widget.episode.stillPath.toString()),
               width: double.infinity,
             ),
             Container(
@@ -54,7 +56,7 @@ class _EpisodeDetailState extends State<EpisodeDetail> {
                     child: Row(
                       children: [
                         Icon(
-                          Icons.movie_filter_outlined,
+                          Icons.movie_filter_rounded,
                           size: 14,
                         ),
                         Text(" Season " + (widget.episode.seasonNumber ?? 0).toString()),
@@ -67,7 +69,7 @@ class _EpisodeDetailState extends State<EpisodeDetail> {
                     child: Row(
                       children: [
                         Icon(
-                          Icons.person,
+                          Icons.person_rounded,
                           size: 14,
                         ),
                         Text(" " + (widget.episode.voteAverage?.toString() ?? "0")),

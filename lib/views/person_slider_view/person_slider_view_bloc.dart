@@ -16,10 +16,10 @@ part 'person_slider_view_event.dart';
 part 'person_slider_view_state.dart';
 
 class PersonSliderViewBloc extends Bloc<VideoSliderViewEvent, PersonSliderViewState> {
-  PersonSliderViewBloc() : super(PersonSliderViewInitial()) {
+  final rest = getIt<TMDBService>();
+  PersonSliderViewBloc() : super(PersonSliderViewLoading()) {
     on((e, emit) async {
       if (e is LoadItemsEvent) {
-        TMDBService rest = getIt<TMDBService>();
 
         emit.call(PersonSliderViewLoading());
         try {

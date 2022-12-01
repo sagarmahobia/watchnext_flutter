@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:watchnext/pages/people_list/people_list.dart';
+import 'package:watchnext/res/app_values.dart';
 import 'package:watchnext/views/person_slider_view/person_card_view/person_card_input_model.dart';
 import 'package:watchnext/views/person_slider_view/person_card_view/person_card_view.dart';
 import 'package:watchnext/views/person_slider_view/person_slider_input_model.dart';
@@ -17,7 +18,7 @@ class PersonSliderView extends StatefulWidget {
 }
 
 class _PersonSliderViewState extends State<PersonSliderView> {
-  final PersonSliderViewBloc bloc = PersonSliderViewBloc();
+  final bloc = PersonSliderViewBloc();
 
   bool isVisible = true;
   bool hasCast = true;
@@ -28,8 +29,8 @@ class _PersonSliderViewState extends State<PersonSliderView> {
   @override
   void initState() {
     super.initState();
-    bloc.add(LoadItemsEvent(widget.inputModel.url, isCredit: widget.inputModel.isCredit));
     bloc.stream.listen((state) {
+      //todo
       if (state is PersonSliderViewSuccess) {
         setState(
           () {
@@ -44,6 +45,10 @@ class _PersonSliderViewState extends State<PersonSliderView> {
           hasCrew = state.crew.isNotEmpty;
         });
       }
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      bloc.add(LoadItemsEvent(widget.inputModel.url, isCredit: widget.inputModel.isCredit));
     });
   }
 
@@ -84,6 +89,7 @@ class _PersonSliderViewState extends State<PersonSliderView> {
                               return Container(
                                 height: 240,
                                 child: ListView(
+                                  physics: BouncingScrollPhysics(),
                                   scrollDirection: Axis.horizontal,
                                   children: state.cast.map((e) => getShowCards(e)).toList(),
                                 ),
@@ -144,6 +150,7 @@ class _PersonSliderViewState extends State<PersonSliderView> {
                               return Container(
                                 height: 235,
                                 child: ListView(
+                                  physics: BouncingScrollPhysics(),
                                   scrollDirection: Axis.horizontal,
                                   children: (state.crew).map((e) => getShowCards(e)).toList(),
                                 ),
@@ -246,6 +253,7 @@ class _PersonSliderViewState extends State<PersonSliderView> {
                         return Container(
                           height: 235,
                           child: ListView(
+                            physics: BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
                             children: (state.cardModels).map((e) => getShowCards(e)).toList(),
                           ),
@@ -266,9 +274,8 @@ class _PersonSliderViewState extends State<PersonSliderView> {
                           ),
                         );
                       }
-                      return CircularProgressIndicator(
-                        strokeWidth: 2,
-                      );
+                      return getSliderShimmer();
+
                     },
                   ),
                 ),
@@ -288,5 +295,11 @@ class _PersonSliderViewState extends State<PersonSliderView> {
         inputModel: model,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
   }
 }

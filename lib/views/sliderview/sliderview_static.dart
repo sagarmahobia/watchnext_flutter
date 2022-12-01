@@ -89,15 +89,19 @@ class StaticShowSlider extends StatelessWidget {
               child: Container(
                 height: 260,
                 child: ListView(
+                  physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   children: (shows ?? [])
                       .map(
                         (e) => ShowCardInputModel(
                           e.id ?? 0,
                           "https://image.tmdb.org/t/p/w185" + (e.posterPath ?? ""),
+                          "https://image.tmdb.org/t/p/w300" + (e.backdropPath ?? ""),
                           e.name == null ? (e.title ?? "N/A") : e.name ?? "N/A",
                           type,
                           (e.voteAverage ?? 0).toStringAsFixed(1),
+                          e.voteCount ?? 0,
+                          e.releaseDate,
                         ),
                       )
                       .map(
