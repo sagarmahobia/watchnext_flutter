@@ -20,9 +20,10 @@ class IntIndex {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await configureInjection();
 
   await requestTrackingAuthorization();
+
+  await configureInjection();
 
   await MobileAds.instance.initialize();
   await MobileAds.instance.updateRequestConfiguration(RequestConfiguration(
