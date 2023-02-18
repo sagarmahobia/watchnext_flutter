@@ -1,5 +1,5 @@
 import 'package:age_calculator/age_calculator.dart';
-import 'package:badges/badges.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:watchnext/adaptive_ui/util.dart';
@@ -103,8 +103,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   trailing: Badge(
-                    badgeColor: Colors.red,
-                    badgeContent: Container(),
+                    backgroundColor: Colors.red,
+                    label: Container(),
                     child: Icon(Icons.open_in_new_rounded),
                   ),
                 ),

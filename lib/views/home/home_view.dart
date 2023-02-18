@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+// import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:watchnext/di/injection.dart';
@@ -56,8 +56,8 @@ class _HomeViewState extends State<HomeView> with AutomaticKeepAliveClientMixin<
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16),
                         child: Badge(
-                          badgeColor: Colors.red,
-                          badgeContent: Container(),
+                          backgroundColor: Colors.red,
+                          label: Container(),
                           child: Icon(
                             Icons.menu,
                             color: Colors.white,
