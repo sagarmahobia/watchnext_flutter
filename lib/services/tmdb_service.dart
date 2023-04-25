@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
 import 'package:injectable/injectable.dart';
+import 'package:watchnext/di/injection.dart';
 import 'package:watchnext/models/cast_and_crew.dart';
 import 'package:watchnext/models/collection_detail.dart';
 import 'package:watchnext/models/credits_model.dart';
@@ -13,6 +14,7 @@ import 'package:watchnext/models/person_detail.dart';
 import 'package:watchnext/models/tv-detail-models.dart';
 import 'package:watchnext/models/video-model.dart' as vm;
 import 'package:watchnext/pages/person_detail/season_detail_model.dart';
+import 'package:watchnext/services/my_cached_client.dart';
 
 part "tmdb_service.chopper.dart";
 
@@ -34,12 +36,12 @@ class ModelConverter extends JsonConverter {
 abstract class TMDBService extends ChopperService {
   // helper methods that help you instantiate your service
   @factoryMethod
-  static TMDBService create() {
-    var chopperClient = ChopperClient(
+  static TMDBService create(prefs) {
+    var chopperClient = MyCachedClient(
+      cacheManager: prefs,
       interceptors: [
         KeyParameterInterceptor(),
-        HttpLoggingInterceptor(),
-        CurlInterceptor(),
+        // HttpLoggingInterceptor(),
       ],
       converter: ModelConverter(
         {
@@ -77,7 +79,7 @@ abstract class TMDBService extends ChopperService {
   @Get(path: 'movie/{id}?append_to_response=similar,recommendations,credits,videos,images')
   Future<Response<MovieDetail>> getMovieDetails(@Path("id") int id);
 
-  @Get(path: 'tv/{id}?append_to_response=similar,recommendations,credits,videos,images')
+  @Get(path: 'tv/{id}?append_to_response=similar,recommendations,credits,videos,images,content_ratings')
   Future<Response<TvDetail>> getTvDetails(@Path("id") int id);
 
   @Get(path: 'person/{person_id}?append_to_response=movie_credits,tv_credits,images,videos')

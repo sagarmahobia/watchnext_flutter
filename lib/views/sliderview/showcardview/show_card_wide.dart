@@ -5,6 +5,8 @@ import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/utils/utils.dart';
 import 'package:watchnext/views/sliderview/showcardview/show_card_input_model.dart';
 
+import '../../../res/app_values.dart';
+
 class ShowCardViewWide extends StatelessWidget {
   final ShowCardInputModel inputModel;
 
@@ -38,22 +40,27 @@ class ShowCardViewWide extends StatelessWidget {
               children: [
                 Container(
                   width: 120,
-                  child: FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    imageErrorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 120,
-                        child: Center(
-                          child: Icon(
-                            Icons.broken_image_rounded,
-                            size: 50,
-                            color: Colors.white24,
-                          ),
-                        ),
-                      );
-                    },
-                    image: this.inputModel.imageUrl,
-                    fit: BoxFit.cover,
+                  // child: FadeInImage.memoryNetwork(
+                  //   placeholder: kTransparentImage,
+                  //   imageErrorBuilder: (context, error, stackTrace) {
+                  //     return Container(
+                  //       width: 120,
+                  //       child: Center(
+                  //         child: Icon(
+                  //           Icons.broken_image_rounded,
+                  //           size: 50,
+                  //           color: Colors.white24,
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  //   image: this.inputModel.imageUrl,
+                  //   fit: BoxFit.cover,
+                  // ),
+                  child: getImage(
+                    inputModel.imageUrl,
+                    width: 120,
+                    fit: BoxFit.fitWidth,
                   ),
                 ),
                 Expanded(

@@ -3,6 +3,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:watchnext/models/tv-detail-models.dart';
 import 'package:watchnext/pages/seaons/season_detail.dart';
 import 'package:watchnext/res/app_colors.dart';
+import 'package:watchnext/res/app_values.dart';
 import 'package:watchnext/views/seasons/season_card_view/season_card_input_model.dart';
 
 class SeasonCard extends StatelessWidget {
@@ -51,23 +52,30 @@ class SeasonCard extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(4.0),
 
-                    child: FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      imageErrorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          height: 180,
-                          child: Center(
-                            child: Icon(
-                              Icons.broken_image_rounded,
-                              size: 50,
-                              color: Colors.white24,
-                            ),
-                          ),
-                        );
-                      },
-                      image: "https://image.tmdb.org/t/p/w185" + (this.inputModel.posterPath ?? ""),
+                    // child: FadeInImage.memoryNetwork(
+                    //   placeholder: kTransparentImage,
+                    //   imageErrorBuilder: (context, error, stackTrace) {
+                    //     return Container(
+                    //       height: 180,
+                    //       child: Center(
+                    //         child: Icon(
+                    //           Icons.broken_image_rounded,
+                    //           size: 50,
+                    //           color: Colors.white24,
+                    //         ),
+                    //       ),
+                    //     );
+                    //   },
+                    //   image: "https://image.tmdb.org/t/p/w185" + (this.inputModel.posterPath ?? ""),
+                    //   fit: BoxFit.fitWidth,
+                    // ),
+
+                    child: getImage(
+                      "https://image.tmdb.org/t/p/w185" + (this.inputModel.posterPath ?? ""),
                       fit: BoxFit.fitWidth,
-                    ),
+                      width: double.infinity,
+                      height: 190,
+                    ),//todo height issue
                   ),
                   Expanded(
                     child: Container(),

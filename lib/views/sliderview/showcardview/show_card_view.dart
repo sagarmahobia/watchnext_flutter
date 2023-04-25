@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:watchnext/pages/detail/detail_page.dart';
 import 'package:watchnext/res/app_colors.dart';
+import 'package:watchnext/res/app_values.dart';
 import 'package:watchnext/views/sliderview/showcardview/show_card_input_model.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -29,7 +30,6 @@ class ShowCardView extends StatelessWidget {
               builder: (context) => DetailPage(
                 id: inputModel.id,
                 pictureType: inputModel.type,
-
               ),
             ),
           );
@@ -42,22 +42,29 @@ class ShowCardView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      imageErrorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          height: 180,
-                          child: Center(
-                            child: Icon(
-                              Icons.broken_image_rounded,
-                              size: 50,
-                              color: Colors.white24,
-                            ),
-                          ),
-                        );
-                      },
-                      image: this.inputModel.imageUrl,
+                    // FadeInImage.memoryNetwork(
+                    //   placeholder: kTransparentImage,
+                    //   imageErrorBuilder: (context, error, stackTrace) {
+                    //     return Container(
+                    //       height: 180,
+                    //       child: Center(
+                    //         child: Icon(
+                    //           Icons.broken_image_rounded,
+                    //           size: 50,
+                    //           color: Colors.white24,
+                    //         ),
+                    //       ),
+                    //     );
+                    //   },
+                    //   image: this.inputModel.imageUrl,
+                    //   fit: BoxFit.fitWidth,
+                    // ),
+
+                    getImage(
+                      inputModel.imageUrl,
                       fit: BoxFit.fitWidth,
+                      width: double.infinity,
+                      height: 190,
                     ),
                     Expanded(
                       child: Container(),

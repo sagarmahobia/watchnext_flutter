@@ -10,11 +10,19 @@ class ListPage extends StatefulWidget {
 
   final String title;
 
-  const ListPage({Key? key, required this.url, required this.pictureType, required this.title})
+  final Color? color;
+
+  const ListPage(
+      {Key? key,
+      required this.url,
+      required this.pictureType,
+      required this.title,
+      this.color})
       : super(key: key);
 
   @override
-  _ListPageState createState() => _ListPageState(this.url, this.pictureType, this.title);
+  _ListPageState createState() =>
+      _ListPageState(this.url, this.pictureType, this.title);
 }
 
 class _ListPageState extends State<ListPage> with TickerProviderStateMixin {

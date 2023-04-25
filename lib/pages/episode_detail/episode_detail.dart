@@ -5,6 +5,7 @@ import 'package:watchnext/pages/person_detail/season_detail_model.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/res/app_values.dart';
 import 'package:watchnext/utils/utils.dart';
+import 'package:watchnext/views/attribute/tmdb_attribute.dart';
 import 'package:watchnext/views/person_slider_view/person_card_view/person_card_input_model.dart';
 import 'package:watchnext/views/person_slider_view/person_slider_view_bloc.dart';
 import 'package:watchnext/views/person_slider_view/static_person_slider_view.dart';
@@ -87,7 +88,9 @@ class _EpisodeDetailState extends State<EpisodeDetail> {
               crew: widget.episode.guestStars,
               titleCast: "Crew",
               titleCrew: "Guest Stars",
-            )
+            ),
+            TmdbAttribution(type: Type.wide),
+
           ],
         ),
       ),

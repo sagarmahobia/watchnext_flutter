@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -61,32 +62,81 @@ String getImageUrlProfileLQ(String path) => "https://image.tmdb.org/t/p/h632" + 
 
 String getImageUrlHq(String path) => "https://image.tmdb.org/t/p/original" + path;
 
-FadeInImage getImage(
+Widget getImage(
   String str, {
   double? height = 180,
   double? width = 50,
   fit = BoxFit.fitWidth,
 }) {
-  return FadeInImage.memoryNetwork(
-    placeholder: kTransparentImage,
-    imageErrorBuilder: (context, error, stackTrace) {
-      return Container(
-        height: height,
-        width: width,
-        child: Center(
-          child: Icon(
-            Icons.broken_image_rounded,
-            size: 50,
-            color: Colors.white24,
-          ),
-        ),
-      );
-    },
-    image: str,
-    fit: fit,
+
+  return CachedNetworkImageWithFade(
+    imageUrl: str,
     height: height,
     width: width,
+    fit: fit,
   );
+
+
+
+// return FadeInImage.memoryNetwork(
+//   placeholder: kTransparentImage,
+//   imageErrorBuilder: (context, error, stackTrace) {
+//     return Container(
+//       height: height,
+//       width: width,
+//       child: Center(
+//         child: Icon(
+//           Icons.broken_image_rounded,
+//           size: 50,
+//           color: Colors.white24,
+//         ),
+//       ),
+//     );
+//   },
+//   image: str,
+//   fit: fit,
+//   height: height,
+//   width: width,
+// );
+
+
+
+}
+
+class CachedNetworkImageWithFade extends StatelessWidget {
+  final String imageUrl;
+
+  final double? height;
+
+  final double? width;
+
+  final BoxFit fit;
+
+  const CachedNetworkImageWithFade({
+    Key? key,
+    this.height = 50,
+    this.width = 50,
+    required this.fit,
+    required this.imageUrl,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
+      height: height,
+      width: width,
+      fit: this.fit,
+      placeholder: (context, url) => Container(),
+      fadeInDuration: Duration(milliseconds: 500),
+      fadeInCurve: Curves.easeIn,
+      errorWidget: (context, url, error) => Icon(
+        Icons.broken_image_rounded,
+        size: 50,
+        color: Colors.white24,
+      ),
+    );
+  }
 }
 
 getSliderShimmer() {

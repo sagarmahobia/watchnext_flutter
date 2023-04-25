@@ -1,46 +1,83 @@
-import 'package:age_calculator/age_calculator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @singleton
-class PrefsManager {
-  final String _birthday = "BIRTHDAY";
+class CacheManger {
+  static const String _prefix = "cache_";
+  static const String _expires = "_expires";
+  static const String _keys = "keys";
 
   final SharedPreferences prefs;
 
-  PrefsManager(this.prefs);
+  CacheManger(this.prefs);
 
-  saveBirthday(double? age) {
-    if (age != null) {
-      prefs.setDouble(_birthday, age);
+  void cacheResponse(String key, String value, expires) {
+    key = _prefix + key;
+    prefs.setString(key, value);
+    prefs.setString(key + _expires, expires.toString());
+
+    addKey(key);
+  }
+
+  String? getCacheOrRemoveIfExpired(String key) {
+    key = _prefix + key;
+    var containsKey = prefs.containsKey(key);
+    if (!containsKey) {
+      return null;
     }
+    bool expired = DateTime.parse(prefs.getString(key + _expires)!).isBefore(DateTime.now());
+
+    if (expired) {
+      prefs.remove(key);
+      prefs.remove(key + _expires);
+      removeKey(key);
+      return null;
+    }
+
+    return prefs.getString(key);
   }
 
-  int? getBirthDay() {
-    return prefs.getDouble(_birthday)?.toInt();
+  void clearCache() {
+    var keys = prefs.getStringList(_keys) ?? [];
+    for (var key in keys) {
+      prefs.remove(key);
+      prefs.remove(key + _expires);
+    }
+    prefs.remove(_keys);
   }
 
-  bool hasBirthday() {
-    return true;
+  void clearExpiredCache() {
+    var keys = prefs.getStringList(_keys) ?? [];
+    for (var key in keys) {
+      //check contains key
 
-    return prefs.getDouble(_birthday) != null;
-  }
+      var containsKey = prefs.containsKey(key + _expires);
 
-  bool isAdult() {
-    return true;
-
-    if (!hasBirthday()) {
-      return false;
-    } else {
-      var birthDate = DateTime.fromMillisecondsSinceEpoch(getBirthDay() ?? 0);
-
-      var age = AgeCalculator.age(birthDate);
-
-      if (age.years >= 18) {
-        return true;
-      } else {
-        return false;
+      bool expired = containsKey
+          ? DateTime.parse(prefs.getString(key + _expires)!).isBefore(DateTime.now())
+          : true;
+      if (expired) {
+        prefs.remove(key);
+        prefs.remove(key + _expires);
       }
     }
+  }
+
+  void addKey(String key) {
+    var keys = prefs.getStringList(_keys) ?? [];
+    keys.add(key);
+    prefs.setStringList(_keys, keys);
+  }
+
+  void removeKey(String key) {
+    var keys = prefs.getStringList(_keys) ?? [];
+    keys.remove(key);
+    prefs.setStringList(_keys, keys);
+  }
+
+  //print all keys
+  void printKeys() {
+    var keys = prefs.getStringList(_keys) ?? [];
+    print("keys: $keys");
   }
 }

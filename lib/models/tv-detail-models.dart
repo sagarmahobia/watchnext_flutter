@@ -48,6 +48,7 @@ class TvDetail {
     required this.credits,
     required this.videos,
     required this.images,
+    required this.contentRating,
   });
 
   final bool? adult;
@@ -125,6 +126,9 @@ class TvDetail {
   final Credits? credits;
   final Videos? videos;
   final Images? images;
+
+  @JsonKey(name: 'content_ratings')
+  final ContentRating? contentRating;
 
   factory TvDetail.fromJson(Map<String, dynamic> json) => _$TvDetailFromJson(json);
 }
@@ -264,4 +268,32 @@ class Season {
   final List<Network>? networks;
 
   factory Season.fromJson(Map<String, dynamic> json) => _$SeasonFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class ContentRating {
+  ContentRating({
+    required this.results,
+    required this.id,
+  });
+
+  @JsonKey(name: 'results')
+  final List<Rate>? results;
+  final int? id;
+
+  factory ContentRating.fromJson(Map<String, dynamic> json) => _$ContentRatingFromJson(json);
+}
+
+@JsonSerializable(createToJson: false)
+class Rate {
+  Rate({
+    required this.iso31661,
+    required this.rating,
+  });
+
+  @JsonKey(name: 'iso_3166_1')
+  final String? iso31661;
+  final String? rating;
+
+  factory Rate.fromJson(Map<String, dynamic> json) => _$RateFromJson(json);
 }

@@ -7,8 +7,8 @@ import 'package:watchnext/services/tmdb_service.dart';
 abstract class RegisterModule {
   @preResolve
   @singleton
-  Future<TMDBService> get apis async {
-    return TMDBService.create();
+  Future<TMDBService> apis(CacheManger prefsManager) async {
+    return TMDBService.create(prefsManager);
   }
 
   @preResolve

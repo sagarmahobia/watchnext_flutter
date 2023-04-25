@@ -4,6 +4,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:watchnext/pages/collection_detail/collection_detail_bloc.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/res/app_values.dart';
+import 'package:watchnext/views/attribute/tmdb_attribute.dart';
 import 'package:watchnext/views/sliderview/sliderview_static.dart';
 
 class CollectionDetail extends StatefulWidget {
@@ -59,7 +60,8 @@ class _CollectionDetailState extends State<CollectionDetail> {
                                         (state.model?.backdropPath ?? ""),
                                     width: double.infinity,
                                     fit: BoxFit.fill,
-                                    errorBuilder: (context, error, xstackTrace) {
+                                    errorBuilder:
+                                        (context, error, xstackTrace) {
                                       return Container(
                                         height: 200,
                                         child: Center(
@@ -76,16 +78,22 @@ class _CollectionDetailState extends State<CollectionDetail> {
                               ),
                               Container(
                                 margin: EdgeInsets.fromLTRB(
-                                    state.model?.posterPath != null ? 130 : 16, 8, 16, 8),
+                                    state.model?.posterPath != null ? 130 : 16,
+                                    8,
+                                    16,
+                                    8),
                                 child: Container(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
                                         state.model?.name ?? "N/A",
                                         maxLines: 2,
-                                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                                        style: TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w600),
                                       ),
                                       InkWell(
                                         onTap: () {
@@ -93,14 +101,18 @@ class _CollectionDetailState extends State<CollectionDetail> {
                                               context: context,
                                               builder: (context) {
                                                 return AlertDialog(
-                                                  content: SingleChildScrollView(
-                                                    child: Text(state.model?.overview ?? "N/A"),
+                                                  content:
+                                                      SingleChildScrollView(
+                                                    child: Text(
+                                                        state.model?.overview ??
+                                                            "N/A"),
                                                   ),
                                                 );
                                               });
                                         },
                                         child: Padding(
-                                          padding: const EdgeInsets.only(top: 8.0),
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
                                           child: Text(
                                             state.model?.overview ?? "N/A",
                                             maxLines: 6,
@@ -120,7 +132,8 @@ class _CollectionDetailState extends State<CollectionDetail> {
                               bottom: 12,
                               left: 12,
                               child: Image.network(
-                                getImageUrlPosterLQ(state.model?.posterPath ?? ""),
+                                getImageUrlPosterLQ(
+                                    state.model?.posterPath ?? ""),
                                 fit: BoxFit.fitHeight,
                                 height: 150,
                                 width: 100,
@@ -143,7 +156,11 @@ class _CollectionDetailState extends State<CollectionDetail> {
                         ],
                       ),
                     ),
-                    StaticShowSlider(type: "movie", title: "Parts", shows: (state.model?.parts))
+                    StaticShowSlider(
+                        type: "movie",
+                        title: "Parts",
+                        shows: (state.model?.parts)),
+                    TmdbAttribution(type: Type.wide),
                   ],
                 ),
               ),
@@ -233,7 +250,8 @@ class _CollectionDetailState extends State<CollectionDetail> {
                                   padding: EdgeInsets.all(4),
                                   child: Container(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Container(
                                           height: 252,

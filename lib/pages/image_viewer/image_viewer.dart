@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:watchnext/res/app_colors.dart';
+import 'package:watchnext/views/attribute/tmdb_attribute.dart';
 
 class ImageViewer extends StatefulWidget {
   final List<String> list;
@@ -70,21 +71,22 @@ class _ImageViewerState extends State<ImageViewer> {
               },
             ),
             Positioned(
-              bottom: 24,
+              bottom: 48,
               left: 0,
               right: 0,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: widget.list.asMap().entries.map(
                   (e) {
-                    var val = MediaQuery.of(context).size.width / widget.list.length;
+                    var val =
+                        MediaQuery.of(context).size.width / widget.list.length;
                     if (e.key == carouselIndex) {
                       return InkWell(
                         onTap: () {
                           pageController.jumpToPage(e.key);
                         },
                         child: Container(
-                          height: 12,
+                          height: 4,
                           width: val > 12 ? val : 12,
                           color: Colors.pink,
                         ),
@@ -96,7 +98,7 @@ class _ImageViewerState extends State<ImageViewer> {
                           pageController.jumpToPage(e.key);
                         },
                         child: Container(
-                          height: 12,
+                          height: 4,
                           color: Colors.black38,
                         ),
                       ),
@@ -104,6 +106,12 @@ class _ImageViewerState extends State<ImageViewer> {
                   },
                 ).toList(),
               ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: TmdbAttribution(type: Type.wide),
             ),
           ],
         ),

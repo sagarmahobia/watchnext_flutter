@@ -85,6 +85,10 @@ TvDetail _$TvDetailFromJson(Map<String, dynamic> json) => TvDetail(
       images: json['images'] == null
           ? null
           : Images.fromJson(json['images'] as Map<String, dynamic>),
+      contentRating: json['content_ratings'] == null
+          ? null
+          : ContentRating.fromJson(
+              json['content_ratings'] as Map<String, dynamic>),
     );
 
 CreatedBy _$CreatedByFromJson(Map<String, dynamic> json) => CreatedBy(
@@ -140,4 +144,17 @@ Season _$SeasonFromJson(Map<String, dynamic> json) => Season(
       networks: (json['networks'] as List<dynamic>?)
           ?.map((e) => Network.fromJson(e as Map<String, dynamic>))
           .toList(),
+    );
+
+ContentRating _$ContentRatingFromJson(Map<String, dynamic> json) =>
+    ContentRating(
+      results: (json['results'] as List<dynamic>?)
+          ?.map((e) => Rate.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      id: json['id'] as int?,
+    );
+
+Rate _$RateFromJson(Map<String, dynamic> json) => Rate(
+      iso31661: json['iso_3166_1'] as String?,
+      rating: json['rating'] as String?,
     );

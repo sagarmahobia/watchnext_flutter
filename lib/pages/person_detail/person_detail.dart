@@ -7,6 +7,7 @@ import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/res/app_values.dart';
 import 'package:watchnext/utils/utils.dart';
 import 'package:watchnext/views/ad_views/native_ad_view.dart';
+import 'package:watchnext/views/attribute/tmdb_attribute.dart';
 import 'package:watchnext/views/sliderview/sliderview_static.dart';
 import 'package:watchnext/views/text_banner/text_banner.dart';
 
@@ -223,6 +224,7 @@ class _PersonDetailPageState extends State<PersonDetailPage> {
                     shows: state.stateModel.personDetail?.tvCredits?.crew,
                   ),
                   NativeAdView(false),
+                  TmdbAttribution(type: Type.wide),
                   Container(
                     height: 16,
                   )

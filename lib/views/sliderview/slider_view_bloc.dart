@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:chopper/chopper.dart';
 import 'package:meta/meta.dart';
@@ -9,7 +7,6 @@ import 'package:watchnext/services/tmdb_service.dart';
 import 'package:watchnext/views/sliderview/showcardview/show_card_input_model.dart';
 
 part 'slider_view_event.dart';
-
 part 'slider_view_state.dart';
 
 class SliderViewBloc extends Bloc<SliderViewEvent, SliderViewState> {

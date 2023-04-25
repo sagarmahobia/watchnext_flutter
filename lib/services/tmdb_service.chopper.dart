@@ -82,7 +82,7 @@ class _$TMDBService extends TMDBService {
   @override
   Future<Response<TvDetail>> getTvDetails(int id) {
     final String $url =
-        'https://api.themoviedb.org/3/tv/${id}?append_to_response=similar,recommendations,credits,videos,images';
+        'https://api.themoviedb.org/3/tv/${id}?append_to_response=similar,recommendations,credits,videos,images,content_ratings';
     final Request $request = Request(
       'GET',
       $url,

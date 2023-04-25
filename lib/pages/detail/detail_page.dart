@@ -13,6 +13,7 @@ import 'package:watchnext/pages/image_viewer/image_viewer.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/res/app_values.dart';
 import 'package:watchnext/views/ad_views/native_ad_view.dart';
+import 'package:watchnext/views/attribute/tmdb_attribute.dart';
 import 'package:watchnext/views/person_slider_view/static_person_slider_view.dart';
 import 'package:watchnext/views/seasons/seasons_view.dart';
 import 'package:watchnext/views/sliderview/sliderview_static.dart';
@@ -134,7 +135,7 @@ class _DetailPageState extends State<DetailPage> {
                               ),
                               Container(
                                 margin: EdgeInsets.fromLTRB(
-                                    state.stateModel.poster != null ? 130 : 16, 16, 16, 28),
+                                    state.stateModel.poster != null ? 130 : 16, 16, 16, 24),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -142,7 +143,9 @@ class _DetailPageState extends State<DetailPage> {
                                       state.stateModel.title ?? "N/A",
                                       maxLines: 2,
                                       style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+
                                     ),
+
                                     Padding(
                                       padding: const EdgeInsets.only(top: 8.0),
                                       child: Row(
@@ -168,6 +171,8 @@ class _DetailPageState extends State<DetailPage> {
                                       padding: const EdgeInsets.only(top: 8.0),
                                       child: Text(
                                         state.stateModel.genres ?? "N/A",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
@@ -176,12 +181,12 @@ class _DetailPageState extends State<DetailPage> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 8.0),
-                                      child: Text(state.stateModel.vote ??
-                                          "0" +
+                                      child: Text((double.parse(state.stateModel.vote??"0.0").toStringAsFixed(2)) +
                                               " (" +
                                               (state.stateModel.voteCount ?? "0") +
                                               " votes)"),
                                     ),
+
                                   ],
                                 ),
                               ),
@@ -446,6 +451,8 @@ class _DetailPageState extends State<DetailPage> {
                       crew: state.stateModel.credits?.crew,
                     ),
                     NativeAdView(false),
+                    TmdbAttribution(type: Type.wide),
+
                     Container(
                       height: 30,
                     )

@@ -37,6 +37,8 @@ class DetailPageStateModels {
 
   Credits? credits;
 
+  String? contentRating;
+
   List<String> get5Backdrops() {
     var items = this.backdrops?.map((e) => getImageUrlBackdropLQ(e.filePath ?? "")).toList() ?? [];
     if (items.isNotEmpty) {

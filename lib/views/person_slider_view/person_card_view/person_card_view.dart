@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:watchnext/pages/person_detail/person_detail.dart';
 import 'package:watchnext/res/app_colors.dart';
+import 'package:watchnext/res/app_values.dart';
 
 import 'person_card_input_model.dart';
 
@@ -40,22 +41,28 @@ class PersonCardView extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(4.0),
 
-                child: FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  imageErrorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      height: 170,
-                      child: Center(
-                        child: Icon(
-                          Icons.broken_image_rounded,
-                          size: 50,
-                          color: Colors.white24,
-                        ),
-                      ),
-                    );
-                  },
-                  image: this.inputModel.image,
+                // child: FadeInImage.memoryNetwork(
+                //   placeholder: kTransparentImage,
+                //   imageErrorBuilder: (context, error, stackTrace) {
+                //     return Container(
+                //       height: 170,
+                //       child: Center(
+                //         child: Icon(
+                //           Icons.broken_image_rounded,
+                //           size: 50,
+                //           color: Colors.white24,
+                //         ),
+                //       ),
+                //     );
+                //   },
+                //   image: this.inputModel.image,
+                //   width: double.infinity,
+                //   fit: BoxFit.fitWidth,
+                // ),
+                child: getImage(
+                  this.inputModel.image,
                   width: double.infinity,
+                  height: 170,
                   fit: BoxFit.fitWidth,
                 ),
               ),

@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:watchnext/pages/home/home_page.dart';
+import 'package:watchnext/pages/picture_list/list_page.dart';
 import 'package:watchnext/utils/genre_utils.dart';
+import 'package:watchnext/utils/utils.dart';
 import 'package:watchnext/views/ad_views/native_ad_view.dart';
 import 'package:watchnext/views/sliderview/slider_input_model.dart';
 import 'package:watchnext/views/sliderview/slider_view.dart';
+
+import '../attribute/tmdb_attribute.dart';
 
 class ShowsView extends StatefulWidget {
   @override
   _ShowsViewState createState() => _ShowsViewState();
 }
 
-class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixin<ShowsView> {
+class _ShowsViewState extends State<ShowsView>
+    with AutomaticKeepAliveClientMixin<ShowsView> {
   var reload = IntCubit();
+
+  var isCollapsed = true;
+
+  var rotatingColor = RotatingColor();
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +54,122 @@ class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixi
               ),
             ),
           ),
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Explore by Genres",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Container(
+          child: GridView.count(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: 3,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            childAspectRatio: 1.6,
+            padding: EdgeInsets.all(16),
+            children: TVGenres.values.sublist(0, isCollapsed ? 5 : null).map(
+              (e) {
+                var withOpacity =
+                    rotatingColor.getColor().shade900.withOpacity(0.4);
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ListPage(
+                          url:
+                              "discover/tv?sort_by=popularity.desc&with_genres=" +
+                                  e.id.toString(),
+                          pictureType: "tv",
+                          title: getTvGenreById(e.id),
+                          color: withOpacity,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    color: withOpacity,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          getTvGenreById(e.id),
+                          textAlign: TextAlign.center,
+                          strutStyle: StrutStyle(
+                            forceStrutHeight: true,
+                            height: 1.5,
+                          ),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ).toList()
+              ..add(
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      isCollapsed = !isCollapsed;
+                    });
+                  },
+                  child: Container(
+                    color: Colors.red.shade900.withOpacity(.3),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          isCollapsed ? "More" : "Less",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Icon(
+                          isCollapsed
+                              ? Icons.arrow_drop_down
+                              : Icons.arrow_drop_up,
+                          color: Colors.white,
+                          size: 22,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+          ),
+        ),
+        SizedBox(
+          height: 16,
         )
       ],
     );
@@ -138,7 +263,8 @@ class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixi
       }
       models.add(
         SliderInputModel(
-          url: "discover/tv?sort_by=popularity.desc&with_genres=" + genre.id.toString(),
+          url: "discover/tv?sort_by=popularity.desc&with_genres=" +
+              genre.id.toString(),
           sliderTitle: getTvGenreById(genre.id),
           pictureType: "tv",
         ),
@@ -166,6 +292,11 @@ class _ShowsViewState extends State<ShowsView> with AutomaticKeepAliveClientMixi
     //     "Popular",
     //   )),
     // );
+    widgets.add(
+      TmdbAttribution(
+        type: Type.wide,
+      ),
+    );
 
     return widgets;
   }

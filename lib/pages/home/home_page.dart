@@ -69,50 +69,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      drawerEnableOpenDragGesture: false,
-      drawer: Drawer(
-        child: SafeArea(
-          child: Column(
-            children: [
-              InkWell(
-                onTap: () {
-                  showDatePicker(
-                          context: context,
-                          firstDate: DateTime.parse("1920-01-01"),
-                          initialDate: DateTime.parse("2009-01-01"),
-                          lastDate: DateTime.now(),
-                          initialDatePickerMode: DatePickerMode.year)
-                      .then(
-                    (value) {
-                      getIt<PrefsManager>().saveBirthday(
-                        value?.millisecondsSinceEpoch.toDouble(),
-                      );
-                    },
-                  );
-                },
-                child: ListTile(
-                  title: Container(
-                    child: Text(
-                      "Update Age",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  trailing: Badge(
-                    backgroundColor: Colors.red,
-                    label: Container(),
-                    child: Icon(Icons.open_in_new_rounded),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
       body: Column(
         children: [
           Expanded(

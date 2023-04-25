@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:watchnext/di/injection.dart';
 import 'package:watchnext/models/movie-detail-models.dart';
@@ -27,8 +28,8 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
           var stateModel = DetailPageStateModels();
 
           if (e.type == 'movie') {
-            MovieDetail movieDetail =
-                (await rest.getMovieDetails(e.id)).body ?? MovieDetail.fromJson(jsonDecode("{}}"));
+            var movieDetails = await rest.getMovieDetails(e.id);
+            MovieDetail movieDetail = (movieDetails).body ?? MovieDetail.fromJson(jsonDecode("{}"));
 
             stateModel.backdrop = movieDetail.backdropPath;
             stateModel.poster = movieDetail.posterPath;
@@ -97,7 +98,6 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
                     .toList()
                     .join(", "),
               ),
-
             ]);
 
             if (movieDetail.belongsToCollection != null) {
@@ -150,6 +150,19 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
             } else {
               stateModel.runtime = "";
             }
+            //try with origin country
+            var originCountry = tvDetail.originCountry?.first;
+
+            var all = tvDetail.contentRating?.results
+                ?.where((element) => element.iso31661 == originCountry);
+
+            var first = (all?.isNotEmpty ?? false) ? all?.first : null;
+
+            if (first != null) {
+              stateModel.contentRating = (first.rating!) + " (" + originCountry! + ")";
+            } else {
+              stateModel.contentRating = "";
+            }
 
             stateModel.textBannersInputModels.addAll([
               TextBannerInputModel(
@@ -160,9 +173,15 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
                 title: "Original Title",
                 value: tvDetail.originalName ?? "N/A",
               ),
+
+              TextBannerInputModel(
+                title: "Content Rating",
+                value: stateModel.contentRating ?? "N/A",
+              ),
+              // getDisplayLanguage(tvDetail.originalLanguage),
               TextBannerInputModel(
                 title: "Original Language",
-                value: tvDetail.originalLanguage ?? "N/A",
+                value: LanguageLocal.getDisplayLanguage(tvDetail.originalLanguage) ,
               ),
               TextBannerInputModel(
                 title: "Show Status",
@@ -200,6 +219,7 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
             stateModel.credits = tvDetail.credits;
             stateModel.homepage = tvDetail.homepage;
 
+            //get Country code from system
           }
 
           emit.call(DetailPageLoaded(stateModel));
@@ -210,4 +230,14 @@ class DetailPageBloc extends Bloc<DetailPageEvent, DetailPageState> {
       }
     });
   }
+}
+
+String getCountryCode() {
+  final List<Locale> systemLocales = WidgetsBinding.instance.window.locales;
+  String? isoCountryCode = systemLocales.first.countryCode;
+
+  if (isoCountryCode == null) {
+    isoCountryCode = "US";
+  }
+  return isoCountryCode;
 }

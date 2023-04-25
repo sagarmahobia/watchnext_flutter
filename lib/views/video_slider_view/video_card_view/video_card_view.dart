@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:watchnext/res/app_colors.dart';
+import 'package:watchnext/res/app_values.dart';
 
 import 'video_card_input_model.dart';
 
@@ -28,25 +29,31 @@ class VideoCardView extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(4.0),
-
-                  child: FadeInImage.memoryNetwork(
+                  //
+                  // child: FadeInImage.memoryNetwork(
+                  //   width: 216,
+                  //   height: 120,
+                  //   placeholder: kTransparentImage,
+                  //   image: this.inputModel.image,
+                  //   fit: BoxFit.fitWidth,
+                  //   imageErrorBuilder: (context, error, stackTrace) {
+                  //     return Container(
+                  //       height: 120,
+                  //       child: Center(
+                  //         child: Icon(
+                  //           Icons.broken_image_rounded,
+                  //           size: 50,
+                  //           color: Colors.white24,
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+                  child: getImage(
+                    inputModel.image,
+                    fit: BoxFit.fitWidth,
                     width: 216,
                     height: 120,
-                    placeholder: kTransparentImage,
-                    image: this.inputModel.image,
-                    fit: BoxFit.fitWidth,
-                    imageErrorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        height: 120,
-                        child: Center(
-                          child: Icon(
-                            Icons.broken_image_rounded,
-                            size: 50,
-                            color: Colors.white24,
-                          ),
-                        ),
-                      );
-                    },
                   ),
                 ),
 
