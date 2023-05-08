@@ -27,6 +27,8 @@ class TmdbAttribution extends StatefulWidget {
 class _TmdbAttributionState extends State<TmdbAttribution> {
   @override
   Widget build(BuildContext context) {
+    return SizedBox.shrink();
+
     return Padding(
       padding: EdgeInsets.all(16),
       child: Row(

@@ -42,6 +42,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
     _currentIndex.stream.listen((event) {
       if (pageController.page?.toInt() != event.index) {
         setState(() {
