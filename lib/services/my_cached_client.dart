@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -73,7 +74,9 @@ class MyCachedClient extends ChopperClient {
         print("maxAgeFactored: $maxAge");
 
         var expires = DateTime.now().add(Duration(seconds: maxAge));
+
         cacheManager.cacheResponse(request.url.toString(), send.bodyString, expires);
+
       }
     }
 

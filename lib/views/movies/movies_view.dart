@@ -16,8 +16,7 @@ class MoviesView extends StatefulWidget {
   _MoviesViewState createState() => _MoviesViewState();
 }
 
-class _MoviesViewState extends State<MoviesView>
-    with AutomaticKeepAliveClientMixin<MoviesView> {
+class _MoviesViewState extends State<MoviesView> with AutomaticKeepAliveClientMixin<MoviesView> {
   var reload = IntCubit();
   final rotatingColor = RotatingColor();
 
@@ -26,6 +25,8 @@ class _MoviesViewState extends State<MoviesView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Column(
@@ -90,17 +91,17 @@ class _MoviesViewState extends State<MoviesView>
             mainAxisSpacing: 8,
             childAspectRatio: 1.6,
             padding: EdgeInsets.all(16),
-            children: MovieGenres.values.sublist(0, isCollapsed?5:null).map(
+            children: MovieGenres.values.sublist(0, isCollapsed ? 5 : null).map(
               (e) {
-                var withOpacity =
-                    rotatingColor.getColor().shade900.withOpacity(0.4);
+                var withOpacity = rotatingColor.getColor().shade900.withOpacity(0.4);
                 return InkWell(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ListPage(
-                          url: "discover/movie?sort_by=popularity.desc&with_genres=" + e.id.toString(),
+                          url: "discover/movie?sort_by=popularity.desc&with_genres=" +
+                              e.id.toString(),
                           pictureType: "movie",
                           title: getMovieGenreById(e.id),
                           color: withOpacity,
@@ -119,7 +120,6 @@ class _MoviesViewState extends State<MoviesView>
                           strutStyle: StrutStyle(
                             forceStrutHeight: true,
                             height: 1.5,
-                            
                           ),
                           style: TextStyle(
                             color: Colors.white,
@@ -132,37 +132,38 @@ class _MoviesViewState extends State<MoviesView>
                   ),
                 );
               },
-            ).toList()..add(
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    isCollapsed = !isCollapsed;
-                  });
-                },
-                child: Container(
-                  color: Colors.red.shade900.withOpacity(.3),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        isCollapsed ? "More" : "Less",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+            ).toList()
+              ..add(
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      isCollapsed = !isCollapsed;
+                    });
+                  },
+                  child: Container(
+                    color: Colors.red.shade900.withOpacity(.3),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          isCollapsed ? "More" : "Less",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      Icon(
-                        isCollapsed ? Icons.arrow_drop_down : Icons.arrow_drop_up,
-                        color: Colors.white,
-                        size: 22,
-                      )
-                    ],
+                        Icon(
+                          isCollapsed ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                          color: Colors.white,
+                          size: 22,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
           ),
         ),
 
@@ -173,8 +174,6 @@ class _MoviesViewState extends State<MoviesView>
     );
 
     //6 initial elements with end one being more button
-
-
 
     models.add(
       SliderInputModel(
@@ -227,8 +226,7 @@ class _MoviesViewState extends State<MoviesView>
       }
       models.add(
         SliderInputModel(
-          url: "discover/movie?sort_by=popularity.desc&with_genres=" +
-              genre.id.toString(),
+          url: "discover/movie?sort_by=popularity.desc&with_genres=" + genre.id.toString(),
           sliderTitle: getMovieGenreById(genre.id),
           pictureType: "movie",
         ),

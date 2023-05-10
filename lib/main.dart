@@ -3,7 +3,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:watchnext/pages/home/home_page.dart';
 import 'package:watchnext/res/app_colors.dart';
@@ -23,25 +22,25 @@ class IntIndex {
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // showFlutterNotification(message);
 }
-
-void showFlutterNotification(RemoteMessage message) {
-  RemoteNotification? notification = message.notification;
-  AndroidNotification? android = message.notification?.android;
-  if (notification != null && android != null) {
-    FlutterLocalNotificationsPlugin().show(
-      notification.hashCode,
-      notification.title,
-      notification.body,
-      NotificationDetails(
-        android: AndroidNotificationDetails(
-          "crapbin_notification",
-          "Crapbin",
-          channelDescription: "Crapbin Notification",
-        ),
-      ),
-    );
-  }
-}
+//
+// void showFlutterNotification(RemoteMessage message) {
+//   RemoteNotification? notification = message.notification;
+//   AndroidNotification? android = message.notification?.android;
+//   if (notification != null && android != null) {
+//     FlutterLocalNotificationsPlugin().show(
+//       notification.hashCode,
+//       notification.title,
+//       notification.body,
+//       NotificationDetails(
+//         android: AndroidNotificationDetails(
+//           "crapbin_notification",
+//           "Crapbin",
+//           channelDescription: "Crapbin Notification",
+//         ),
+//       ),
+//     );
+//   }
+// }
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -65,9 +64,9 @@ Future<void> main() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    showFlutterNotification(message);
-  });
+  // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //   showFlutterNotification(message);
+  // });
 
 
   await MobileAds.instance.initialize();
@@ -84,8 +83,6 @@ Future<void> main() async {
   // printKeys
   getIt<CacheManger>().printKeys();
   runApp(MyApp());
-
-
 
 
 

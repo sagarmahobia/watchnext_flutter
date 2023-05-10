@@ -22,7 +22,7 @@ class _$TMDBService extends TMDBService {
     int page = 1,
     String query = "",
   }) {
-    final String $url = 'https://api.themoviedb.org/3/${url}';
+    final Uri $url = Uri.parse('https://api.themoviedb.org/3/${url}');
     final Map<String, dynamic> $params = <String, dynamic>{
       'page': page,
       'query': query,
@@ -42,7 +42,7 @@ class _$TMDBService extends TMDBService {
     int page = 1,
     String query = "",
   }) {
-    final String $url = 'https://api.themoviedb.org/3/${url}';
+    final Uri $url = Uri.parse('https://api.themoviedb.org/3/${url}');
     final Map<String, dynamic> $params = <String, dynamic>{
       'page': page,
       'query': query,
@@ -58,7 +58,7 @@ class _$TMDBService extends TMDBService {
 
   @override
   Future<Response<CastAndCrew>> getCastAndCrew(String url) {
-    final String $url = 'https://api.themoviedb.org/3/${url}';
+    final Uri $url = Uri.parse('https://api.themoviedb.org/3/${url}');
     final Request $request = Request(
       'GET',
       $url,
@@ -69,8 +69,8 @@ class _$TMDBService extends TMDBService {
 
   @override
   Future<Response<MovieDetail>> getMovieDetails(int id) {
-    final String $url =
-        'https://api.themoviedb.org/3/movie/${id}?append_to_response=similar,recommendations,credits,videos,images';
+    final Uri $url = Uri.parse(
+        'https://api.themoviedb.org/3/movie/${id}?append_to_response=similar,recommendations,credits,videos,images');
     final Request $request = Request(
       'GET',
       $url,
@@ -81,8 +81,8 @@ class _$TMDBService extends TMDBService {
 
   @override
   Future<Response<TvDetail>> getTvDetails(int id) {
-    final String $url =
-        'https://api.themoviedb.org/3/tv/${id}?append_to_response=similar,recommendations,credits,videos,images,content_ratings';
+    final Uri $url = Uri.parse(
+        'https://api.themoviedb.org/3/tv/${id}?append_to_response=similar,recommendations,credits,videos,images,content_ratings');
     final Request $request = Request(
       'GET',
       $url,
@@ -93,8 +93,8 @@ class _$TMDBService extends TMDBService {
 
   @override
   Future<Response<PersonDetail>> getPersonDetail(int personId) {
-    final String $url =
-        'https://api.themoviedb.org/3/person/${personId}?append_to_response=movie_credits,tv_credits,images,videos';
+    final Uri $url = Uri.parse(
+        'https://api.themoviedb.org/3/person/${personId}?append_to_response=movie_credits,tv_credits,images,videos');
     final Request $request = Request(
       'GET',
       $url,
@@ -108,8 +108,8 @@ class _$TMDBService extends TMDBService {
     int tv_id,
     int season_number,
   ) {
-    final String $url =
-        'https://api.themoviedb.org/3//tv/${tv_id}/season/${season_number}';
+    final Uri $url = Uri.parse(
+        'https://api.themoviedb.org/3//tv/${tv_id}/season/${season_number}');
     final Request $request = Request(
       'GET',
       $url,
@@ -120,7 +120,8 @@ class _$TMDBService extends TMDBService {
 
   @override
   Future<Response<CollectionDetailModel>> getCollection(int id) {
-    final String $url = 'https://api.themoviedb.org/3//collection/${id}';
+    final Uri $url =
+        Uri.parse('https://api.themoviedb.org/3//collection/${id}');
     final Request $request = Request(
       'GET',
       $url,
