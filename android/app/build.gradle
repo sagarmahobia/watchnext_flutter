@@ -37,7 +37,7 @@ if (keystorePropertiesFile.exists()) {
 
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion flutter.compileSdkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -55,8 +55,8 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.sagar.watchnext"
-        minSdkVersion 21
-        targetSdkVersion 33
+        minSdkVersion localProperties.getProperty('flutter.minSdkVersion').toInteger()
+        targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -85,8 +85,8 @@ flutter {
 
 dependencies {
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
-    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

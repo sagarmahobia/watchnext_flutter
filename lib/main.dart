@@ -104,7 +104,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.dark,
-        accentColor: accentColor,
+        // accentColor: accentColor,
       ),
       home: Container(
         color: backGroundColor,
