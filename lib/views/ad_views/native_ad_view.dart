@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:isolate';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:watchnext/admanager.dart';
@@ -13,75 +17,95 @@ class NativeAdView extends StatefulWidget {
 }
 
 class _NativeAdViewState extends State<NativeAdView> {
-  NativeAd? myNative;
-
-  bool loaded = false;
-
+  bool loaded = true;
+  bool loading = true;
   bool useCard;
+
+  BannerAd? bottomBanner;
 
   _NativeAdViewState(this.useCard);
 
   @override
   void initState() {
     super.initState();
-    myNative = NativeAd(
-      adUnitId: AdManager.nativeAdUnitId,
-      //todo ad unit id
-      factoryId: 'adFactoryExample',
-      customOptions: {},
+    bottomBanner = BannerAd(
+      adUnitId: AdManager.bannerAdUnitId,
+      size: AdSize.mediumRectangle,
       request: AdRequest(),
-      listener: NativeAdListener(
+      listener: BannerAdListener(
         onAdLoaded: (ad) {
-          setState(() {
-            loaded = true;
+          Future.delayed(Duration(seconds: 1), () {
+            setState(() {
+              loaded = true;
+              loading = false;
+            });
           });
         },
         onAdFailedToLoad: (ad, err) {
-          print(err.responseInfo);
-          loaded = false;
+          setState(() {
+            loaded = false;
+            loaded = false;
+          });
         },
       ),
     );
-
-    myNative?.load();
+    bottomBanner?.load();
+    Future.delayed(Duration(seconds: 6), () {
+      if (loading) {
+        setState(() {
+          loaded = false;
+        });
+      }
+    });
   }
 
   getAdWidget() {
     if (useCard) {
       return Container(
-        margin: EdgeInsets.only(top: 32),
-
-        child: Container(
-          margin: EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color: lightBackGround,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Container(
-            padding: EdgeInsets.all(8),
-            height: 380,
-            child: AdWidget(
-              ad: myNative!,
-            ),
-          ),
+        margin: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: lightBackGround,
+          borderRadius: BorderRadius.circular(4),
         ),
+        child: getAd(),
       );
     } else {
+      return getAd();
+    }
+  }
+
+  getAd() {
+    if (loading) {
       return Container(
         padding: EdgeInsets.all(8),
-        height: 360,
-        child: AdWidget(
-          ad: myNative!,
+        alignment: Alignment.center,
+        child: CircularProgressIndicator(
+          color: Colors.white,
         ),
       );
     }
+    return Container(
+      padding: EdgeInsets.all(8),
+      alignment: Alignment.center,
+      child: AdWidget(ad: bottomBanner!),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Visibility(
       visible: loaded,
-      child: getAdWidget(),
+      child: AspectRatio(
+        aspectRatio:
+            AdSize.mediumRectangle.width / AdSize.mediumRectangle.height,
+        child: getAdWidget(),
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bottomBanner?.dispose();
   }
 }

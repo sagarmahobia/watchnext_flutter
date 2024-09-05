@@ -14,7 +14,8 @@ class PeopleList extends StatefulWidget {
 
   final MyListenable? myListenable;
 
-  const PeopleList({Key? key, required this.model, this.myListenable}) : super(key: key);
+  const PeopleList({Key? key, required this.model, this.myListenable})
+      : super(key: key);
 
   @override
   _PeopleListState createState() => _PeopleListState();
@@ -31,8 +32,8 @@ class _PeopleListState extends State<PeopleList> implements MyListener {
     super.initState();
     // bloc.add(LoadFirstPage());
     _pagingController.addPageRequestListener((pageKey) {
-      bloc.add(
-          LoadNextPage(widget.model.url, pageKey, query: widget.myListenable?.getQuery() ?? ""));
+      bloc.add(LoadNextPage(widget.model.url, pageKey,
+          query: widget.myListenable?.getQuery() ?? ""));
     });
 
     bloc.stream.listen((PeopleListState state) {
@@ -86,6 +87,8 @@ class _PeopleListState extends State<PeopleList> implements MyListener {
   @override
   Widget build(BuildContext context) {
     var pagedGridView = BaseWidget(builder: (context, sizingInformation) {
+      var crossAxisCount = sizingInformation.screenSize.width ~/ 125;
+      crossAxisCount = crossAxisCount > 3 ? crossAxisCount : 3;
       return PagedGridView<int, PersonCardInputModel>(
         showNewPageProgressIndicatorAsGridChild: false,
         physics: BouncingScrollPhysics(),
@@ -96,7 +99,7 @@ class _PeopleListState extends State<PeopleList> implements MyListener {
           childAspectRatio: 100 / 192,
           crossAxisSpacing: 0,
           mainAxisSpacing: 0,
-          crossAxisCount: sizingInformation.screenSize.width ~/ 125,
+          crossAxisCount: crossAxisCount,
         ),
         builderDelegate: PagedChildBuilderDelegate<PersonCardInputModel>(
           itemBuilder: (context, item, index) {
@@ -110,7 +113,7 @@ class _PeopleListState extends State<PeopleList> implements MyListener {
                 highlightColor: lightBackGround,
                 child: GridView.count(
                   scrollDirection: Axis.vertical,
-                  crossAxisCount: sizingInformation.screenSize.width ~/ 125,
+                  crossAxisCount: crossAxisCount,
                   crossAxisSpacing: 0,
                   mainAxisSpacing: 0,
                   childAspectRatio: 100 / 192,

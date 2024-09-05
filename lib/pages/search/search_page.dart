@@ -87,10 +87,12 @@ class _SearchPageState extends State<SearchPage>
                       Radius.circular(50),
                     ),
                   ),
-                  margin: EdgeInsets.symmetric(vertical: 12).copyWith(right: 16),
+                  margin:
+                      EdgeInsets.symmetric(vertical: 12).copyWith(right: 16),
                   child: TextFormField(
                     autofocus: true,
                     maxLines: 1,
+                    textInputAction: TextInputAction.done,
                     controller: _searchController,
                     style: TextStyle(color: Colors.white, fontSize: 16),
                     decoration: InputDecoration(
@@ -134,6 +136,9 @@ class _SearchPageState extends State<SearchPage>
               child: Column(
                 children: [
                   TabBar(
+                    labelColor: accentColor,
+                    indicatorColor: accentColor,
+                    unselectedLabelColor: Colors.grey,
                     controller: _tabController,
                     onTap: (index) {
                       _pageController.jumpToPage(index);

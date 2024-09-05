@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,34 +20,35 @@ class CacheManger {
     addKey(key);
   }
 
-  String? getCacheOrRemoveIfExpired(String key) {
+  Future<String?> getCacheOrRemoveIfExpired(String key) async {
     key = _prefix + key;
     var containsKey = prefs.containsKey(key);
     if (!containsKey) {
       return null;
     }
-    bool expired = DateTime.parse(prefs.getString(key + _expires)!).isBefore(DateTime.now());
+    bool expired = DateTime.parse(prefs.getString(key + _expires)!)
+        .isBefore(DateTime.now());
 
     if (expired) {
-      prefs.remove(key);
-      prefs.remove(key + _expires);
-      removeKey(key);
+      await prefs.remove(key);
+      await prefs.remove(key + _expires);
+      await removeKey(key);
       return null;
     }
 
     return prefs.getString(key);
   }
 
-  void clearCache() {
+  Future<void> clearCache() async {
     var keys = prefs.getStringList(_keys) ?? [];
     for (var key in keys) {
-      prefs.remove(key);
-      prefs.remove(key + _expires);
+      await prefs.remove(key);
+      await prefs.remove(key + _expires);
     }
-    prefs.remove(_keys);
+    await prefs.remove(_keys);
   }
 
-  void clearExpiredCache() {
+  Future<void> clearExpiredCache() async {
     var keys = prefs.getStringList(_keys) ?? [];
     for (var key in keys) {
       //check contains key
@@ -54,11 +56,12 @@ class CacheManger {
       var containsKey = prefs.containsKey(key + _expires);
 
       bool expired = containsKey
-          ? DateTime.parse(prefs.getString(key + _expires)!).isBefore(DateTime.now())
+          ? DateTime.parse(prefs.getString(key + _expires)!)
+              .isBefore(DateTime.now())
           : true;
       if (expired) {
-        prefs.remove(key);
-        prefs.remove(key + _expires);
+        await prefs.remove(key);
+        await prefs.remove(key + _expires);
       }
     }
   }
@@ -69,15 +72,18 @@ class CacheManger {
     prefs.setStringList(_keys, keys);
   }
 
-  void removeKey(String key) {
+  Future<void> removeKey(String key) async {
     var keys = prefs.getStringList(_keys) ?? [];
-    keys.remove(key);
+    await keys.remove(key);
     prefs.setStringList(_keys, keys);
   }
 
   //print all keys
   void printKeys() {
     var keys = prefs.getStringList(_keys) ?? [];
-    print("keys: $keys");
+
+    if (kDebugMode) {
+      print("keys: $keys");
+    }
   }
 }

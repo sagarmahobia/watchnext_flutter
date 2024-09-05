@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:watchnext/admanager.dart';
 import 'package:watchnext/pages/home/home_page.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/services/pref_manager.dart';
@@ -19,6 +20,7 @@ class IntIndex {
   @override
   bool operator ==(Object other) => false;
 }
+
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // showFlutterNotification(message);
 }
@@ -41,6 +43,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 //     );
 //   }
 // }
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -49,10 +52,10 @@ Future<void> main() async {
   await configureInjection();
 
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+  NotificationSettings settings =
+      await FirebaseMessaging.instance.requestPermission(
     alert: true,
     announcement: false,
     badge: true,
@@ -64,10 +67,11 @@ Future<void> main() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
+  FirebaseMessaging.instance.subscribeToTopic("weekend-reminder");
+
   // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
   //   showFlutterNotification(message);
   // });
-
 
   await MobileAds.instance.initialize();
   await MobileAds.instance.updateRequestConfiguration(RequestConfiguration(
@@ -78,14 +82,11 @@ Future<void> main() async {
     ],
   ));
 
-  getIt<CacheManger>().clearExpiredCache();
+  await (getIt<CacheManger>().clearExpiredCache());
 
   // printKeys
   getIt<CacheManger>().printKeys();
   runApp(MyApp());
-
-
-
 }
 
 Future<void> requestTrackingAuthorization() async {
@@ -117,8 +118,6 @@ class MyApp extends StatelessWidget {
 /*
 
      // todo ad saturday and sunday notifications
-
-
 
 
      //next todo add filters

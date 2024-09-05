@@ -45,9 +45,7 @@ class _HomePageState extends State<HomePage> {
 
     _currentIndex.stream.listen((event) {
       if (pageController.page?.toInt() != event.index) {
-        setState(() {
           pageController.jumpToPage(event.index);
-        });
       }
     });
   }
@@ -117,44 +115,68 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        fixedColor: accentColor,
-        type: BottomNavigationBarType.fixed,
-        unselectedItemColor: Colors.grey,
-        onTap: (int index) {
-          if (_currentIndex.state.index == index) {
-            while (keys[_currentIndex.state.index].currentState?.canPop() ?? false) {
-              keys[_currentIndex.state.index].currentState?.pop();
-            }
-            return;
+      bottomNavigationBar: BottomAppBar(currentIndex: _currentIndex, keys: keys),
+    );
+  }
+}
+
+class BottomAppBar extends StatefulWidget {
+  const BottomAppBar({
+    super.key,
+    required IntCubit currentIndex,
+    required this.keys,
+  }) : _currentIndex = currentIndex;
+
+  final IntCubit _currentIndex;
+  final List<GlobalKey<NavigatorState>> keys;
+
+  @override
+  State<BottomAppBar> createState() => _BottomAppBarState();
+}
+
+class _BottomAppBarState extends State<BottomAppBar> {
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      fixedColor: accentColor,
+      type: BottomNavigationBarType.fixed,
+      unselectedItemColor: Colors.grey,
+      onTap: (int index) {
+        if (widget._currentIndex.state.index == index) {
+          while (widget.keys[widget._currentIndex.state.index].currentState?.canPop() ?? false) {
+            widget.keys[widget._currentIndex.state.index].currentState?.pop();
           }
-          // pageController.jumpToPage(page);
-          _currentIndex.setValue(index);
-        },
-        currentIndex: _currentIndex.state.index,
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home_rounded,
-              ),
-              label: "Home"),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.movie_rounded,
-              ),
-              label: "Movies"),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.tv_rounded,
-              ),
-              label: "TV Shows"),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.search_rounded,
-              ),
-              label: "Search"),
-        ],
-      ),
+          return;
+        }
+        // pageController.jumpToPage(page);
+        setState(() {
+          widget._currentIndex.setValue(index);
+
+        });
+      },
+      currentIndex: widget._currentIndex.state.index,
+      items: [
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home_rounded,
+            ),
+            label: "Home"),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.movie_rounded,
+            ),
+            label: "Movies"),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.tv_rounded,
+            ),
+            label: "TV Shows"),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.search_rounded,
+            ),
+            label: "Search"),
+      ],
     );
   }
 }
