@@ -9,7 +9,7 @@ part of 'collection_detail.dart';
 CollectionDetailModel _$CollectionDetailModelFromJson(
         Map<String, dynamic> json) =>
     CollectionDetailModel(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
       overview: json['overview'] as String?,
       posterPath: json['poster_path'] as String?,
@@ -22,9 +22,10 @@ CollectionDetailModel _$CollectionDetailModelFromJson(
 Part _$PartFromJson(Map<String, dynamic> json) => Part(
       adult: json['adult'] as bool?,
       backdropPath: json['backdrop_path'] as String?,
-      genreIds:
-          (json['genre_ids'] as List<dynamic>?)?.map((e) => e as int).toList(),
-      id: json['id'] as int?,
+      genreIds: (json['genre_ids'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList(),
+      id: (json['id'] as num?)?.toInt(),
       title: json['title'] as String?,
       originalLanguage: json['original_language'] as String?,
       originalTitle: json['original_title'] as String?,
@@ -36,5 +37,5 @@ Part _$PartFromJson(Map<String, dynamic> json) => Part(
           : DateTime.parse(verify_date(json, 'release_date') as String),
       video: json['video'] as bool?,
       voteAverage: (json['vote_average'] as num?)?.toDouble(),
-      voteCount: json['vote_count'] as int?,
+      voteCount: (json['vote_count'] as num?)?.toInt(),
     );

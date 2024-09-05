@@ -10,12 +10,12 @@ ListResponse _$ListResponseFromJson(Map<String, dynamic> json) => ListResponse(
       dates: json['dates'] == null
           ? null
           : Dates.fromJson(json['dates'] as Map<String, dynamic>),
-      page: json['page'] as int?,
+      page: (json['page'] as num?)?.toInt(),
       results: (json['results'] as List<dynamic>?)
           ?.map((e) => Show.fromJson(e as Map<String, dynamic>))
           .toList(),
-      totalPages: json['total_pages'] as int?,
-      totalResults: json['total_results'] as int?,
+      totalPages: (json['total_pages'] as num?)?.toInt(),
+      totalResults: (json['total_results'] as num?)?.toInt(),
     );
 
 Dates _$DatesFromJson(Map<String, dynamic> json) => Dates(
@@ -30,9 +30,10 @@ Dates _$DatesFromJson(Map<String, dynamic> json) => Dates(
 Show _$ShowFromJson(Map<String, dynamic> json) => Show(
       adult: json['adult'] as bool?,
       backdropPath: json['backdrop_path'] as String?,
-      genreIds:
-          (json['genre_ids'] as List<dynamic>?)?.map((e) => e as int).toList(),
-      id: json['id'] as int?,
+      genreIds: (json['genre_ids'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList(),
+      id: (json['id'] as num?)?.toInt(),
       originalLanguage: json['original_language'] as String,
       originalTitle: json['original_title'] as String?,
       overview: json['overview'] as String?,
@@ -45,6 +46,6 @@ Show _$ShowFromJson(Map<String, dynamic> json) => Show(
       name: json['name'] as String?,
       video: json['video'] as bool?,
       voteAverage: (json['vote_average'] as num?)?.toDouble(),
-      voteCount: json['vote_count'] as int?,
+      voteCount: (json['vote_count'] as num?)?.toInt(),
       character: json['character'] as String?,
     );

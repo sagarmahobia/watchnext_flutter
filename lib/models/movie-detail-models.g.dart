@@ -13,12 +13,12 @@ MovieDetail _$MovieDetailFromJson(Map<String, dynamic> json) => MovieDetail(
           ? null
           : BelongsToCollection.fromJson(
               json['belongs_to_collection'] as Map<String, dynamic>),
-      budget: json['budget'] as int?,
+      budget: (json['budget'] as num?)?.toInt(),
       genres: (json['genres'] as List<dynamic>?)
           ?.map((e) => Genre.fromJson(e as Map<String, dynamic>))
           .toList(),
       homepage: json['homepage'] as String?,
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       imdbId: json['imdb_id'] as String?,
       originalLanguage: json['original_language'] as String?,
       originalTitle: json['original_title'] as String?,
@@ -34,8 +34,8 @@ MovieDetail _$MovieDetailFromJson(Map<String, dynamic> json) => MovieDetail(
       releaseDate: verify_date(json, 'release_date') == null
           ? null
           : DateTime.parse(verify_date(json, 'release_date') as String),
-      revenue: json['revenue'] as int?,
-      runtime: json['runtime'] as int?,
+      revenue: (json['revenue'] as num?)?.toInt(),
+      runtime: (json['runtime'] as num?)?.toInt(),
       spokenLanguages: (json['spoken_languages'] as List<dynamic>?)
           ?.map((e) => SpokenLanguage.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -44,7 +44,7 @@ MovieDetail _$MovieDetailFromJson(Map<String, dynamic> json) => MovieDetail(
       title: json['title'] as String?,
       video: json['video'] as bool?,
       voteAverage: (json['vote_average'] as num?)?.toDouble(),
-      voteCount: json['vote_count'] as int?,
+      voteCount: (json['vote_count'] as num?)?.toInt(),
       similar: json['similar'] == null
           ? null
           : Recommendations.fromJson(json['similar'] as Map<String, dynamic>),
@@ -65,7 +65,7 @@ MovieDetail _$MovieDetailFromJson(Map<String, dynamic> json) => MovieDetail(
 
 BelongsToCollection _$BelongsToCollectionFromJson(Map<String, dynamic> json) =>
     BelongsToCollection(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
       posterPath: json['poster_path'] as String?,
       backdropPath: json['backdrop_path'] as String?,
@@ -81,13 +81,13 @@ Credits _$CreditsFromJson(Map<String, dynamic> json) => Credits(
     );
 
 Genre _$GenreFromJson(Map<String, dynamic> json) => Genre(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
     );
 
 ProductionCompany _$ProductionCompanyFromJson(Map<String, dynamic> json) =>
     ProductionCompany(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       logoPath: json['logo_path'] as String?,
       name: json['name'] as String?,
       originCountry: json['origin_country'] as String?,
@@ -101,12 +101,12 @@ ProductionCountry _$ProductionCountryFromJson(Map<String, dynamic> json) =>
 
 Recommendations _$RecommendationsFromJson(Map<String, dynamic> json) =>
     Recommendations(
-      page: json['page'] as int?,
+      page: (json['page'] as num?)?.toInt(),
       results: (json['results'] as List<dynamic>?)
           ?.map((e) => Show.fromJson(e as Map<String, dynamic>))
           .toList(),
-      totalPages: json['total_pages'] as int?,
-      totalResults: json['total_results'] as int?,
+      totalPages: (json['total_pages'] as num?)?.toInt(),
+      totalResults: (json['total_results'] as num?)?.toInt(),
     );
 
 SpokenLanguage _$SpokenLanguageFromJson(Map<String, dynamic> json) =>
@@ -128,7 +128,7 @@ VideosResult _$VideosResultFromJson(Map<String, dynamic> json) => VideosResult(
       name: json['name'] as String?,
       key: json['key'] as String?,
       site: json['site'] as String?,
-      size: json['size'] as int?,
+      size: (json['size'] as num?)?.toInt(),
       type: json['type'] as String?,
       official: json['official'] as bool?,
       publishedAt: verify_date(json, 'published_at') == null
@@ -151,10 +151,10 @@ Images _$ImagesFromJson(Map<String, dynamic> json) => Images(
 
 Image _$ImageFromJson(Map<String, dynamic> json) => Image(
       aspectRatio: (json['aspect_ratio'] as num?)?.toDouble(),
-      height: json['height'] as int?,
+      height: (json['height'] as num?)?.toInt(),
       iso6391: json['iso_639_1'] as String?,
       filePath: json['file_path'] as String?,
       voteAverage: (json['vote_average'] as num?)?.toDouble(),
-      voteCount: json['vote_count'] as int?,
-      width: json['width'] as int?,
+      voteCount: (json['vote_count'] as num?)?.toInt(),
+      width: (json['width'] as num?)?.toInt(),
     );

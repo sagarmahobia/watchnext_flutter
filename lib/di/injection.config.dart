@@ -4,8 +4,7 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_lambdas
-// ignore_for_file: lines_longer_than_80_chars
+// ignore_for_file: type=lint
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
@@ -17,7 +16,7 @@ import 'package:watchnext/services/pref_manager.dart' as _i4;
 import 'package:watchnext/services/tmdb_service.dart' as _i5;
 
 extension GetItInjectableX on _i1.GetIt {
-  // initializes the registration of main-scope dependencies inside of GetIt
+// initializes the registration of main-scope dependencies inside of GetIt
   Future<_i1.GetIt> init({
     String? environment,
     _i2.EnvironmentFilter? environmentFilter,
@@ -32,7 +31,8 @@ extension GetItInjectableX on _i1.GetIt {
       () => registerModule.prefs,
       preResolve: true,
     );
-    gh.singleton<_i4.CacheManger>(_i4.CacheManger(gh<_i3.SharedPreferences>()));
+    gh.singleton<_i4.CacheManger>(
+        () => _i4.CacheManger(gh<_i3.SharedPreferences>()));
     await gh.singletonAsync<_i5.TMDBService>(
       () => registerModule.apis(gh<_i4.CacheManger>()),
       preResolve: true,

@@ -1,4 +1,5 @@
 import 'package:age_calculator/age_calculator.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,9 +46,36 @@ class _HomePageState extends State<HomePage> {
 
     _currentIndex.stream.listen((event) {
       if (pageController.page?.toInt() != event.index) {
-          pageController.jumpToPage(event.index);
+        pageController.jumpToPage(event.index);
       }
     });
+
+    buildNotificationScheduler();
+  }
+
+  Future<void> buildNotificationScheduler() async {
+    await AwesomeNotifications().cancelAllSchedules();
+
+    //repeat every friday at 8:00PM
+
+    var timeZone = await AwesomeNotifications().getLocalTimeZoneIdentifier();
+    AwesomeNotifications().createNotification(
+      schedule: NotificationCalendar(
+        repeats: true,
+        allowWhileIdle: true,
+        timeZone: timeZone,
+        weekday: DateTime.friday,
+        hour: 20,
+        minute: 0,
+        preciseAlarm: true,
+      ),
+      content: NotificationContent(
+        id: 10,
+        channelKey: 'basic_channel',
+        title: 'Weekend Reminder',
+        body: 'Don\'t forget to watch your favorite shows this weekend',
+      ),
+    );
   }
 
   Future<bool> _willPopCallback() async {
@@ -115,7 +143,8 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(currentIndex: _currentIndex, keys: keys),
+      bottomNavigationBar:
+          BottomAppBar(currentIndex: _currentIndex, keys: keys),
     );
   }
 }
@@ -143,7 +172,9 @@ class _BottomAppBarState extends State<BottomAppBar> {
       unselectedItemColor: Colors.grey,
       onTap: (int index) {
         if (widget._currentIndex.state.index == index) {
-          while (widget.keys[widget._currentIndex.state.index].currentState?.canPop() ?? false) {
+          while (widget.keys[widget._currentIndex.state.index].currentState
+                  ?.canPop() ??
+              false) {
             widget.keys[widget._currentIndex.state.index].currentState?.pop();
           }
           return;
@@ -151,7 +182,6 @@ class _BottomAppBarState extends State<BottomAppBar> {
         // pageController.jumpToPage(page);
         setState(() {
           widget._currentIndex.setValue(index);
-
         });
       },
       currentIndex: widget._currentIndex.state.index,

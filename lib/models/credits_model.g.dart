@@ -13,22 +13,22 @@ CreditsModel _$CreditsModelFromJson(Map<String, dynamic> json) => CreditsModel(
       crew: (json['crew'] as List<dynamic>?)
           ?.map((e) => Cast.fromJson(e as Map<String, dynamic>))
           .toList(),
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
     );
 
 Cast _$CastFromJson(Map<String, dynamic> json) => Cast(
       adult: json['adult'] as bool?,
-      gender: json['gender'] as int?,
-      id: json['id'] as int?,
+      gender: (json['gender'] as num?)?.toInt(),
+      id: (json['id'] as num?)?.toInt(),
       knownForDepartment: json['known_for_department'] as String?,
       name: json['name'] as String?,
       originalName: json['original_name'] as String?,
       popularity: (json['popularity'] as num?)?.toDouble(),
       profilePath: json['profile_path'] as String?,
-      castId: json['cast_id'] as int?,
+      castId: (json['cast_id'] as num?)?.toInt(),
       character: json['character'] as String?,
       creditId: json['credit_id'] as String?,
-      order: json['order'] as int?,
+      order: (json['order'] as num?)?.toInt(),
       department: json['department'] as String?,
       job: json['job'] as String?,
       knownFor: (json['known_for'] as List<dynamic>?)
@@ -37,12 +37,13 @@ Cast _$CastFromJson(Map<String, dynamic> json) => Cast(
       releaseDate: verify_date(json, 'release_date') == null
           ? null
           : DateTime.parse(verify_date(json, 'release_date') as String),
-      voteCount: json['vote_count'] as int?,
+      voteCount: (json['vote_count'] as num?)?.toInt(),
       video: json['video'] as bool?,
       voteAverage: (json['vote_average'] as num?)?.toDouble(),
       title: json['title'] as String?,
-      genreIds:
-          (json['genre_ids'] as List<dynamic>?)?.map((e) => e as int).toList(),
+      genreIds: (json['genre_ids'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList(),
       originalLanguage: json['original_language'] as String?,
       originalTitle: json['original_title'] as String?,
       backdropPath: json['backdrop_path'] as String?,
@@ -53,9 +54,10 @@ Cast _$CastFromJson(Map<String, dynamic> json) => Cast(
 KnownFor _$KnownForFromJson(Map<String, dynamic> json) => KnownFor(
       adult: json['adult'] as bool?,
       backdropPath: json['backdrop_path'] as String?,
-      genreIds:
-          (json['genre_ids'] as List<dynamic>?)?.map((e) => e as int).toList(),
-      id: json['id'] as int?,
+      genreIds: (json['genre_ids'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList(),
+      id: (json['id'] as num?)?.toInt(),
       mediaType: json['media_type'] as String?,
       originalLanguage: json['original_language'] as String?,
       originalTitle: json['original_title'] as String?,
@@ -67,7 +69,7 @@ KnownFor _$KnownForFromJson(Map<String, dynamic> json) => KnownFor(
       title: json['title'] as String?,
       video: json['video'] as bool?,
       voteAverage: (json['vote_average'] as num?)?.toDouble(),
-      voteCount: json['vote_count'] as int?,
+      voteCount: (json['vote_count'] as num?)?.toInt(),
       firstAirDate: verify_date(json, 'first_air_date') == null
           ? null
           : DateTime.parse(verify_date(json, 'first_air_date') as String),

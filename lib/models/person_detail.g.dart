@@ -18,9 +18,9 @@ PersonDetail _$PersonDetailFromJson(Map<String, dynamic> json) => PersonDetail(
       deathday: verify_date(json, 'deathday') == null
           ? null
           : DateTime.parse(verify_date(json, 'deathday') as String),
-      gender: json['gender'] as int?,
+      gender: (json['gender'] as num?)?.toInt(),
       homepage: json['homepage'],
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       imdbId: json['imdb_id'] as String?,
       knownForDepartment: json['known_for_department'] as String?,
       name: json['name'] as String?,
@@ -47,12 +47,12 @@ Images _$ImagesFromJson(Map<String, dynamic> json) => Images(
 
 Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       aspectRatio: (json['aspect_ratio'] as num?)?.toDouble(),
-      height: json['height'] as int?,
+      height: (json['height'] as num?)?.toInt(),
       iso6391: json['iso_639_1'],
       filePath: json['file_path'] as String?,
       voteAverage: (json['vote_average'] as num?)?.toDouble(),
-      voteCount: json['vote_count'] as int?,
-      width: json['width'] as int?,
+      voteCount: (json['vote_count'] as num?)?.toInt(),
+      width: (json['width'] as num?)?.toInt(),
     );
 
 MovieCredits _$MovieCreditsFromJson(Map<String, dynamic> json) => MovieCredits(

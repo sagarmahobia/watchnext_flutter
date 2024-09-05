@@ -1,5 +1,6 @@
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,8 +9,8 @@ import 'package:watchnext/admanager.dart';
 import 'package:watchnext/pages/home/home_page.dart';
 import 'package:watchnext/res/app_colors.dart';
 import 'package:watchnext/services/pref_manager.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+// import 'package:firebase_core/firebase_core.dart';
+
 import 'di/injection.dart';
 
 class IntIndex {
@@ -21,27 +22,8 @@ class IntIndex {
   bool operator ==(Object other) => false;
 }
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // showFlutterNotification(message);
-}
-//
-// void showFlutterNotification(RemoteMessage message) {
-//   RemoteNotification? notification = message.notification;
-//   AndroidNotification? android = message.notification?.android;
-//   if (notification != null && android != null) {
-//     FlutterLocalNotificationsPlugin().show(
-//       notification.hashCode,
-//       notification.title,
-//       notification.body,
-//       NotificationDetails(
-//         android: AndroidNotificationDetails(
-//           "crapbin_notification",
-//           "Crapbin",
-//           channelDescription: "Crapbin Notification",
-//         ),
-//       ),
-//     );
-//   }
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   // showFlutterNotification(message);
 // }
 
 Future<void> main() async {
@@ -51,23 +33,23 @@ Future<void> main() async {
 
   await configureInjection();
 
-  await Firebase.initializeApp(
-  );
+  // await Firebase.initializeApp(
+  // );
 
-  NotificationSettings settings =
-      await FirebaseMessaging.instance.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
+  // NotificationSettings settings =
+  //     await FirebaseMessaging.instance.requestPermission(
+  //   alert: true,
+  //   announcement: false,
+  //   badge: true,
+  //   carPlay: false,
+  //   criticalAlert: false,
+  //   provisional: false,
+  //   sound: true,
+  // );
 
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  FirebaseMessaging.instance.subscribeToTopic("weekend-reminder");
+  // FirebaseMessaging.instance.subscribeToTopic("weekend-reminder");
 
   // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
   //   showFlutterNotification(message);
@@ -84,6 +66,19 @@ Future<void> main() async {
 
   await (getIt<CacheManger>().clearExpiredCache());
 
+  AwesomeNotifications().initialize(
+    'resource://drawable/res_app_icon',
+    [
+      NotificationChannel(
+        channelKey: 'basic_channel',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic tests',
+        defaultColor: Color(0xFF9D50DD),
+        ledColor: Colors.white,
+      )
+    ],
+  );
+
   // printKeys
   getIt<CacheManger>().printKeys();
   runApp(MyApp());
@@ -95,6 +90,9 @@ Future<void> requestTrackingAuthorization() async {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
+
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
