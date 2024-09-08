@@ -1,5 +1,6 @@
 import 'package:age_calculator/age_calculator.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:watchnext/services/pref_manager.dart';
 import 'package:watchnext/views/home/home_view.dart';
 import 'package:watchnext/views/movies/movies_view.dart';
 import 'package:watchnext/views/shows/shows_view.dart';
+import 'dart:math';
 
 class HomePage extends StatefulWidget {
   HomePage({
@@ -58,6 +60,69 @@ class _HomePageState extends State<HomePage> {
 
     //repeat every friday at 8:00PM
 
+    List<String> titles = [
+      'Hey there!',
+      'Don\'t miss out!',
+      'Check this out!',
+      'New content alert!',
+      'Exciting news!',
+      'Just for you!',
+      'Special update!',
+      'Latest release!',
+      'Hot off the press!',
+      'Must see!'
+    ];
+
+    List<String> bodies = [
+      'Check out the latest movies and shows',
+      'You won\'t believe what\'s new!',
+      'Fresh content just for you!',
+      'Discover new favorites!',
+      'Your next binge-watch is here!',
+      'New episodes available now!',
+      'Catch up on the latest!',
+      'Don\'t miss the new releases!',
+      'Find something new to watch!',
+      'Your weekend entertainment is here!'
+    ];
+
+    for (var i = 0; i < 52; i++) {
+      //include saturday and sunday
+      var toAdd = Random().nextInt(2);
+
+      var nextFriday = DateTime.now().add(
+        Duration(
+          days: DateTime.friday + (i * 7) + toAdd,
+        ),
+      );
+      var timeZone = await AwesomeNotifications().getLocalTimeZoneIdentifier();
+
+      var randomTitle = titles[Random().nextInt(titles.length)];
+
+      var randomBody = bodies[Random().nextInt(bodies.length)];
+
+      AwesomeNotifications().createNotification(
+        schedule: NotificationCalendar(
+          repeats: false,
+          allowWhileIdle: true,
+          timeZone: timeZone,
+          weekday: DateTime.friday,
+          hour: 20,
+          minute: 0,
+          preciseAlarm: true,
+          year: nextFriday.year,
+          month: nextFriday.month,
+          day: nextFriday.day,
+        ),
+        content: NotificationContent(
+          id: 10 + i,
+          channelKey: 'reminder_channel',
+          title: randomTitle,
+          body: randomBody,
+        ),
+      );
+    }
+
     var timeZone = await AwesomeNotifications().getLocalTimeZoneIdentifier();
     AwesomeNotifications().createNotification(
       schedule: NotificationCalendar(
@@ -71,9 +136,40 @@ class _HomePageState extends State<HomePage> {
       ),
       content: NotificationContent(
         id: 10,
-        channelKey: 'basic_channel',
-        title: 'Weekend Reminder',
-        body: 'Don\'t forget to watch your favorite shows this weekend',
+        channelKey: 'reminder_channel',
+        title: 'Weekend',
+        body: 'Looking for something to watch this weekend?',
+      ),
+    );
+
+    //add one more random no repeat notification with a random date between now and 7 days from now
+
+    var randomDate = DateTime.now().add(Duration(days: Random().nextInt(7)));
+
+    randomDate =
+        DateTime(randomDate.year, randomDate.month, randomDate.day, 20, 0);
+
+    var randomTitle = titles[Random().nextInt(titles.length)];
+
+    var randomBody = bodies[Random().nextInt(bodies.length)];
+
+    AwesomeNotifications().createNotification(
+      schedule: NotificationCalendar(
+        repeats: false,
+        allowWhileIdle: true,
+        timeZone: timeZone,
+        year: randomDate.year,
+        month: randomDate.month,
+        day: randomDate.day,
+        hour: randomDate.hour,
+        minute: randomDate.minute,
+        preciseAlarm: true,
+      ),
+      content: NotificationContent(
+        id: 11,
+        channelKey: 'reminder_channel',
+        title: randomTitle,
+        body: randomBody,
       ),
     );
   }
