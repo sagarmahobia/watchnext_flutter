@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:chopper/chopper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,7 +48,8 @@ class MyCachedClient extends ChopperClient {
     ConvertRequest? requestConverter,
     ConvertResponse? responseConverter,
   }) async {
-    String? cache = cacheManager.getCacheOrRemoveIfExpired(request.url.toString());
+    String? cache =
+        await cacheManager.getCacheOrRemoveIfExpired(request.url.toString());
 
     if (cache != null) {
       final response = http.Response.bytes(
@@ -58,25 +60,29 @@ class MyCachedClient extends ChopperClient {
       if (converter == null) {
         throw Exception("Converter is null");
       }
-      var convertResponse =
-          await converter!.convertResponse<BodyType, InnerType>(Response(response, response.body));
+      var convertResponse = await converter!
+          .convertResponse<BodyType, InnerType>(
+              Response(response, response.body));
       return convertResponse;
     }
 
     var send = await super.send<BodyType, InnerType>(request,
-        requestConverter: requestConverter, responseConverter: responseConverter);
+        requestConverter: requestConverter,
+        responseConverter: responseConverter);
 
     if (send.isSuccessful) {
       var maxAge = getMaxAge(send.headers);
 
       if (maxAge != null) {
         maxAge = getFactoredAge(maxAge);
-        print("maxAgeFactored: $maxAge");
 
+        if (kDebugMode) {
+          print("maxAgeFactored: $maxAge");
+        }
         var expires = DateTime.now().add(Duration(seconds: maxAge));
 
-        cacheManager.cacheResponse(request.url.toString(), send.bodyString, expires);
-
+        cacheManager.cacheResponse(
+            request.url.toString(), send.bodyString, expires);
       }
     }
 
@@ -107,11 +113,4 @@ extension on String {
   Uint8List toUint8List() {
     return Uint8List.fromList(toBytes());
   }
-}
-
-@singleton
-class CacheManager {
-  final SharedPreferences prefs;
-
-  CacheManager(this.prefs);
 }

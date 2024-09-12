@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:injectable/injectable.dart';
+
 class AdManager {
   static String get appId {
     if (Platform.isAndroid) {
@@ -40,5 +43,4 @@ class AdManager {
       throw new UnsupportedError("Unsupported platform");
     }
   }
-
 }

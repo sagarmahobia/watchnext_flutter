@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:watchnext/views/ad_views/ad_widget.dart';
 import 'package:watchnext/views/video_slider_view/video_card_view/video_card_input_model.dart';
 import 'package:watchnext/views/video_slider_view/video_card_view/video_card_view.dart';
@@ -47,7 +48,10 @@ class _VideoSliderViewState extends FullAdWidgetState<VideoSliderView> {
                           (e) => InkWell(
                             onTap: () {
                               var call = () {
-                                launch(e.url,  );
+                                launchUrlString(e.url,
+                                mode:
+                                    LaunchMode.inAppWebView
+                                );
                               };
 
                               if (super.interstitialAd != null) {

@@ -32,8 +32,6 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
 
   final String title;
 
-  late AnimationController _animationController;
-
   _ListPageState(this.url, this.pictureType, this.title);
 
   final cubit = SingleViewCubit(false);
@@ -41,10 +39,7 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
+
   }
 
   @override

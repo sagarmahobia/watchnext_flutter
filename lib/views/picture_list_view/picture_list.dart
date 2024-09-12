@@ -41,8 +41,8 @@ class PictureListView extends StatefulWidget {
 class _PictureListViewState extends State<PictureListView>
     with AutomaticKeepAliveClientMixin<PictureListView>
     implements MyListener {
-  final _pagingController =
-      PagingController<int, ShowCardInputModel>(firstPageKey: 1, invisibleItemsThreshold: 10);
+  final _pagingController = PagingController<int, ShowCardInputModel>(
+      firstPageKey: 1, invisibleItemsThreshold: 10);
 
   final bloc = PictureListBloc();
   bool _single = false;
@@ -117,6 +117,8 @@ class _PictureListViewState extends State<PictureListView>
 
     return BaseWidget(
       builder: (context, sizingInformation) {
+        var crossAxisCount = sizingInformation.screenSize.width ~/ 125;
+        crossAxisCount = crossAxisCount > 3 ? crossAxisCount : 3;
         return Container(
           color: backGroundColor,
           child: PagedGridView<int, ShowCardInputModel>(
@@ -126,14 +128,18 @@ class _PictureListViewState extends State<PictureListView>
             showNoMoreItemsIndicatorAsGridChild: false,
             pagingController: _pagingController,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: _single ? (sizingInformation.screenSize.width / 180) : (100 / 200),
+              childAspectRatio: _single
+                  ? (sizingInformation.screenSize.width / 180)
+                  : (100 / 200),
               crossAxisSpacing: 0,
               mainAxisSpacing: 0,
-              crossAxisCount: _single ? 1 : sizingInformation.screenSize.width ~/ 125,
+              crossAxisCount: _single ? 1 : crossAxisCount,
             ),
-            builderDelegate:
-                PagedChildBuilderDelegate<ShowCardInputModel>(itemBuilder: (context, item, index) {
-              return _single ? ShowCardViewWide(inputModel: item) : ShowCardView(inputModel: item);
+            builderDelegate: PagedChildBuilderDelegate<ShowCardInputModel>(
+                itemBuilder: (context, item, index) {
+              return _single
+                  ? ShowCardViewWide(inputModel: item)
+                  : ShowCardView(inputModel: item);
             }, firstPageProgressIndicatorBuilder: (_) {
               return Container(
                 height: 500,
@@ -142,11 +148,13 @@ class _PictureListViewState extends State<PictureListView>
                   highlightColor: lightBackGround,
                   child: GridView.count(
                     scrollDirection: Axis.vertical,
-                    crossAxisCount: _single ? 1 : sizingInformation.screenSize.width ~/ 125,
+                    crossAxisCount:
+                        _single ? 1 : crossAxisCount,
                     crossAxisSpacing: 0,
                     mainAxisSpacing: 0,
-                    childAspectRatio:
-                        _single ? (sizingInformation.screenSize.width / 180) : (100 / 200),
+                    childAspectRatio: _single
+                        ? (sizingInformation.screenSize.width / 180)
+                        : (100 / 200),
                     children: [0, 1, 2, 3, 4, 5, 0, 1, 2]
                         .map((e) => Container(
                               margin: EdgeInsets.all(4),
