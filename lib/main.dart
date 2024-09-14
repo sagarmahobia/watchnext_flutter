@@ -24,10 +24,39 @@ class IntIndex {
 //   // showFlutterNotification(message);
 // }
 
+class LoaderApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'WatchNext',
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: backGroundColor,
+        body: Center(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(18),
+            child: Builder(builder: (context) {
+              return Container(
+                child: Image.asset(
+                  'assets/ios_logo.png',
+                  width: 114,
+                  height: 114,
+                ),
+              );
+            }),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  runApp(LoaderApp());
 
   await requestTrackingAuthorization();
+  await AwesomeNotifications().requestPermissionToSendNotifications();
+
   await configureInjection();
 
   // await Firebase.initializeApp(
